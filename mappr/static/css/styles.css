@@ -1,0 +1,209 @@
+body,html {
+	margin: 0;
+	padding: 0;
+	font-size: 1.1em;
+	font-weight: 100;
+	font-family: 'Open Sans', sans-serif;
+}
+
+select {
+	background: rgba(255,255,255,0.3);
+	color: #1a1a1a !important;
+	border: .25vh solid #1a1a1a;
+	font-size: 1.2em;
+	line-height: 1.5em;
+	height: 100%;
+	padding: .25vh;
+	top: 0;
+	display: block;
+	float: left;
+	width: 25%;
+}
+
+#toast_section {
+	min-height: 200px;
+	position:absolute;
+}
+
+.toast {
+	z-index: 9999;
+	position:absolute;
+	top:5rem;
+}
+
+#page {
+	width:100%;
+	height:calc(100vh - 3em);
+}
+
+#map {
+	display:block;
+	float:left;
+	width:80%;
+	height:100%;
+	transition: .2s opacity ease-in-out;
+}
+
+#sidebar {
+	display:block;
+	float:left;
+	width:20%;
+	height:calc(100vh - 3em);
+	margin:0;
+	background-color:rgba(255,255,255,0.7);
+	overflow-y:scroll;
+}
+
+#sidebar .tab-content .tab-pane {
+	display: none;
+}
+
+#map_settings {
+	text-align:center;
+}
+#operator_maps button {
+	display:inline-block;
+	float:none;
+	width:33.333%;
+}
+
+#toast_container {
+	position: absolute;
+	top:3em;
+	right:0;
+}
+
+table {
+	width:100%;
+}
+
+table tr {
+	cursor:pointer;
+	border-bottom: 1px solid #000;
+}
+table tr:nth-child(2n) {
+	background-color:rgba(255,255,255,0.2);
+}
+table tr:nth-child(2n-1) {
+	background-color:rgba(255,255,255,0.1);
+}
+table tr:hover, table tr:focus {
+	background-color:rgba(0,0,0,0.1);
+}
+tr td:nth-child(2){
+	font-weight:900;
+}
+
+.site_popup .leaflet-popup-content-wrapper {
+	font-size: 1.2em;
+	background: rgba(255,255,255,0.9) !important;
+}
+
+.loading {
+	opacity: 0.5;
+}
+
+.ticket_title {
+	font-weight: 600;
+	font-size: 1.1em;
+}
+
+.ticket_data {
+	border-bottom: 1px solid #1a1a1a;
+}
+
+#opts {
+	z-index: 100;
+	height: 3em;
+	display: flex;
+	flex-direction: row;
+}
+
+#opts select, input {
+	flex: 1 0;
+}
+
+.leaflet-popup-content {
+	text-align:center;
+}
+
+.site_popup_title {
+	font-size: 1.4em;
+	font-weight: 600;
+	margin:0;
+	display: block;
+}
+
+.site_popup_links {
+	font-weight: 600;
+	display: block;
+}
+
+.site_approx_addr {
+	display: block;
+}
+
+.sect {
+	display: block;
+	font-size:1.2em;
+	line-height:1.2em;
+	padding:0.4em 0.5em;
+	float: left;
+	background-color: #1a1a1a;
+	color: #fff;
+}
+
+.sect_block {
+	margin-top:0.2rem;
+	display:inline-block;
+	height: auto;
+	min-height: 2em;
+}
+
+.leaflet-tooltip {
+	border-radius:1em !important;
+	padding:0.25em 0.3em !important;
+	box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+.leaflet-popup-content {
+	margin:.7em .75em !important;
+}
+
+.marker_label {
+	font-size:1.1em;
+}
+
+@media screen and (max-width:768px) {
+	select {
+		font-size: 1.1em;
+	}
+
+	#sidebar {
+		display:none;
+		width:100%;
+	}
+	#map{
+		display:block;
+		width:100%;
+	}
+}
+
+@media screen and (max-width:512px) {
+	select {
+		font-size: 1em;
+	}
+
+}
+
+@media screen and (max-width:468px) {
+	select {
+		font-size: .8em;
+	}
+	#map {
+		height: 95vh;
+	}
+	#opts {
+		height: 5vh;
+	}
+}

@@ -1,0 +1,19 @@
+{
+	"short_name":"Mappr",
+	"name":"Mappr | Mast Locations",
+	"description":"View the location of masts in your area, based off MLS and OpenCellID data",
+	"categories":["utilities", "productivity"],
+	"icons":[
+		{
+			"src": "img/bus_256.png",
+			"type": "image/png",
+			"sizes": "256x256"
+		}
+	],
+	"start_url":"/",
+	"scope":"/",
+	"theme_color":"#1a1a1a",
+	"background_color":"#1a1a1a",
+	"display":"standalone",
+	"orientation":"portrait"
+}

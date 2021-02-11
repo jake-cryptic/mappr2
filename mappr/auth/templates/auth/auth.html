@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+	<div class="container">
+		<h1 class="display-4">Access is restricted.</h1>
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+				<div class="alert alert-info alert-{{ category }} alert-dismissible fade show" role="alert">
+					{{ message }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    					<span aria-hidden="true">&times;</span>
+  					</button>
+				</div>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+
+		<ul class="nav nav-pills mb-3" id="tabs_list" role="tablist">
+			<li class="nav-item" role="presentation">
+				<a class="nav-link active" id="login_tab" data-toggle="tab" href="#login_pane" role="tab" aria-controls="login_pane" aria-selected="true">Login</a>
+			</li>
+			<li class="nav-item" role="presentation">
+				<a class="nav-link" id="create_tab" data-toggle="tab" href="#create_pane" role="tab" aria-controls="create_pane" aria-selected="false">Create</a>
+			</li>
+		</ul>
+
+		<div class="tab-content" id="content">
+			<div class="tab-pane fade show active" id="login_pane" role="tabpanel" aria-labelledby="login_tab">
+				<form id="login_form" action="{{ url_for('auth_bp.auth') }}" method="POST">
+					{{ login_user.csrf_token }}
+					<div class="form-group">
+						{{ login_user.login_email.label }}
+						{{ login_user.login_email(class_="form-control") }}
+						<small id="emailHelp" class="form-text text-muted">Please enter your registered email.</small>
+					</div>
+					<div class="form-group">
+						{{ login_user.login_password.label }}
+						{{ login_user.login_password(class_="form-control") }}
+					</div>
+					<button type="submit" class="btn btn-info">Login</button>
+				</form>
+			</div>
+			<div class="tab-pane fade" id="create_pane" role="tabpanel" aria-labelledby="create_tab">
+				<form id="create_form" action="{{ url_for('auth_bp.auth') }}" method="POST">
+					{{ create_user.csrf_token }}
+					<div class="form-group">
+						{{ create_user.create_name.label }}
+						{{ create_user.create_name(class_="form-control") }}
+						<small id="name_help" class="form-text text-muted">X Æ A-12 will not pass my validation checks so don't try.</small>
+					</div>
+					<div class="form-group">
+						{{ create_user.create_email.label }}
+						{{ create_user.create_email(class_="form-control") }}
+					</div>
+					<div class="form-group">
+						{{ create_user.create_password.label }}
+						{{ create_user.create_password(class_="form-control") }}
+					</div>
+					<button type="submit" class="btn btn-info">Request Access</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
+{% block jsfiles %}
+<script src="{{ url_for('static', filename='js/login.js') }}" type="text/javascript"></script>
+{% endblock jsfiles %}
