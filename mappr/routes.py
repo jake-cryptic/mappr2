@@ -1,4 +1,4 @@
-from flask import render_template, send_from_directory, Blueprint, redirect, url_for
+from flask import render_template, send_from_directory, Blueprint, redirect, url_for, flash
 from flask_login import current_user, login_required
 
 main_bp = Blueprint("main_bp", __name__)
@@ -6,11 +6,11 @@ main_bp = Blueprint("main_bp", __name__)
 
 @main_bp.errorhandler(404)
 def page_not_found(e):
-    return render_template('templates/errors/404.html')
+	return render_template('templates/errors/404.html')
 
 
 @main_bp.route("/")
 @login_required
 def index():
-    """Landing page."""
-    return redirect(url_for('map_bp.map'))
+	"""Landing page."""
+	return redirect(url_for('map_bp.map'))

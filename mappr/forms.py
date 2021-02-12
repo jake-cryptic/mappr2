@@ -4,37 +4,37 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 
 
 class CreateUserForm(FlaskForm):
-	create_name = StringField('Name', validators=[DataRequired(), Length(min=1, max=50)])
-	create_email = StringField('Email', validators=[DataRequired(), Email()])
-	create_password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=255)])
+	name = StringField('Name', validators=[DataRequired(), Length(min=1, max=50)])
+	email = StringField('Email', validators=[DataRequired(), Email()])
+	password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=255)])
 	submit = SubmitField('Create Account')
 
 
 class LoginUserForm(FlaskForm):
-	login_email = StringField('Email', validators=[DataRequired(), Email()])
-	login_password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=255)])
+	email = StringField('Email', validators=[DataRequired(), Email()])
+	password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=255)])
 	submit = SubmitField('Login')
 
 
 class UpdateEmailForm(FlaskForm):
-	uef_email = StringField('New Email', validators=[DataRequired(), Email()])
-	uef_password = PasswordField('Current Password', validators=[DataRequired()])
+	email = StringField('New Email', validators=[DataRequired(), Email()])
+	password = PasswordField('Current Password', validators=[DataRequired()])
 	submit = SubmitField('Update Email')
 
 
 class UpdatePasswordForm(FlaskForm):
-	upf_old_password = PasswordField('Current Password', validators=[DataRequired(), Length(min=8, max=255)])
-	upf_new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=8, max=255)])
-	upf_confirm_password = PasswordField('Confirm New Password', validators=[DataRequired(), EqualTo('new_password')])
+	old_password = PasswordField('Current Password', validators=[DataRequired(), Length(min=8, max=255)])
+	new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=8, max=255)])
+	confirm_password = PasswordField('Confirm New Password', validators=[DataRequired(), EqualTo('new_password')])
 	submit = SubmitField('Update Password')
 
 
 class DeleteAccountForm(FlaskForm):
-	daf_password = PasswordField('Account Password', validators=[DataRequired(), Length(min=8, max=255)])
-	daf_confirm = BooleanField('Are you sure?', validators=[DataRequired()])
+	password = PasswordField('Account Password', validators=[DataRequired(), Length(min=8, max=255)])
+	confirm = BooleanField('Are you sure?', validators=[DataRequired()])
 	submit = SubmitField('Delete Account')
 
 
 class DownloadDataForm(FlaskForm):
-	ddf_password = PasswordField('Account Password', validators=[DataRequired(), Length(min=8, max=255)])
+	password = PasswordField('Account Password', validators=[DataRequired(), Length(min=8, max=255)])
 	submit = SubmitField('Download Data')

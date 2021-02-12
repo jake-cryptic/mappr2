@@ -12,19 +12,19 @@ login_manager.login_view = "auth_bp.auth"
 
 @auth_bp.route('/auth', methods=['GET', 'POST'])
 def auth():
-	login_form = LoginUserForm()
-	create_form = CreateUserForm()
+	login_form = LoginUserForm(prefix="login")
+	create_form = CreateUserForm(prefix="create")
 
 	if current_user.is_authenticated:
 		flash('You are already logged in!', 'warning')
 		return redirect(url_for('user_bp.account'))
 
 	if login_form.validate_on_submit():
-		user = User.query.filter_by(email=login_form.login_email.data).first()
+		user = User.query.filter_by(email=login_form.email.data).first()
 
 		if user is None:
 			flash(u'Could not log you in, please try again.', 'danger')
-		elif not user.verify_password(login_form.login_password.data):
+		elif not user.verify_password(login_form.password.data):
 			flash(u'Could not log you in please try again.', 'danger')
 		else:
 			login_user(user)
@@ -38,13 +38,13 @@ def auth():
 		return render_template('auth/auth.html', title='Login Required', login_user=login_form, create_user=create_form)
 
 	if create_form.validate_on_submit():
-		user = User.query.filter_by(email=create_form.create_email.data).first()
+		user = User.query.filter_by(email=create_form.email.data).first()
 
 		if user is None:
 			new_user = User(
-				name=create_form.create_name.data,
-				email=create_form.create_email.data,
-				password=create_form.create_password.data,
+				name=create_form.name.data,
+				email=create_form.email.data,
+				password=create_form.password.data,
 				active=0,
 				account_type=1
 			)
@@ -68,6 +68,11 @@ def logout():
 	"""User log-out logic."""
 	logout_user()
 	return redirect(url_for("main_bp.index"))
+
+
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+	return redirect('/auth?next=' + request.path)
 
 
 @login_manager.user_loader

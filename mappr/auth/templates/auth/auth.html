@@ -33,13 +33,13 @@
 				<form id="login_form" action="{{ url_for('auth_bp.auth') }}" method="POST">
 					{{ login_user.csrf_token }}
 					<div class="form-group">
-						{{ login_user.login_email.label }}
-						{{ login_user.login_email(class_="form-control") }}
+						{{ login_user.email.label }}
+						{{ login_user.email(class_="form-control") }}
 						<small id="emailHelp" class="form-text text-muted">Please enter your registered email.</small>
 					</div>
 					<div class="form-group">
-						{{ login_user.login_password.label }}
-						{{ login_user.login_password(class_="form-control") }}
+						{{ login_user.password.label }}
+						{{ login_user.password(class_="form-control") }}
 					</div>
 					<button type="submit" class="btn btn-info">Login</button>
 				</form>
@@ -48,17 +48,17 @@
 				<form id="create_form" action="{{ url_for('auth_bp.auth') }}" method="POST">
 					{{ create_user.csrf_token }}
 					<div class="form-group">
-						{{ create_user.create_name.label }}
-						{{ create_user.create_name(class_="form-control") }}
+						{{ create_user.name.label }}
+						{{ create_user.name(class_="form-control") }}
 						<small id="name_help" class="form-text text-muted">X Æ A-12 will not pass my validation checks so don't try.</small>
 					</div>
 					<div class="form-group">
-						{{ create_user.create_email.label }}
-						{{ create_user.create_email(class_="form-control") }}
+						{{ create_user.email.label }}
+						{{ create_user.email(class_="form-control") }}
 					</div>
 					<div class="form-group">
-						{{ create_user.create_password.label }}
-						{{ create_user.create_password(class_="form-control") }}
+						{{ create_user.password.label }}
+						{{ create_user.password(class_="form-control") }}
 					</div>
 					<button type="submit" class="btn btn-info">Request Access</button>
 				</form>
