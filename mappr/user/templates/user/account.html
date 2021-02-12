@@ -3,10 +3,9 @@
 {% block title %}Your Account{% endblock title %}
 
 {% block content %}
-<div class="jumbotron jumbotron-fluid">
+<div class="container-fluid bg-light p-5">
 	<div class="container">
-		<h1 class="display-4">Your Account</h1>
-		<p class="lead"></p>
+		<h1 class="display-3">Account Settings</h1>
 		{% with messages = get_flashed_messages(with_categories=true) %}
 			{% if messages %}
 				{% for category, message in messages %}
@@ -19,27 +18,38 @@
 				{% endfor %}
 			{% endif %}
 		{% endwith %}
-
+		<hr />
+		<h2 class="h3">User Details</h2>
 		<form id="email_form" action="{{ url_for('user_bp.account') }}" method="POST">
-			<div class="form-group row">
+			{{ email_form.csrf_token }}
+			<div class="input-group mb-3 row">
 				<label for="static_name" class="col-sm-2 col-form-label">Name</label>
 				<div class="col-sm-10">
 					<input type="text" readonly class="form-control" id="static_name" value="{{ user_details.name }}">
 				</div>
 			</div>
-			<div class="form-group row">
-				<label for="input_email" class="col-sm-2 col-form-label">Email</label>
+			<div class="input-group mb-3 row">
+				{{ email_form.email.label(class="col-sm-2 col-form-label") }}
 				<div class="col-sm-10">
-					<input type="email" class="form-control" id="input_email" value="{{ user_details.email }}" placeholder="Current Email" />
+					{{ email_form.email(class="form-control",value=user_details.email) }}
 				</div>
 			</div>
-			<div class="form-group row">
-				<label for="input_password" class="col-sm-2 col-form-label">Password</label>
+			<div class="input-group mb-3 row">
+				{{ email_form.password.label(class="col-sm-2 col-form-label") }}
 				<div class="col-sm-10">
-					<input type="password" class="form-control" id="input_password" />
+					{{ email_form.password(class="form-control",value=user_details.email) }}
 				</div>
+			</div>
+			<div class="input-group mb-3">
+				<button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Changes</button>
 			</div>
 		</form>
+		<hr />
+		<div class="float-right">
+			<a href="{{ url_for('user_bp.password') }}" class="btn btn-outline-primary"><i class="fas fa-key"></i> Change Password</a>
+			<a href="{{ url_for('user_bp.download') }}" class="btn btn-outline-dark"><i class="fas fa-download"></i> Download My Data</a>
+			<a href="{{ url_for('user_bp.delete') }}" class="btn btn-outline-danger"><i class="fas fa-trash"></i> Delete Account</a>
+		</div>
 	</div>
 </div>
 {% endblock content %}

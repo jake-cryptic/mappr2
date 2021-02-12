@@ -20,6 +20,10 @@ select {
 	width: 25%;
 }
 
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: #1a1a1a !important;
+}
+
 #toast_section {
 	min-height: 200px;
 	position:absolute;

@@ -30,8 +30,8 @@ def auth():
 			login_user(user)
 
 			next = request.args.get('next')
-			if not is_safe_url(next, {'localhost'}, require_https=False):
-				return abort(400)
+			#if not is_safe_url(next, {'localhost'}, require_https=False):
+			#	return abort(400)
 
 			return redirect(next or url_for('main_bp.index'))
 

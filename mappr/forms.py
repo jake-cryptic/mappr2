@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField, IntegerField, Selec
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp, NumberRange
 
 
+# TODO: Move these forms to their relevant folders
 class CreateUserForm(FlaskForm):
 	name = StringField('Name', validators=[DataRequired(), Length(min=1, max=50)])
 	email = StringField('Email', validators=[DataRequired(), Email()])
@@ -17,7 +18,7 @@ class LoginUserForm(FlaskForm):
 
 
 class UpdateEmailForm(FlaskForm):
-	email = StringField('New Email', validators=[DataRequired(), Email()])
+	email = StringField('Email Address', validators=[DataRequired(), Email()])
 	password = PasswordField('Current Password', validators=[DataRequired()])
 	submit = SubmitField('Update Email')
 

@@ -76,3 +76,19 @@ def password():
 				flash("Password was updated!")
 
 	return render_template('user/password.html', password_form=update_password)
+
+
+@user_bp.route('/download', methods=['GET', 'POST'])
+@login_required
+def download():
+	download_account = DownloadDataForm(prefix="rm")
+
+	return render_template('user/download.html', download_form=download_account)
+
+
+@user_bp.route('/delete', methods=['GET', 'POST'])
+@login_required
+def delete():
+	delete_account = DeleteAccountForm(prefix="rm")
+
+	return render_template('user/delete.html', delete_form=delete_account)
