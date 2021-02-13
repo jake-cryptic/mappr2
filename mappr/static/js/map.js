@@ -689,12 +689,12 @@ let v = {
 	},
 
 	nodeSearchResults: function(resp) {
-		if (resp.length === 0) {
+		if (resp.response.length === 0) {
 			alert("No eNodeB with this ID found");
 			return;
 		}
 
-		let result = resp[0];
+		let result = resp.response;
 
 		v.m.map.setView([result.lat, result.lng], 15);
 		v.m.reloadMap();

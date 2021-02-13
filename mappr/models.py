@@ -1,5 +1,7 @@
 from datetime import datetime
 from mappr import db, login_manager
+from sqlalchemy import Integer, SmallInteger, Sequence, Index, UniqueConstraint, ForeignKeyConstraint
+from sqlalchemy.types import DECIMAL
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -32,3 +34,58 @@ class User(UserMixin, db.Model):
 
 	def __unicode__(self):
 		return self.name
+
+
+class Sector(db.Model):
+	__tablename__ = 'sectors'
+
+	id = db.Column(Integer, Sequence('sector_id_seq'), primary_key=True)
+
+	mcc = db.Column(SmallInteger, nullable=False)
+	mnc = db.Column(SmallInteger, nullable=False)
+
+	node_id = db.Column(Integer, nullable=False)
+	sector_id = db.Column(SmallInteger, nullable=False)
+	pci = db.Column(SmallInteger, nullable=False)
+
+	lat = db.Column(DECIMAL(8, 6))
+	lng = db.Column(DECIMAL(9, 6))
+	range = db.Column(Integer)
+
+	samples = db.Column(Integer)
+	created = db.Column(Integer)
+	updated = db.Column(Integer)
+
+	def __repr__(self):
+		return "<Sector(id='%s', enb='%s', sector='%s')>" % (self.id, self.node_id, self.sector_id)
+
+	__table_args__ = (
+		Index('sectors_index', 'mcc', 'mnc', 'node_id', 'sector_id'),
+		UniqueConstraint('mcc', 'mnc', 'node_id', 'sector_id', name='unique_sector'),
+    	ForeignKeyConstraint(['mcc', 'mnc', 'node_id',], ['nodes.mcc', 'nodes.mnc', 'nodes.node_id'])
+	)
+
+
+class Node(db.Model):
+	__tablename__ = 'nodes'
+
+	id = db.Column(Integer, Sequence('node_id_seq'), primary_key=True)
+
+	mcc = db.Column(SmallInteger, nullable=False)
+	mnc = db.Column(SmallInteger, nullable=False)
+
+	node_id = db.Column(Integer, nullable=False)
+
+	lat = db.Column(DECIMAL(8, 6), nullable=False)
+	lng = db.Column(DECIMAL(9, 6), nullable=False)
+
+	mean_lat = db.Column(DECIMAL(8, 6))
+	mean_lng = db.Column(DECIMAL(9, 6))
+
+	def __repr__(self):
+		return "<Node(id='%s', enb='%s')>" % (self.id, self.node_id)
+
+	__table_args__ = (
+		Index('nodes_index', 'mcc', 'mnc', 'node_id'),
+		UniqueConstraint('mcc', 'mnc', 'node_id', name='unique_node')
+	)
