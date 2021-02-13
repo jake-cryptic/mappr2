@@ -22,12 +22,14 @@ def create_app():
         from .api import routes as api_routes
         from .auth import routes as auth_routes
         from .map import routes as map_routes
+        from .statistics import routes as statistics_routes
         from .user import routes as user_routes
 
         app.register_blueprint(routes.main_bp)
         app.register_blueprint(api_routes.api_bp)
         app.register_blueprint(auth_routes.auth_bp)
         app.register_blueprint(map_routes.map_bp)
+        app.register_blueprint(statistics_routes.statistics_bp)
         app.register_blueprint(user_routes.user_bp)
 
         db.create_all()

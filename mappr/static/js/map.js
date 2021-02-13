@@ -316,9 +316,9 @@ let v = {
 				}
 			});
 
-			v.m.ico.main = new techIcon({iconUrl: 'assets/img/marker-default.png'});
-			v.m.ico.located = new techIcon({iconUrl: 'assets/img/marker-located.png'});
-			v.m.ico.csv = new techIcon({iconUrl: 'assets/img/marker-csv.png'});
+			v.m.ico.main = new techIcon({iconUrl: 'static/img/marker-default.png'});
+			v.m.ico.located = new techIcon({iconUrl: 'static/img/marker-located.png'});
+			v.m.ico.csv = new techIcon({iconUrl: 'static/img/marker-csv.png'});
 		},
 
 		setMap: function(){
@@ -714,7 +714,7 @@ let v = {
 		}
 
 		$.ajax({
-			url: 'api/get-mnc/',
+			url: 'api/get-mccs',
 			type: 'GET',
 			data: reqData,
 			dataType: 'json',
@@ -822,23 +822,23 @@ let v = {
 
 	getDataParameters: function () {
 		let data = {
-			"limit_m": 1500,
-			"limit_s": 36
+			//"limit_m": 1500,
+			//"limit_s": 36
 		};
 
 		// Coordinate bounds
 		let bounds = v.m.map.getBounds();
-		if ($("#adv_load_only_bounds_ne").is(":checked")) {
-			data["nelat"] = round(bounds._northEast.lat, 12);
-			data["nelng"] = round(bounds._northEast.lng, 12);
+		if (true) {
+			data["ne_lat"] = round(bounds._northEast.lat, 12);
+			data["ne_lng"] = round(bounds._northEast.lng, 12);
 		}
-		if ($("#adv_load_only_bounds_sw").is(":checked")) {
-			data["swlat"] = round(bounds._southWest.lat, 12);
-			data["swlng"] = round(bounds._southWest.lng, 12);
+		if (true) {
+			data["sw_lat"] = round(bounds._southWest.lat, 12);
+			data["sw_lng"] = round(bounds._southWest.lng, 12);
 		}
 
 		// Limits
-		if ($("#adv_max_num_enb").val()) data["limit_m"] = $("#adv_max_num_enb").val();
+		/*if ($("#adv_max_num_enb").val()) data["limit_m"] = $("#adv_max_num_enb").val();
 		if ($("#adv_max_num_sec").val()) data["limit_s"] = $("#adv_max_num_sec").val();
 
 		// eNB range
@@ -860,19 +860,20 @@ let v = {
 			data["sectors"] = sectors.map(function(x){
 				return parseInt(x.value);
 			});
-		}
+		}*/
 
 		data["mnc"] = v.mno;
+		data["mcc"] = 234;
 
-		if (v.showMls) data["estimate"] = 1;
-		if (v.showVerified) data["verified"] = 1;
+		//if (v.showMls) data["estimate"] = 1;
+		//if (v.showVerified) data["verified"] = 1;
 
 		return data;
 	},
 
 	loadData: function () {
 		v.current_request = $.ajax({
-			url: 'api/get-nodes/',
+			url: 'api/map',
 			type: 'GET',
 			data: v.getDataParameters(),
 			dataType: 'json',
@@ -918,9 +919,9 @@ let v = {
 
 		v.ui.popToastMessage('Parsing data from server...', false);
 
-		for (let i = 0; i < data.results.length; i++) {
-			v.addPointToMap(data.results[i]);
-			v.addPointToTable(data.results[i]);
+		for (let i = 0; i < data.response.length; i++) {
+			v.addPointToMap(data.response[i]);
+			v.addPointToTable(data.response[i]);
 		}
 
 		// Display items on map
@@ -979,7 +980,7 @@ let v = {
 	addPointToMap: function (point) {
 		let tLat = round(point.lat, 7);
 		let tLng = round(point.lng, 7);
-		let tEnb = point.id;
+		let tEnb = point.node_id;
 
 		let markerPopOpts = {
 			maxWidth: (screen.availWidth >= 600 ? 600 : screen.availWidth),

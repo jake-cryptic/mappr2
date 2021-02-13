@@ -21,21 +21,21 @@ def account():
 			entered_email = update_email.email.data
 			entered_pass = update_email.password.data
 
+			# Check password is correct
+			if not current_user.verify_password(entered_pass):
+				flash("Account password was incorrect.", 'danger')
+				return redirect(url_for('user_bp.account'))
+
 			# Check if email already in use
 			results = User.query.filter_by(email=entered_email).all()
 			if len(results) > 0:
-				flash("This email is already in use")
-				return redirect(url_for('user_bp.account'))
-
-			# Check password is correct
-			if not current_user.verify_password(entered_pass):
-				flash("Account password was incorrect.")
+				flash("This email is already in use", 'warning')
 				return redirect(url_for('user_bp.account'))
 
 			update_user.email = entered_email
 			db.session.commit()
 
-			flash("Email was updated!")
+			flash("Email was updated!", 'success')
 
 		if delete_account.validate_on_submit():
 			entered_pass = delete_account.password.data
@@ -43,11 +43,11 @@ def account():
 
 			# Check password is correct
 			if not current_user.verify_password(entered_pass):
-				flash("Account password was incorrect.")
+				flash("Account password was incorrect.", 'danger')
 				return redirect(url_for('user_bp.account'))
 
 			if not entered_consent:
-				flash("Please give consent for the account to be deleted")
+				flash("Please give consent for the account to be deleted", 'danger')
 				return redirect(url_for('user_bp.account'))
 
 		return redirect(url_for('user_bp.account'))
@@ -69,11 +69,11 @@ def password():
 
 			# Check password is correct
 			if not current_user.verify_password(entered_pass):
-				flash("Current password was incorrect.")
+				flash("Current password was incorrect.", 'danger')
 			else:
 				update_user.password = entered_newpass
 				db.session.commit()
-				flash("Password was updated!")
+				flash("Password was updated!", 'success')
 
 	return render_template('user/password.html', password_form=update_password)
 

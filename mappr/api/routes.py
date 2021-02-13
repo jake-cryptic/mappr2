@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, abort, jsonify
 from flask_login import current_user, login_required
-from sqlalchemy import text
+from sqlalchemy import text, and_
 from ..models import db, User, Node, Sector
 
 api_bp = Blueprint("api_bp", __name__, template_folder="templates", url_prefix='/api')
 
 
-def resp(data, **kwargs):
+def resp(data=None, **kwargs):
 	err = False
 	msg = ''
 	if 'error' in kwargs:
@@ -36,9 +36,16 @@ def api_update_node():
 	pass
 
 
-@api_bp.route('/lookup-node/<int:mcc>/<int:mnc>/<int:node_id>', methods=['GET'])
+@api_bp.route('/lookup-node', methods=['GET'])
 @login_required
-def api_lookup_node(mcc, mnc, node_id):
+def api_lookup_node():
+	mcc = request.args.get('mcc')
+	mnc = request.args.get('mnc')
+	node_id = request.args.get('node_id')
+
+	if not node_id:
+		return resp(error='No node_id specified')
+
 	node_query = Node.query.filter_by(
 		mcc=mcc,
 		mnc=mnc,
@@ -56,18 +63,33 @@ def api_lookup_node(mcc, mnc, node_id):
 	return resp(node_list)
 
 
-@api_bp.route('/map/<int:mcc>/<int:mnc>/<float:ne_lat>/<float:ne_lng>/<float:sw_lat>/<float:sw_lng>', methods=['GET'])
+@api_bp.route('/map', methods=['GET'])
 @login_required
-def api_get_map_area(mcc, mnc, ne_lat, ne_lng, sw_lat, sw_lng):
-	node_query = Node.query.filter_by(
-		mcc=mcc,
-		mnc=mnc
+def api_get_map_area():
+	mcc = request.args.get('mcc')
+	mnc = request.args.get('mnc')
+
+	ne_lat = float(request.args.get('ne_lat'))
+	ne_lng = float(request.args.get('ne_lng'))
+	sw_lat = float(request.args.get('sw_lat'))
+	sw_lng = float(request.args.get('sw_lng'))
+
+	node_query = db.session.query(Node).filter(
+		Node.mcc == mcc,
+		Node.mnc == mnc,
+		Node.lat >= sw_lat,
+		Node.lng >= sw_lng,
+		Node.lat <= ne_lat,
+		Node.lng <= ne_lng
 	).all()
 
 	node_list = [{
+		'mcc': row.mcc,
+		'mnc': row.mnc,
 		'node_id': row.node_id,
 		'lat': float(row.lat),
 		'lng': float(row.lng),
+		'sectors': []
 	} for row in node_query]
 
 	return resp(node_list)

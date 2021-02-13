@@ -6,18 +6,7 @@
 <div class="container-fluid bg-light p-5">
 	<div class="container">
 		<h1 class="display-3">Account Settings</h1>
-		{% with messages = get_flashed_messages(with_categories=true) %}
-			{% if messages %}
-				{% for category, message in messages %}
-				<div class="alert alert-info alert-{{ category }} alert-dismissible fade show" role="alert">
-					{{ message }}
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				{% endfor %}
-			{% endif %}
-		{% endwith %}
+		{% include "alert.html" %}
 		<hr />
 		<h2 class="h3">User Details</h2>
 		<form id="email_form" action="{{ url_for('user_bp.account') }}" method="POST">
