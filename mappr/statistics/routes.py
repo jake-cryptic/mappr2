@@ -3,10 +3,16 @@ from flask_login import current_user, login_required
 from ..models import db, Node, Sector
 from .. import login_manager
 
-statistics_bp = Blueprint("statistics_bp", __name__, template_folder="templates")
+statistics_bp = Blueprint("statistics_bp", __name__, template_folder="templates", url_prefix='/statistics')
 
 
-@statistics_bp.route('/statistics', methods=['GET'])
+@statistics_bp.route('/networks', methods=['GET'])
 @login_required
-def statistics():
-	return render_template('statistics/statistics.html')
+def network_stats():
+	return render_template('statistics/networks.html')
+
+
+@statistics_bp.route('/users', methods=['GET'])
+@login_required
+def user_stats():
+	return render_template('statistics/users.html')

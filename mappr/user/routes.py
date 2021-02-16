@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
-from flask_login import login_user, current_user, logout_user, login_required
+from flask_login import current_user, login_required
 from ..models import db, User
 from ..forms import UpdateEmailForm, UpdatePasswordForm, DeleteAccountForm, DownloadDataForm
 from .. import login_manager
 
-user_bp = Blueprint("user_bp", __name__, template_folder="templates")
+user_bp = Blueprint("user_bp", __name__, template_folder="templates", url_prefix='/user')
 
 
 @user_bp.route('/account', methods=['GET', 'POST'])
