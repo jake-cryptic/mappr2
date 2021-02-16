@@ -82,6 +82,10 @@ class Node(db.Model):
 	mean_lat = db.Column(DECIMAL(8, 6))
 	mean_lng = db.Column(DECIMAL(9, 6))
 
+	samples = db.Column(Integer)
+	created = db.Column(Integer)
+	updated = db.Column(Integer)
+
 	def __repr__(self):
 		return "<Node(id='%s', enb='%s')>" % (self.id, self.node_id)
 

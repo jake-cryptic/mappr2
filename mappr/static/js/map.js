@@ -1042,9 +1042,9 @@ let v = {
 		}
 		txt += "</div>";
 
-		if (v.user.list[point.verified]){
-			txt += '<br />Located by: ' + v.user.list[point.verified];
-		}
+		//if (v.user.list[point.verified]){
+		//	txt += '<br />Located by: ' + v.user.list[point.verified];
+		//}
 
 		pushMarker([tLat, tLng], txt, v.sectorInfo(parseInt(point.mnc), tEnb, Object.keys(point.sectors)), point);
 	},

@@ -83,13 +83,35 @@ def api_get_map_area():
 		Node.lng <= ne_lng
 	).all()
 
+	def get_sectors_for_node(mcc, mnc, node_id):
+		sectors_query = db.session.query(Sector).filter(
+			Sector.mcc == mcc,
+			Sector.mnc == mnc,
+			Sector.node_id == node_id
+		).all()
+
+		sect_dict = {}
+		for row in sectors_query:
+			sect_dict[row.sector_id] = [
+				float(row.lat),
+				float(row.lng),
+				row.created,
+				row.updated,
+				row.pci
+			]
+
+		return sect_dict
+
 	node_list = [{
 		'mcc': row.mcc,
 		'mnc': row.mnc,
 		'node_id': row.node_id,
 		'lat': float(row.lat),
 		'lng': float(row.lng),
-		'sectors': []
+		'created': row.created,
+		'updated': row.updated,
+		'samples': row.samples,
+		'sectors': get_sectors_for_node(row.mcc, row.mnc, row.node_id)
 	} for row in node_query]
 
 	return resp(node_list)
