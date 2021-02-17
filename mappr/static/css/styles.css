@@ -58,10 +58,6 @@ select {
 	overflow-y:scroll;
 }
 
-#sidebar .tab-content .tab-pane {
-	display: none;
-}
-
 #map_settings {
 	text-align:center;
 }
@@ -123,7 +119,7 @@ tr td:nth-child(2){
 	flex-direction: row;
 }
 
-#opts select, input {
+#opts input {
 	flex: 1 0;
 }
 
@@ -193,17 +189,7 @@ tr td:nth-child(2){
 	}
 }
 
-@media screen and (max-width:512px) {
-	select {
-		font-size: 1em;
-	}
-
-}
-
 @media screen and (max-width:468px) {
-	select {
-		font-size: .8em;
-	}
 	#map {
 		height: 95vh;
 	}

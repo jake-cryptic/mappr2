@@ -8,9 +8,12 @@ let _table = {
 
 	init:function() {
 		_table.html = $("#results_tbl");
+		console.log('[Table]-> Initialised');
 	},
 
 	addData:function(data) {
+		_table.html.empty();
+
 		for (let i = 0; i < data.length; i++) {
 			_table.addPointToTable(data[i]);
 		}
@@ -27,7 +30,7 @@ let _table = {
 			$("<tr/>",{
 				"data-lat":point.lat,
 				"data-lng":point.lng
-			}).on("click enter",v.goToHereData).append(
+			}).on("click enter",_map.goToHereData).append(
 				$("<td/>").text(point.mnc),
 				$("<td/>").text(point.id),
 				$("<td/>").text(getSectors())

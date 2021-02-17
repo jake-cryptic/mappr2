@@ -6,6 +6,7 @@ const MAPPR_VER = "mappr-v2.0.0b";
 
 let _app = {
 
+	rat: "LTE",
 	mcc: 234,
 	mnc: 0,
 
@@ -15,6 +16,27 @@ let _app = {
 		_history.loadParams(function(){
 			_map.init();
 		});
+
+		_ui.init();
+		_table.init();
+	},
+
+	changeRat: function(){
+		_app.rat = $(this).val();
+		_history.updateUrl();
+		_map.reloadMap();
+	},
+
+	changeMcc: function(){
+		_app.mcc = parseInt($(this).val());
+		_history.updateUrl();
+		_map.reloadMap();
+	},
+
+	changeMnc: function(){
+		_app.mnc = parseInt($(this).val());
+		_history.updateUrl();
+		_map.reloadMap();
 	}
 
 };

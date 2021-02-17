@@ -10,7 +10,7 @@ let _api = {
 		let apiBounds = {};
 
 		// Coordinate area to load
-		let bounds = v.m.map.getBounds();
+		let bounds = _map.state.map.getBounds();
 		apiBounds["ne_lat"] = round(bounds._northEast.lat, 12);
 		apiBounds["ne_lng"] = round(bounds._northEast.lng, 12);
 		apiBounds["sw_lat"] = round(bounds._southWest.lat, 12);
@@ -23,7 +23,8 @@ let _api = {
 		getParams: function (){
 			let data = {};
 
-			// Get selected MCC / MNC
+			// Get selected RAT / MCC / MNC
+			data['rat'] = _app.rat;
 			data['mcc'] = _app.mcc;
 			data['mnc'] = _app.mnc;
 
@@ -73,6 +74,7 @@ let _api = {
 			_table.addData(resp.response);
 			_map.addData(resp.response);
 
+			_ui.burnToastMessage();
 			document.title = 'Mappr2 | Map';
 		}
 	},
@@ -80,22 +82,28 @@ let _api = {
 	nodeSearch: {
 		doNodeSearch: function() {
 			let enb = $("#enb_search").val();
+			let request_data = {
+				'enb': enb,
+				'mcc': _app.mcc
+			};
+
+			if (_app.mnc !== 0){
+				request_data['mnc'] = _app.mnc;
+			}
+
 			$.ajax({
 				url: 'api/lookup-node/',
 				type: 'GET',
-				data: {
-					"mnc":v.mno,
-					"enb":enb
-				},
+				data: request_data,
 				dataType: 'json',
-				success: v.nodeSearchResults,
+				success: _api.nodeSearch.success,
 				error: function (e) {
 					console.error(e);
 				}
 			});
 		},
 
-		nodeSearchResults: function(resp) {
+		success: function(resp) {
 			if (resp.response.length === 0) {
 				alert("No eNodeB with this ID found");
 				return;
@@ -103,8 +111,8 @@ let _api = {
 
 			let result = resp.response;
 
-			v.m.map.setView([result.lat, result.lng], 15);
-			v.m.reloadMap();
+			_map.state.map.setView([result.lat, result.lng], 15);
+			_map.reloadMap();
 		},
 	}
 
