@@ -18,6 +18,11 @@ let _map = {
 		});
 	},
 
+	attr: {
+		g: '<a href="https://maps.google.co.uk">Google Maps</a>',
+		o: '<a href="http://openstreetmap.org">OpenStreetMap</a>'
+	},
+
 	icons: {
 
 		ico: {
@@ -49,6 +54,7 @@ let _map = {
 		isNodeLoadingPaused:false,
 		isNodePolygonPaused:false,
 
+		base: null,
 		map: null,
 		map_id: "rdi",
 
@@ -78,7 +84,7 @@ let _map = {
 			preferCanvas:true
 		}).setView(_map.state.defaultCoords, _map.state.zoom);
 
-		if (!v.loadedFromParams) {
+		if (!_history.loadedFromParams) {
 			_map.moveToCurrentLocation();
 		}
 		_map.state.map.addEventListener('contextmenu', _map.mapMove);
@@ -95,14 +101,14 @@ let _map = {
 		_map.state.isNodeLoadingPaused = !_map.state.isNodeLoadingPaused;
 		$("#node_loading_pause").text(_map.state.isNodeLoadingPaused ? "Unpause Node Loading" : "Pause Node Loading");
 
-		v.u.updateUrl();
+		_history.updateUrl();
 	},
 
 	togglePolygonPause:function(){
 		_map.state.isNodePolygonPaused = !_map.state.isNodePolygonPaused;
 		$("#node_polygons_pause").text(_map.state.isNodePolygonPaused ? "Enable Node Polygons" : "Disable Node Polygons");
 		_map.removeMapPolygons();
-		//v.u.updateUrl();
+		//_history.updateUrl();
 	},
 
 	moveToCurrentLocation: function() {
@@ -117,7 +123,7 @@ let _map = {
 
 	changeMap: function(map) {
 		if (!map) map = "rdi";
-		if (v.base) _map.state.map.removeLayer(v.base);
+		if (_map.state.base) _map.state.map.removeLayer(_map.state.base);
 
 		let maps = {
 			"sat": "s",
@@ -130,10 +136,10 @@ let _map = {
 		};
 
 		let server = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			attr = v.attr.o;
+			attr = _map.attr.o;
 
 		if (map && maps[map] && map !== "osm" && map !== "otm") {
-			attr = v.attr.g;
+			attr = _map.attr.g;
 			server = 'https://mt1.google.com/vt/lyrs=' + maps[map] + '&x={x}&y={y}&z={z}';
 		}
 
@@ -141,15 +147,15 @@ let _map = {
 			server = "https://tile.opentopomap.org/{z}/{x}/{y}.png";
 		}
 
-		v.base = new L.TileLayer(server, {attribution: attr + " | " + MAPPR_VER});
+		_map.state.base = new L.TileLayer(server, {attribution: attr + " | " + MAPPR_VER});
 		_map.state.map_id = map;
-		_map.state.map.addLayer(v.base);
+		_map.state.map.addLayer(_map.state.base);
 
-		v.u.updateUrl();
+		_history.updateUrl();
 	},
 
 	mapMove: function (evt) {
-		v.u.updateUrl();
+		_history.updateUrl();
 		_map.reloadMap();
 	},
 
@@ -184,6 +190,20 @@ let _map = {
 		}
 
 		_map.state.polygons = [];
+	},
+
+	addData:function (data){
+		for (let i = 0; i < data.length; i++) {
+			_map.addPointToMap(data[i]);
+		}
+
+		// Display items on map
+		v.markers.forEach(function (marker) {
+			_map.state.map.addLayer(marker);
+		});
+		v.polygons.forEach(function (polygon) {
+			_map.state.map.addLayer(polygon);
+		});
 	},
 
 	osm: {

@@ -6,31 +6,74 @@ let _api = {
 
 	currentRequest: null,
 
-	getMapAreaParameters: function () {
-		let data = {};
+	getMapBounds: function () {
+		let apiBounds = {};
 
 		// Coordinate area to load
 		let bounds = v.m.map.getBounds();
-		data["ne_lat"] = round(bounds._northEast.lat, 12);
-		data["ne_lng"] = round(bounds._northEast.lng, 12);
-		data["sw_lat"] = round(bounds._southWest.lat, 12);
-		data["sw_lng"] = round(bounds._southWest.lng, 12);
+		apiBounds["ne_lat"] = round(bounds._northEast.lat, 12);
+		apiBounds["ne_lng"] = round(bounds._northEast.lng, 12);
+		apiBounds["sw_lat"] = round(bounds._southWest.lat, 12);
+		apiBounds["sw_lng"] = round(bounds._southWest.lng, 12);
 
-		return data;
+		return apiBounds;
 	},
 
 	map: {
+		getParams: function (){
+			let data = {};
+
+			// Get selected MCC / MNC
+			data['mcc'] = _app.mcc;
+			data['mnc'] = _app.mnc;
+
+			// Get any node_id constraints
+
+
+			// Get any sector_id constraints
+
+
+			// Get any pci constraints
+
+
+			// Get any time constraints
+
+
+
+			return Object.assign(
+				data,
+				_api.getMapBounds()
+			);
+		},
+
 		loadArea: function() {
+			document.title = 'Updating Map...';
+
 			_api.currentRequest = $.ajax({
 				url: 'api/map',
 				type: 'GET',
-				data: v.getDataParameters(),
+				data: _api.map.getParams(),
 				dataType: 'json',
-				success: v.viewData,
+				success: _api.map.success,
 				error: function (e) {
+					document.title = 'API Error!';
 					console.error(e);
 				}
 			});
+		},
+
+		success:function(resp) {
+			_ui.popToastMessage('Parsing data from server...', false);
+
+			if (!resp || resp.error) {
+				_ui.popToastMessage(resp.msg || 'Unknown API error', false);
+				return;
+			}
+
+			_table.addData(resp.response);
+			_map.addData(resp.response);
+
+			document.title = 'Mappr2 | Map';
 		}
 	},
 

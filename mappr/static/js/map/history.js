@@ -3,6 +3,9 @@
 */
 
 let _history = {
+
+	loadedFromParams:false,
+
 	serialiseObject: function(obj){
 		let str = "";
 		for (let key in obj) {
@@ -30,36 +33,43 @@ let _history = {
 		let obj = window.location;
 		let url = obj.origin + obj.pathname + "?";
 
-		let loc = v.m.map.getCenter();
-		let zoom = v.m.map.getZoom();
+		let loc = _map.state.map.getCenter();
+		let zoom = _map.state.map.getZoom();
 		let params = {
-			"mcc": v.mcc,
-			"mnc": v.mno,
-			"paused": v.m.isNodeLoadingPaused ? 1 : 0,
-			"map": v.m.map_id,
+			"mcc": _app.mcc,
+			"mnc": _app.mnc,
+			"paused": _map.state.isNodeLoadingPaused ? 1 : 0,
+			"map": _map.state.map_id,
 			"lat": loc.lat || -1.5,
 			"lng": loc.lng || 52,
 			"zoom": zoom || 13
 		};
 
-		let newUrl = url + v.u.serialiseObject(params);
+		let newUrl = url + _history.serialiseObject(params);
 
-		v.u.h.pushState(params, "Viewing " + params['mnc'], newUrl);
+		window.history.pushState(params, "Viewing " + params['mnc'], newUrl);
 	},
 
 	loadParams:function (cb) {
-		let obj = v.u.deserialiseObject(window.location.search.substring(1));
+		let obj = _history.deserialiseObject(window.location.search.substring(1));
 
 		if (Object.keys(obj).length > 4) {
-			v.loadedFromParams = true;
+			_history.loadedFromParams = true;
 
-			if (obj.mnc) v.mno = parseInt(obj.mnc);
-			if (obj.paused) v.m.isNodeLoadingPaused = parseInt(obj.paused) === 1;
-			if (obj.lat && obj.lng) v.m.defaultCoords = [obj.lat, obj.lng];
-			if (obj.zoom) v.m.zoom = parseInt(obj.zoom);
-			if (obj.map) v.m.map_id = obj.map;
+			if (obj.mcc) _app.mcc = parseInt(obj.mcc);
+			if (obj.mnc) _app.mnc = parseInt(obj.mnc);
+			if (obj.paused) _map.state.isNodeLoadingPaused = parseInt(obj.paused) === 1;
+			if (obj.lat && obj.lng) _map.state.defaultCoords = [obj.lat, obj.lng];
+			if (obj.zoom) _map.state.zoom = parseInt(obj.zoom);
+			if (obj.map) _map.state.map_id = obj.map;
 		}
 
 		if (cb) cb();
+	},
+
+	urlChange:function(){
+		// TODO: Change map when forward / back buttons are pressed
+		// TODO: Add UI controls to enable / disable this behaviour
 	}
+
 };

@@ -24,6 +24,12 @@ function getDateString(uts) {
 	return d.getFullYear() + "-" + d.getMonth() + "-" + (d.getDate().toString().length === 1 ? "0" + d.getDate() : d.getDate());
 }
 
+function getDateStringUtc(uts) {
+	let dateObj = new Date();
+	dateObj.setTime(parseInt(uts) * 1000);
+	return dateObj.toUTCString();
+}
+
 let isMobileDevice = function(){
 	return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
 };
