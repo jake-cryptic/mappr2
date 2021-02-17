@@ -6,6 +6,12 @@ from .. import login_manager
 map_bp = Blueprint("map_bp", __name__, template_folder="templates")
 
 
+@map_bp.route('/old-map', methods=['GET', 'POST'])
+@login_required
+def old_map():
+	return render_template('map/oldmap.html')
+
+
 @map_bp.route('/map', methods=['GET', 'POST'])
 @login_required
 def map():
