@@ -32,7 +32,7 @@ let _table = {
 				"data-lng":point.lng
 			}).on("click enter",_map.goToHereData).append(
 				$("<td/>").text(point.mnc),
-				$("<td/>").text(point.id),
+				$("<td/>").text(point.node_id),
 				$("<td/>").text(getSectors())
 			)
 		);

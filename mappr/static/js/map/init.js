@@ -15,10 +15,12 @@ let _app = {
 
 		_history.loadParams(function(){
 			_map.init();
+			_ui.init();
+			_table.init();
+			document.title = "Mappr2 | Map";
 		});
 
-		_ui.init();
-		_table.init();
+		_csv.init();
 	},
 
 	changeRat: function(){

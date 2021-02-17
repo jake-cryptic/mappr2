@@ -114,6 +114,30 @@ let _api = {
 			_map.state.map.setView([result.lat, result.lng], 15);
 			_map.reloadMap();
 		},
+	},
+
+	nodeUpdate: {
+		move_attempt:{},
+
+		sendMove:function(){
+			_ui.popToastMessage("Updating Node....", false);
+
+			$.ajax({
+				url: 'api/update-node/',
+				type: 'POST',
+				data: _api.move_attempt,
+				dataType: 'json',
+				success: function (resp) {
+					console.log(resp);
+					_ui.popToastMessage("Update Success", true);
+					_map.reloadMap();
+				},
+				error: function (e) {
+					_ui.popToastMessage("Failed to update node!", true);
+					console.error(e);
+				}
+			});
+		}
 	}
 
 };

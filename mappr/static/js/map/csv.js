@@ -26,24 +26,26 @@ let _csv = {
 		}
 
 		// Add callback functions to config
-		v.csv.conf['before'] = v.csv.parseBefore;
-		v.csv.conf['step'] = v.csv.parseStep;
-		v.csv.conf['complete'] = v.csv.parseComplete;
+		_csv.conf['before'] = _csv.parseBefore;
+		_csv.conf['step'] = _csv.parseStep;
+		_csv.conf['complete'] = _csv.parseComplete;
 
 		// Assign event listener
 		$("input[type=file]#csv_import").on("change", function(e) {
-			v.csv.parseFile($(this).prop('files')[0]);
+			_csv.parseFile($(this).prop('files')[0]);
 			return;
 			let fileReader = new FileReader();
 
 			fileReader.onload = function () {
-				v.csv.parse(fileReader.result);
+				_csv.parse(fileReader.result);
 			};
 
 			fileReader.readAsDataURL(
 				$(this).prop('files')[0]
 			);
-		})
+		});
+
+		console.log('[CSV]-> Initialised')
 	},
 
 	parseBefore: function(file, inputElem) {
@@ -62,7 +64,7 @@ let _csv = {
 		};
 
 		if (point.lat === 0 || isNaN(point.lat) || point.lng === 0 || isNaN(point.lng)) {
-			v.csv.errors.push(
+			_csv.errors.push(
 				row
 			);
 			return;
@@ -73,7 +75,7 @@ let _csv = {
 			{
 				draggable:false,
 				autoPan:true,
-				icon: v.m.ico.csv
+				icon: _map.icons.ico.csv
 			}
 		);
 
@@ -85,8 +87,8 @@ let _csv = {
 			});
 		}
 
-		v.csv.dataPoints.push(m);
-		v.m.map.addLayer(v.csv.dataPoints[v.csv.dataPoints.length-1]);
+		_csv.dataPoints.push(m);
+		_map.state.map.addLayer(_csv.dataPoints[_csv.dataPoints.length-1]);
 	},
 
 	parseComplete: function(result, par) {
@@ -94,15 +96,15 @@ let _csv = {
 	},
 
 	parseFile:function(f) {
-		v.csv.files.push(
-			Papa.parse(f, v.csv.conf)
+		_csv.files.push(
+			Papa.parse(f, _csv.conf)
 		);
 	},
 
 	parse:function(text) {
 		let raw = atob(text);
-		v.csv.files.push(
-			Papa.parse(raw, v.csv.conf)
+		_csv.files.push(
+			Papa.parse(raw, _csv.conf)
 		);
 	}
 

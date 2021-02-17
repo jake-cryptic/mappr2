@@ -17,6 +17,7 @@ let _ui = {
 			$('#node_loading_pause').on('click enter', _map.items.toggleNodeLoading);
 			$('#node_polygons_pause').on('click enter', _map.items.togglePolygonPause);
 
+			// TODO: set value depending on load from history URL
 			// Select box change events
 			$("#select_rat").on("change", _app.changeRat);
 			$("#select_mcc").on("change", _app.changeMcc);
@@ -67,6 +68,18 @@ let _ui = {
 		}
 	},
 
+	getSiteAddr: function(el, lat, lng){
+		el.innerText = 'Loading...'
+		let parent = el.parentElement;
+		_map.osm.getApproxLocation(lat, lng, function(data){
+			parent.innerHTML = "<strong>Site Address:</strong><br/>" + data;
+		});
+	},
+
+	getSiteHistory: function(el, mnc, enb){
+		alert("Not yet " + mnc + " " + enb);
+	},
+
 	// TODO: Make it so that a new toast is created each time and they stack
 	popToastMessage:function(txt, autohide){
 		$("#toast_content_body").text(txt);
@@ -83,13 +96,14 @@ let _ui = {
 			$("<br />"),
 			$("<button/>",{"class":"btn btn-success"}).text(yesTxt).on("click enter", successCallback),
 			" ",
-			$("<button/>",{"class":"btn btn-danger"}).text(noTxt).on("click enter", v.ui.burnToastAction)
+			$("<button/>",{"class":"btn btn-danger"}).text(noTxt).on("click enter", _ui.burnToastAction)
 		);
 
 		$("#toast_action_required").attr('data-autohide', false).toast('show');
 	},
+
 	burnToastAction:function(){
 		$('#toast_action_required').attr('data-autohide', true).toast('hide');
-	},
+	}
 
 };

@@ -85,6 +85,7 @@ let _map = {
 			_map.items.removeMapPolygons();
 		},
 
+		// TODO: Don't clear markers on map move if they are staying in viewport
 		removeMapMarkers: function() {
 			for (let marker in _map.items.markers) {
 				_map.state.map.removeLayer(_map.items.markers[marker]);
@@ -215,6 +216,24 @@ let _map = {
 		_api.map.loadArea();
 	},
 
+	attemptMove:function(evt){
+		if (!evt) return;
+
+		_api.nodeUpdate.move_attempt = {
+			rat:_app.rat,
+			mcc:evt.target.options.mcc,
+			mnc:evt.target.options.mnc,
+			enb:evt.target.options.enb,
+			lat:evt.target._latlng.lat,
+			lng:evt.target._latlng.lng
+		};
+
+		_ui.popToastAction("Are you sure you wish to move this node?", "Yes", "No", function(){
+			_ui.burnToastAction();
+			_api.nodeUpdate.sendMove();
+		});
+	},
+
 	getSectorColor: function (mnc, sector) {
 		//let sectorName = v.sData[mnc][sector];
 		let sectorId = mnc.toString(); // + sectorName;
@@ -287,8 +306,8 @@ let _map = {
 			<a href="https://www.cellmapper.net/map?MCC=234&MNC=' + mnc + '&type=LTE&latitude=' + lat + '&longitude=' + lng + '&zoom=15&clusterEnabled=false" target="_blank">Cell Mapper</a>\
 		</span>\
 		<div class="site_approx_addr btn-group btn-group-sm" role="group" aria-label="Basic example">\
-			<button type="button" class="btn btn-secondary" onclick="v.t.getSiteAddr(this,' + lat + ',' + lng + ')">Address</button>\
-			<button type="button" class="btn btn-primary btn-sm" onclick="v.t.getSiteHistory(this,' + mnc + ',' + enb + ')">Location History</button>\
+			<button type="button" class="btn btn-secondary" onclick="_ui.getSiteAddr(this,' + lat + ',' + lng + ')">Address</button>\
+			<button type="button" class="btn btn-primary btn-sm" onclick="_ui.getSiteHistory(this,' + mnc + ',' + enb + ')">Location History</button>\
 		</div>';
 
 		return t;
@@ -327,7 +346,7 @@ let _map = {
 					{
 						mcc:point.mcc,
 						mnc:point.mnc,
-						enb:point.id,
+						enb:point.node_id,
 						draggable:true,
 						autoPan:true,
 						icon: (point.verified ? _map.icons.ico.located : _map.icons.ico.main)
@@ -336,7 +355,7 @@ let _map = {
 					poptext, markerPopOpts
 				).bindTooltip(
 					tooltext, markerToolOpts
-				)//.on('moveend', v.p.attemptMove)
+				).on('moveend', _map.attemptMove)
 			);
 		}
 
