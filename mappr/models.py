@@ -7,7 +7,7 @@ from flask_login import UserMixin
 
 
 class User(UserMixin, db.Model):
-	__tablename__ = 'user_accounts'
+	__tablename__ = 'users'
 
 	id = db.Column(db.Integer, primary_key=True)
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -17,8 +17,11 @@ class User(UserMixin, db.Model):
 	password_hash = db.Column(db.String(128))
 	password = db.Column(db.String(60), nullable=False)
 	email = db.Column(db.String(256), unique=True, nullable=False)
-	active = db.Column(db.Integer, nullable=False)
-	account_type = db.Column(db.Integer, nullable=False)
+	active = db.Column(db.SmallInteger, nullable=False, default=0)
+	account_type = db.Column(db.SmallInteger, nullable=False, default=0)
+
+	bookmarks = db.relationship("Bookmark")
+	locations = db.relationship("NodeLocation")
 
 	@property
 	def password(self):
@@ -93,3 +96,44 @@ class Node(db.Model):
 		Index('nodes_index', 'mcc', 'mnc', 'node_id'),
 		UniqueConstraint('mcc', 'mnc', 'node_id', name='unique_node')
 	)
+
+
+class NodeLocation(db.Model):
+	__tablename__ = 'node_locations'
+
+	id = db.Column(Integer, Sequence('node_loc_id_seq'), primary_key=True)
+	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+
+	mcc = db.Column(SmallInteger, nullable=False)
+	mnc = db.Column(SmallInteger, nullable=False)
+
+	node_id = db.Column(Integer, nullable=False)
+
+	lat = db.Column(DECIMAL(8, 6), nullable=False)
+	lng = db.Column(DECIMAL(9, 6), nullable=False)
+
+	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+	def __repr__(self):
+		return "<NodeLocation(id='%s', node_id='%s', lat='%s', lng='%s')>" % (self.id, self.node_id, self.lat, self.lng)
+
+
+class Bookmark(db.Model):
+	__tablename__ = 'bookmarks'
+
+	id = db.Column(Integer, Sequence('bookmark_id_seq'), primary_key=True)
+	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+
+	mcc = db.Column(SmallInteger, nullable=False)
+	mnc = db.Column(SmallInteger, nullable=False)
+
+	lat = db.Column(DECIMAL(8, 6), nullable=False)
+	lng = db.Column(DECIMAL(9, 6), nullable=False)
+	zoom = db.Column(SmallInteger, nullable=False)
+
+	comment = db.Column(db.Text, nullable=True)
+
+	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+	def __repr__(self):
+		return "<Bookmark(id='%s', lat='%s', lng='%s')>" % (self.id, self.lat, self.lng)

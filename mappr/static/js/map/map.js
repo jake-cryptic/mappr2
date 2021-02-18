@@ -162,6 +162,16 @@ let _map = {
 		_map.state.map.setView([$(this).data("lat"), $(this).data("lng")], 16);
 	},
 
+	getMapXyz: function(){
+		let loc = _map.state.map.getCenter();
+		let zoom = _map.state.map.getZoom();
+		return {
+			'lat': loc.lat,
+			'lng': loc.lng,
+			'zoom': zoom
+		};
+	},
+
 	setMap: function(){
 		_map.changeMap($(this).val());
 	},

@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, abort, jsonify
+from flask import Blueprint, request, abort, jsonify
 from flask_login import current_user, login_required
-from sqlalchemy import text, and_
-from ..models import db, User, Node, Sector
+from sqlalchemy import text
+from ..models import db, Node, Sector, Bookmark
 
 api_bp = Blueprint("api_bp", __name__, template_folder="templates", url_prefix='/api')
 
@@ -123,3 +123,72 @@ def api_get_mnc_list():
 	mnc_query = db.engine.execute(text('SELECT DISTINCT nodes.mcc, nodes.mnc FROM nodes'))
 	mnc_list = [[row[0], row[1]] for row in mnc_query]
 	return resp(mnc_list)
+
+
+@api_bp.route('/bookmark/create', methods=['POST'])
+@login_required
+def api_bookmark_create():
+	user_id = current_user.id
+
+	mcc = request.form.get('mcc')
+	mnc = request.form.get('mnc')
+
+	lat = float(request.form.get('lat'))
+	lng = float(request.form.get('lng'))
+	zoom = int(request.form.get('zoom'))
+
+	comment = request.form.get('comment')
+
+	new_bookmark = Bookmark(user_id=user_id, mcc=mcc, mnc=mnc, lat=lat, lng=lng, zoom=zoom, comment=comment)
+	db.session.add(new_bookmark)
+	db.session.commit()
+
+	return resp({})
+
+
+@api_bp.route('/bookmark/delete', methods=['POST'])
+@login_required
+def api_bookmark_remove():
+	user_id = current_user.id
+
+	mcc = request.form.get('mcc')
+	mnc = request.form.get('mnc')
+	id = request.form.get('id')
+
+	bookmark_item = Bookmark.query.filter(
+		id == id,
+		user_id == user_id,
+		mcc == mcc,
+		mnc == mnc
+	).one()
+
+	if not bookmark_item:
+		return resp({}, error=True, msg='Bookmark not found')
+
+	db.session.delete(bookmark_item)
+	db.session.commit()
+
+	return resp({})
+
+
+@api_bp.route('/bookmark/get', methods=['GET', 'POST'])
+@login_required
+def api_bookmark_get():
+	user_id = current_user.id
+
+	bookmark_query = Bookmark.query.filter_by(
+		user_id=user_id
+	).all()
+
+	bookmark_list = [{
+		'mcc': row.mcc,
+		'mnc': row.mnc,
+		'lat': float(row.lat),
+		'lng': float(row.lng),
+		'zoom': int(row.zoom),
+		'comment': row.comment,
+		'created': row.time_created,
+		'id': row.id
+	} for row in bookmark_query]
+
+	return resp(bookmark_list)

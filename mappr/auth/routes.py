@@ -19,45 +19,48 @@ def auth():
 		flash('You are already logged in!', 'warning')
 		return redirect(url_for('user_bp.account'))
 
-	if login_form.validate_on_submit():
-		user = User.query.filter_by(email=login_form.email.data).first()
+	if request.method == 'POST':
+		if create_form.validate_on_submit():
+			user = User.query.filter_by(email=create_form.email.data).first()
 
-		if user is None:
-			flash(u'Could not log you in, please try again.', 'danger')
-		elif not user.verify_password(login_form.password.data):
-			flash(u'Could not log you in please try again.', 'danger')
-		else:
-			login_user(user)
+			if user is None:
+				new_user = User(
+					name=create_form.name.data,
+					email=create_form.email.data,
+					password=create_form.password.data,
+					active=0,
+					account_type=1
+				)
 
-			next = request.args.get('next')
-			#if not is_safe_url(next, {'localhost'}, require_https=False):
-			#	return abort(400)
+				db.session.add(new_user)
+				db.session.flush()
+				db.session.commit()
 
-			return redirect(next or url_for('main_bp.index'))
+				flash('Account has been created.', 'success')
+			else:
+				flash('Email address cannot be used', 'warning')
+
+			return redirect(url_for('auth_bp.auth'))
+
+		if login_form.validate_on_submit():
+			user = User.query.filter_by(email=login_form.email.data).first()
+
+			if user is None:
+				flash('Could not log you in, please try again.', 'danger')
+			elif not user.verify_password(login_form.password.data):
+				flash('Could not log you in please try again.', 'danger')
+			elif user.active == 0:
+				flash('Your account is not active', 'danger')
+			else:
+				login_user(user)
+
+				next = request.args.get('next')
+				#if not is_safe_url(next, {'localhost'}, require_https=False):
+				#	return abort(400)
+
+				return redirect(next or url_for('main_bp.index'))
 
 		return render_template('auth/auth.html', title='Login Required', login_user=login_form, create_user=create_form)
-
-	if create_form.validate_on_submit():
-		user = User.query.filter_by(email=create_form.email.data).first()
-
-		if user is None:
-			new_user = User(
-				name=create_form.name.data,
-				email=create_form.email.data,
-				password=create_form.password.data,
-				active=0,
-				account_type=1
-			)
-
-			db.session.add(new_user)
-			db.session.flush()
-			db.session.commit()
-
-			flash(u'Account has been created. You can now login.', 'success')
-		else:
-			flash(u'Email address cannot be used', 'warning')
-
-		return redirect(url_for('auth_bp.auth'))
 
 	return render_template('auth/auth.html', title='Login Required', login_user=login_form, create_user=create_form)
 

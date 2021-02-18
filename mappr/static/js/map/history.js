@@ -33,16 +33,15 @@ let _history = {
 		let obj = window.location;
 		let url = obj.origin + obj.pathname + "?";
 
-		let loc = _map.state.map.getCenter();
-		let zoom = _map.state.map.getZoom();
+		let xyz = _map.getMapXyz();
 		let params = {
 			"mcc": _app.mcc,
 			"mnc": _app.mnc,
 			"paused": _map.state.isNodeLoadingPaused ? 1 : 0,
 			"map": _map.state.map_id,
-			"lat": loc.lat || -1.5,
-			"lng": loc.lng || 52,
-			"zoom": zoom || 13
+			"lat": xyz.lat || -1.5,
+			"lng": xyz.lng || 52,
+			"zoom": xyz.zoom || 13
 		};
 
 		let newUrl = url + _history.serialiseObject(params);

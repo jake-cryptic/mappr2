@@ -4,7 +4,7 @@ from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 
 db = SQLAlchemy()
-csrf = CSRFProtect()
+#csrf = CSRFProtect()
 login_manager = LoginManager()
 
 
@@ -14,7 +14,7 @@ def create_app():
 
     db.init_app(app)
     login_manager.init_app(app)
-    csrf.init_app(app)
+    #csrf.init_app(app)
     app.testing = True
 
     with app.app_context():
