@@ -64,7 +64,7 @@ let _api = {
 		},
 
 		success:function(resp) {
-			_ui.popToastMessage('Parsing data from server...', false);
+			_ui.popToastMessage('Parsing data from server...', false, true);
 
 			if (!resp || resp.error) {
 				_ui.popToastMessage(resp.msg || 'Unknown API error', false);
@@ -74,7 +74,6 @@ let _api = {
 			_table.addData(resp.response);
 			_map.addData(resp.response);
 
-			_ui.burnToastMessage();
 			document.title = 'Mappr2 | Map';
 		}
 	},
@@ -120,7 +119,7 @@ let _api = {
 		move_attempt:{},
 
 		sendMove:function(){
-			_ui.popToastMessage("Updating Node....", false);
+			_ui.popToastMessage("Updating Node....", false, true, 'warning');
 
 			$.ajax({
 				url: 'api/update-node/',
@@ -129,11 +128,11 @@ let _api = {
 				dataType: 'json',
 				success: function (resp) {
 					console.log(resp);
-					_ui.popToastMessage("Update Success", true);
+					_ui.popToastMessage("Update Success", true, true, 'success');
 					_map.reloadMap();
 				},
 				error: function (e) {
-					_ui.popToastMessage("Failed to update node!", true);
+					_ui.popToastMessage("Failed to update node!", true, true, 'danger');
 					console.error(e);
 				}
 			});

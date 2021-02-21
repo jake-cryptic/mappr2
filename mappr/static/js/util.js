@@ -30,6 +30,22 @@ function getDateStringUtc(uts) {
 	return dateObj.toUTCString();
 }
 
+function getGmapsUrl(lat, lng) {
+	return 'https://www.google.co.uk/maps/search/' + lat + ',' + lng + '/'
+}
+
+function getOsmUrl(lat, lng, zoom = 15) {
+	return 'https://www.openstreetmap.org/#map=' + zoom + '/' + lat + '/' + lng + '/'
+}
+
+function getCellMapperUrl(mcc, mnc, lat, lng, zoom = 15) {
+	return 'https://www.cellmapper.net/map?MCC=' + mcc + '&MNC=' + mnc + '&type=LTE&latitude=' + lat + '&longitude=' + lng + '&zoom=' + zoom + '&clusterEnabled=false;'
+}
+
+function getLteItUrl(mcc, mnc, lat, lng, zoom = 15) {
+	return 'https://lteitaly.it/public/map.php#' + zoom + '/' + lat + '/' + lng
+}
+
 let isMobileDevice = function(){
 	return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
 };

@@ -7,8 +7,6 @@ from .. import login_manager
 
 auth_bp = Blueprint("auth_bp", __name__, template_folder="templates")
 
-login_manager.login_view = "auth_bp.auth"
-
 
 @auth_bp.route('/auth', methods=['GET', 'POST'])
 def auth():

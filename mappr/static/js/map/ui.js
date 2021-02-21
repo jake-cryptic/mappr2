@@ -80,30 +80,106 @@ let _ui = {
 		alert("Not yet " + mnc + " " + enb);
 	},
 
-	// TODO: Make it so that a new toast is created each time and they stack
-	popToastMessage:function(txt, autohide){
-		$("#toast_content_body").text(txt);
-		$('#toast_content').attr('data-autohide', autohide).toast('show');
+	freshToast: function($toastBody, autohide, type = ''){
+		let toastOpts = {
+			'class':'toast mx-5',
+			'role':'alert',
+			'aria-live':'polite',
+			'aria-atomic':true
+		};
+
+		if (!!autohide) {
+			toastOpts['data-autohide'] = !!autohide;
+			toastOpts['data-delay'] = autohide;
+		}
+
+		return $("<div/>",toastOpts).append(
+			$("<div/>",{
+				'class':'toast-header'
+			}).append(
+				$("<strong/>", {
+					'class':'me-auto text-primary'
+				}).text('Message'),
+				$('<small/>',{
+					'class':'text-muted'
+				}),
+				$('<button/>',{
+					'type':'button',
+					'class':'btn-close',
+					'data-bs-dismiss':'toast',
+					'aria-label':'close'
+				})
+			),
+			$toastBody
+		).toast('show')
 	},
 
-	burnToastMessage:function(){
-		$('#toast_content').attr('data-autohide', true).toast('hide');
+	freshToastSmall: function($toastBody, autohide, type){
+		return $("<div/>",{
+			'class':'toast mx-5 align-items-center' + type,
+			'role':'alert',
+			'aria-live':'assertive',
+			'aria-atomic':true,
+			'data-autohide':true,
+			'data-delay':autohide
+		}).append(
+			$("<div/>",{
+				'class':'d-flex'
+			}).append(
+				$toastBody,
+				$('<button/>',{
+					'type':'button',
+					'class':'btn-close me-2 m-auto',
+					'data-bs-dismiss':'toast',
+					'aria-label':'close'
+				})
+			)
+		).toast('show')
 	},
 
-	popToastAction:function(txt, yesTxt, noTxt, successCallback){
-		$("#toast_action_content").empty().append(
-			txt,
-			$("<br />"),
-			$("<button/>",{"class":"btn btn-success"}).text(yesTxt).on("click enter", successCallback),
-			" ",
-			$("<button/>",{"class":"btn btn-danger"}).text(noTxt).on("click enter", _ui.burnToastAction)
+	popToastMessage:function(txt, autohide, small = false, type = 'primary'){
+		console.log(txt);
+		let $toastBody = $('<div/>',{
+			'class':'toast-body'
+		}).text(txt);
+
+		let typeText = ' text-white border-0 bg-' + type;
+		let func = small ? _ui.freshToastSmall : _ui.freshToast
+
+		$('#toast_alerts').append(func($toastBody, autohide, typeText));
+
+		// Delete the toasts once they have served their purpose
+		setTimeout(function() {
+			$('#toast_alerts').find('.toast').first().remove();
+		},autohide + 1000);
+	},
+
+	// TODO: Figure out why these auto-close, they shouldn't!
+	popToastAction:function(txt, yesTxt, noTxt, successCallback) {
+		let $toastBody = $('<div/>',{
+			'class':'toast-body'
+		}).append(
+			$('<p/>',{
+				'class':'fs-6'
+			}).text(txt),
+			$("<div/>",{
+				'class':'btn-group',
+				'role':'group'
+			}).append(
+				$("<button/>",{"class":"btn btn-success"}).text(yesTxt).on("click enter", successCallback),
+				$("<button/>",{"class":"btn btn-danger"}).text(noTxt).on("click enter", _ui.burnToastAction)
+			)
 		);
 
-		$("#toast_action_required").attr('data-autohide', false).toast('show');
+		$("#toast_actions").append(
+			_ui.freshToast(
+				$toastBody, false
+			)
+		);
 	},
 
 	burnToastAction:function(){
-		$('#toast_action_required').attr('data-autohide', true).toast('hide');
+		$('#toast_actions').empty();
 	}
 
 };

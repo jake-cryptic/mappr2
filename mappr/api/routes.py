@@ -74,14 +74,24 @@ def api_get_map_area():
 	sw_lat = float(request.args.get('sw_lat'))
 	sw_lng = float(request.args.get('sw_lng'))
 
-	node_query = db.session.query(Node).filter(
-		Node.mcc == mcc,
-		Node.mnc == mnc,
-		Node.lat >= sw_lat,
-		Node.lng >= sw_lng,
-		Node.lat <= ne_lat,
-		Node.lng <= ne_lng
-	).all()
+	if mnc != "0":
+		node_query = db.session.query(Node).filter(
+			Node.mcc == mcc,
+			Node.mnc == mnc,
+			Node.lat >= sw_lat,
+			Node.lng >= sw_lng,
+			Node.lat <= ne_lat,
+			Node.lng <= ne_lng
+		).all()
+	else:
+		node_query = db.session.query(Node).filter(
+			Node.mcc == mcc,
+			Node.lat >= sw_lat,
+			Node.lng >= sw_lng,
+			Node.lat <= ne_lat,
+			Node.lng <= ne_lng
+		).all()
+
 
 	def get_sectors_for_node(mcc, mnc, node_id):
 		sectors_query = db.session.query(Sector).filter(

@@ -21,6 +21,12 @@ let _map = {
 		});
 	},
 
+	settings: {
+		popupCoords: true,
+		popupLinks: true,
+		popupOptions: true
+	},
+
 	attr: {
 		g: '<a href="https://maps.google.co.uk">Google Maps</a>',
 		o: '<a href="http://openstreetmap.org">OpenStreetMap</a>'
@@ -51,6 +57,17 @@ let _map = {
 	},
 
 	items: {
+
+		markerPopupOptions: {
+			maxWidth: (screen.availWidth >= 600 ? 600 : screen.availWidth),
+			className: 'site_popup'
+		},
+
+		markerTooltipOptions: {
+			permanent: true,
+			direction: 'bottom',
+			className: 'marker_label'
+		},
 
 		markers: [],
 		polygons: [],
@@ -100,6 +117,45 @@ let _map = {
 			}
 
 			_map.items.polygons = [];
+		},
+
+		createMarker: function(lat, lng, point, popupText, tooltipText) {
+			function getMarkerOptions(point) {
+				return {
+					mcc:point.mcc,
+					mnc:point.mnc,
+					enb:point.node_id,
+					draggable:true,
+					autoPan:true,
+					icon: (point.verified ? _map.icons.ico.located : _map.icons.ico.main)
+				};
+			}
+
+			return new L.marker(
+				[lat, lng],
+				getMarkerOptions(point)
+			).bindPopup(
+				popupText, _map.items.markerPopupOptions
+			).bindTooltip(
+				tooltipText, _map.items.markerTooltipOptions
+			).on('moveend', _map.attemptMove)
+		},
+
+		pushMarker: function(lat, lng, point, popupText, tooltipText) {
+			_map.items.markers.push(
+				_map.items.createMarker(lat, lng, point, popupText, tooltipText)
+			);
+		},
+
+		pushPolygon: function (nodeCoords, sectorCoords, color) {
+			_map.items.polygons.push(
+				L.polygon(
+					[nodeCoords, sectorCoords],
+					{
+						color: color
+					}
+				)
+			);
 		}
 	},
 
@@ -120,10 +176,11 @@ let _map = {
 		duration:1000,
 
 		clearMoveTimer:function(){
-			if (_map.moveTimer.timer) clearTimeout(_map.moveTimer.timer);
+			if (_map.moveTimer.timer) {
+				clearTimeout(_map.moveTimer.timer);
+			}
 			if (_api.currentRequest) {
 				_api.currentRequest.abort();
-				_ui.popToastMessage('Node loading has been paused due to map move', true);
 			}
 		},
 
@@ -134,6 +191,10 @@ let _map = {
 
 	init: function () {
 		_map.state.map = L.map('map', {
+		  	fullscreenControl: true,
+			fullscreenControlOptions: {
+				position: 'topleft'
+		  	},
 			preferCanvas:true
 		}).setView(_map.state.defaultCoords, _map.state.zoom);
 
@@ -216,12 +277,12 @@ let _map = {
 
 	reloadMap: function() {
 		if (_map.state.isNodeLoadingPaused) {
-			_ui.popToastMessage("Node loading is currently paused.", true);
+			_ui.popToastMessage("Node loading is currently paused.", 2000, true);
 			return;
 		}
 
 		document.title = "Reloading Map...";
-		_ui.popToastMessage("Loading map data...", false);
+		_ui.popToastMessage("Loading map data...", 1000, true);
 		_map.items.removeMapItems();
 		_api.map.loadArea();
 	},
@@ -304,21 +365,31 @@ let _map = {
 		return ret;
 	},
 
-	// TODO: Refactor this too...
-	getPopupText: function (enb, mnc, lat, lng) {
-		let t = '\
-		<span class="site_popup_title">'+enb+'</span>\
-		<strong>Lat / Lng Coords:</strong><br/>\
-		<input class="form-control form-control-sm" type="text" readonly value="' + lat + ', ' + lng + '" />\
-		<span class="site_popup_links">View on:<br/>\
-			<a href="https://www.google.co.uk/maps/search/' + lat + ',' + lng + '/" target="_blank">Google Maps</a> | \
-			<a href="https://www.openstreetmap.org/#map=15/' + lat + '/' + lng + '/" target="_blank">OSM</a> | \
-			<a href="https://www.cellmapper.net/map?MCC=234&MNC=' + mnc + '&type=LTE&latitude=' + lat + '&longitude=' + lng + '&zoom=15&clusterEnabled=false" target="_blank">Cell Mapper</a>\
-		</span>\
-		<div class="site_approx_addr btn-group btn-group-sm" role="group" aria-label="Basic example">\
-			<button type="button" class="btn btn-secondary" onclick="_ui.getSiteAddr(this,' + lat + ',' + lng + ')">Address</button>\
-			<button type="button" class="btn btn-primary btn-sm" onclick="_ui.getSiteHistory(this,' + mnc + ',' + enb + ')">Location History</button>\
-		</div>';
+	// TODO: Refactor this?
+	getPopupText: function (enb, mcc, mnc, lat, lng) {
+		let t = '<span class="site_popup_title">'+enb+'</span>';
+
+		if (_map.settings.popupCoords === true) {
+			t += '<strong>Coordinates:</strong><br/>\
+			<input class="form-control form-control-sm" type="text" readonly value="' + lat + ', ' + lng + '" />';
+		}
+
+		if (_map.settings.popupLinks === true) {
+			t += '\
+			<span class="site_popup_links">View on:<br/>\
+				<a href="' + getGmapsUrl(lat, lng) + '" target="_blank">Google Maps</a> | \
+				<a href="' + getOsmUrl(lat, lng) + '" target="_blank">OSM</a> | \
+				<a href="' + getCellMapperUrl(mcc, mnc, lat, lng) + '" target="_blank">CellMapper</a>\
+			</span>';
+		}
+
+		if (_map.settings.popupLinks === true) {
+			t += '\
+			<div class="site_approx_addr btn-group btn-group-sm" role="group" aria-label="eNB Options">\
+				<button type="button" class="btn btn-secondary" onclick="_ui.getSiteAddr(this,' + lat + ',' + lng + ')">Address</button>\
+				<button type="button" class="btn btn-primary btn-sm" onclick="_ui.getSiteHistory(this,'+mcc+',' + mnc + ',' + enb + ')">Location History</button>\
+			</div>';
+		}
 
 		return t;
 	},
@@ -329,49 +400,8 @@ let _map = {
 		let tLng = round(point.lng, 7);
 		let tEnb = point.node_id;
 
-		let markerPopOpts = {
-			maxWidth: (screen.availWidth >= 600 ? 600 : screen.availWidth),
-			className: 'site_popup'
-		};
+		let txt = _map.getPopupText(tEnb, point.mcc, point.mnc, tLat, tLng);
 
-		let markerToolOpts = {
-			permanent: true,
-			direction: 'bottom',
-			className: 'marker_label'
-		};
-
-		function pushPolygon(siteloc, sectorloc, color) {
-			_map.items.polygons.push(
-				L.polygon(
-					[siteloc, sectorloc],
-					{color: color}
-				)
-			);
-		}
-
-		function pushMarker(siteloc, poptext, tooltext, point) {
-			_map.items.markers.push(
-				new L.marker(
-					siteloc,
-					{
-						mcc:point.mcc,
-						mnc:point.mnc,
-						enb:point.node_id,
-						draggable:true,
-						autoPan:true,
-						icon: (point.verified ? _map.icons.ico.located : _map.icons.ico.main)
-					}
-				).bindPopup(
-					poptext, markerPopOpts
-				).bindTooltip(
-					tooltext, markerToolOpts
-				).on('moveend', _map.attemptMove)
-			);
-		}
-
-		let txt = _map.getPopupText(tEnb, point.mnc, tLat, tLng);
-
-		//sectCoords = [];
 		txt += "<div class='sect_block'>";
 		for (let s in point.sectors) {
 			let color = _map.getSectorColor(point.mnc, s);
@@ -381,8 +411,13 @@ let _map = {
 
 			txt += "<span class='sect' style='background-color:" + color + "' title='" + dates + "'>" + s + "</span>";
 
-			//sectCoords.push([point.sectors[s][0], point.sectors[s][1]]);
-			if (!_map.items.isNodePolygonPaused) pushPolygon([tLat, tLng], [parseFloat(point.sectors[s][0]), parseFloat(point.sectors[s][1])], color);
+			if (!_map.items.isNodePolygonPaused) {
+				_map.items.pushPolygon(
+					[tLat, tLng],
+					[parseFloat(point.sectors[s][0]), parseFloat(point.sectors[s][1])],
+					color
+				);
+			}
 		}
 		txt += "</div>";
 
@@ -390,7 +425,8 @@ let _map = {
 		//	txt += '<br />Located by: ' + v.user.list[point.verified];
 		//}
 
-		pushMarker([tLat, tLng], txt, _map.sectorInfo(parseInt(point.mnc), tEnb, Object.keys(point.sectors)), point);
+		let tooltipText = _map.sectorInfo(parseInt(point.mnc), tEnb, Object.keys(point.sectors));
+		_map.items.pushMarker(tLat, tLng, point, txt, tooltipText);
 	},
 
 	osm: {
