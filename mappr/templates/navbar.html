@@ -7,27 +7,39 @@
 			<a class="navbar-brand" href="/">
 				<i class="text-light far fa-map"></i> mappr2
 			</a>
+			{% if current_user.is_authenticated %}
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('map_bp.map') }}">Map <span class="sr-only">(current)</span></a>
+					<a class="nav-link" href="{{ url_for('map_bp.map') }}">
+						<i class="fas fa-compass"></i> Map <span class="sr-only">(current)</span>
+					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('user_bp.account') }}">Account</a>
+					<a class="nav-link" href="{{ url_for('user_bp.account') }}">
+						<i class="fas fa-user-alt"></i> Account
+					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('statistics_bp.network_stats') }}">Network Statistics</a>
+					<a class="nav-link" href="{{ url_for('statistics_bp.network_stats') }}">
+						<i class="fas fa-broadcast-tower"></i> Network Statistics
+					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('statistics_bp.user_stats') }}">User Statistics</a>
+					<a class="nav-link" href="{{ url_for('statistics_bp.user_stats') }}">
+						<i class="fas fa-chart-area"></i> User Statistics
+					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('auth_bp.logout') }}">Logout</a>
+					<a class="nav-link" href="{{ url_for('auth_bp.logout') }}">
+						<i class="fas fa-sign-out-alt"></i> Logout
+					</a>
 				</li>
 			</ul>
 			<form class="d-flex">
 				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
 				<button class="btn btn-outline-success" type="submit" />Search</button>
 			</form>
+			{% endif %}
 		</div>
 	</div>
 </nav>

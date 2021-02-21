@@ -112,10 +112,18 @@
 				<div id="collapse_four" class="accordion-collapse collapse" aria-labelledby="accord_head_filter" data-bs-parent="#sidebar_accordion">
 					<div class="accordion-body">
 						<div class="container container-fluid">
+							<h2 class="h4">Markers</h2>
 							<label for="adv_map_show_verified">Show Located Nodes</label>
 							<input type="checkbox" name="adv_map_show_verified" id="adv_map_show_verified" checked="checked"/>
 							<label for="adv_map_show_mls">Show MLS Nodes</label>
 							<input type="checkbox" name="adv_map_show_mls" id="adv_map_show_mls" checked="checked"/>
+						</div>
+						<div class="container container-fluid mt-3">
+							<h2 class="h4">Date Filter</h2>
+							<label for="node_first_seen">Show nodes first seen after:</label>
+							<input type="date" class="form-control" id="node_first_seen" name="node_first_seen" value="2010-01-01" />
+							<label for="node_last_updated">Show nodes updated before:</label>
+							<input type="date" class="form-control" id="node_last_updated" name="node_last_updated" value="2030-01-01" />
 						</div>
 					</div>
 				</div>
