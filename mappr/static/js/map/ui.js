@@ -13,6 +13,7 @@ let _ui = {
 		init:function() {
 			// Button press events
 			$('#locate_user_manual').on('click enter', _ui.controls.moveMapToUser);
+			$('#toggle_geo_watch').on('click enter', _ui.controls.watchGeoUser);
 			$('#node_markers_clear').on('click enter', _map.items.removeMapItems);
 			$('#node_loading_pause').on('click enter', _map.items.toggleNodeLoading);
 			$('#node_polygons_pause').on('click enter', _map.items.togglePolygonPause);
@@ -42,6 +43,16 @@ let _ui = {
 		moveMapToUser:function(){
 			_ui.popToastMessage('Attempting to move to your location...', true);
 			_map.moveToCurrentLocation();
+		},
+
+		watchGeoUser:function(){
+			if (_map.watch.id === null) {
+				_map.watch.init();
+				$('#toggle_geo_watch').text('Stop Watching');
+			} else {
+				_map.watch.stop();
+				$('#toggle_geo_watch').text('Watch Geolocation');
+			}
 		},
 
 		osmQuery: function(){

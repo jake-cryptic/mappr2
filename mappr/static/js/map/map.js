@@ -5,7 +5,9 @@
 let _map = {
 
 	getLocation: function (cb) {
-		navigator.permissions.query({name:"geolocation"}).then(function(resp){
+		navigator.permissions.query({
+			name:"geolocation"
+		}).then(function(resp){
 			if (resp && resp.state) {
 				if (resp.state === "granted" || resp.state === "prompt") {
 					console.info('Geolocation permission granted!');
@@ -224,14 +226,61 @@ let _map = {
 		console.log('[Map]-> Initialised');
 	},
 
+	watch: {
+
+		id: null,
+
+		options: {
+		  	enableHighAccuracy: false,
+		  	timeout: 5000,
+			maximumAge: 0
+		},
+
+		init:function() {
+			_map.watch.id = navigator.geolocation.watchPosition(
+				_map.watch.update,
+				_map.watch.error,
+				_map.watch.options
+			);
+		},
+
+		toggle: function (){
+
+		},
+
+		update:function(pos) {
+			let coords = pos.coords;
+
+			_map.setLocation(coords.latitude, coords.longitude, 15);
+		},
+
+		error: function (err) {
+			console.warn(err);
+			_ui.popToastMessage('Failed to start geolocation watch');
+		},
+
+		stop: function() {
+			navigator.geolocation.clearWatch(_map.watch.id);
+			_map.watch.id = null;
+		}
+
+	},
+
+	setLocation:function(lat, lng, zoom = 14){
+		_map.state.map.setView([
+			parseFloat(lat),
+			parseFloat(lng)
+		], zoom);
+	},
+
 	moveToCurrentLocation: function() {
-		_map.getLocation(function (lat, lon) {
-			_map.state.map.setView([lat, lon], 14);
+		_map.getLocation(function (lat, lng) {
+			_map.setLocation(lat, lng, 14)
 		});
 	},
 
 	goToHereData:function(){
-		_map.state.map.setView([$(this).data("lat"), $(this).data("lng")], 16);
+		_map.setLocation($(this).data("lat"), $(this).data("lng"), 16);
 	},
 
 	getMapXyz: function(){
@@ -457,7 +506,7 @@ let _map = {
 					}
 
 					_ui.popToastMessage("You have been teleported!");
-					_map.state.map.setView([parseFloat(resp[0].lat), parseFloat(resp[0].lon)], 14);
+					_map.setLocation(resp[0].lat, resp[0].lon, 14);
 				},
 				error: function(e) {
 					if (!navigator.onLine){
