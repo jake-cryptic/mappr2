@@ -52,6 +52,17 @@ let _map = {
 			_map.icons.ico.main = new techIcon({iconUrl: 'static/img/marker-default.png'});
 			_map.icons.ico.located = new techIcon({iconUrl: 'static/img/marker-located.png'});
 			_map.icons.ico.csv = new techIcon({iconUrl: 'static/img/marker-csv.png'});
+
+			let newicon = L.BeautifyIcon.icon({
+				icon:'far fa-circle',
+				shadowSize: [0,0],
+				iconShape:'marker',
+				borderColor:'#fff',
+				borderWidth:1,
+				backgroundColor:'#0099ff',
+				textColor:'#fff'
+			});
+			_map.icons.ico.main = newicon;
 		}
 
 	},
