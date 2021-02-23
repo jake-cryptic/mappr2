@@ -31,6 +31,7 @@ let _table = {
 				"data-lat":point.lat,
 				"data-lng":point.lng
 			}).on("click enter",_map.goToHereData).append(
+				$("<td/>").text(point.mcc),
 				$("<td/>").text(point.mnc),
 				$("<td/>").text(point.node_id),
 				$("<td/>").text(getSectors())

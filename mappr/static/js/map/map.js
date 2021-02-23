@@ -383,40 +383,53 @@ let _map = {
 	},
 
 	// TODO: Refactor this
-	sectorInfo: function (mno, enb, sectors) {
-		let ret = "<strong>" + enb + "</strong>: ";
-		switch (mno) {
+	getTooltipText: function(mnc, enb, sectors) {
+		let html = '<strong>' + enb + '</strong><br />';
+
+		let sectorIds = Object.keys(sectors);
+		let sectorInfo = _map.sectorInfo(mnc, enb, sectorIds);
+		if (sectorInfo !== '') {
+			html += sectorInfo;
+		}
+
+		return html;
+	},
+
+	sectorInfo: function (mnc, enb, sectors) {
+		let ret = '';
+		switch (mnc) {
 			case 10:
-				if (findItem(sectors, [115, 125, 135, 145, 155, 165])) ret += (enb >= 500000 ? "1 " : "40C1 ");
-				if (findItem(sectors, [114, 124, 134, 144, 154, 164])) ret += (enb >= 500000 ? "3 " : "1 ");
-				if (findItem(sectors, [110, 120, 130, 140, 150, 160])) ret += "20 ";
-				if (findItem(sectors, [112, 122, 132])) ret += "8 ";
-				if (findItem(sectors, [116, 126, 136, 146, 156, 166])) ret += (enb >= 500000 ? "40C1 " : "3 ");
-				if (findItem(sectors, [117, 127, 137, 147, 157, 167])) ret += "40C2";
+				if (findItem(sectors, [115, 125, 135, 145, 155, 165])) ret += (enb >= 500000 ? '1 ' : '40C1 ');
+				if (findItem(sectors, [114, 124, 134, 144, 154, 164])) ret += (enb >= 500000 ? '3 ' : '1 ');
+				if (findItem(sectors, [110, 120, 130, 140, 150, 160])) ret += '20 ';
+				if (findItem(sectors, [112, 122, 132])) ret += '8 ';
+				if (findItem(sectors, [116, 126, 136, 146, 156, 166])) ret += (enb >= 500000 ? '40C1 ' : '3 ');
+				if (findItem(sectors, [117, 127, 137, 147, 157, 167])) ret += '40C2';
 				break;
 			case 15:
-				if (findItem(sectors, [15, 25, 35, 45, 55, 65])) ret += (enb >= 500000 ? "1 " : "?");
-				if (findItem(sectors, [14, 24, 34, 44, 54, 64])) ret += "1 ";
-				if (findItem(sectors, [16, 26, 36, 46, 56, 66])) ret += "3 ";
-				if (findItem(sectors, [18, 28, 38, 48, 58, 68])) ret += "7 ";
-				if (findItem(sectors, [12, 22, 32])) ret += "8 ";
-				if (findItem(sectors, [10, 20, 30, 40, 50, 60])) ret += "20 ";
-				if (findItem(sectors, [19, 29, 39, 49, 59, 69])) ret += "38";
+				if (findItem(sectors, [15, 25, 35, 45, 55, 65])) ret += (enb >= 500000 ? '1 ' : '?');
+				if (findItem(sectors, [14, 24, 34, 44, 54, 64])) ret += '1 ';
+				if (findItem(sectors, [16, 26, 36, 46, 56, 66])) ret += '3 ';
+				if (findItem(sectors, [18, 28, 38, 48, 58, 68])) ret += '7 ';
+				if (findItem(sectors, [12, 22, 32])) ret += '8 ';
+				if (findItem(sectors, [10, 20, 30, 40, 50, 60])) ret += '20 ';
+				if (findItem(sectors, [19, 29, 39, 49, 59, 69])) ret += '38';
 				break;
 			case 20:
-				if (findItem(sectors, [71, 72, 73, 74, 75, 76])) ret += "1 ";
-				if (findItem(sectors, [0, 1, 2, 3, 4, 5])) ret += "3 ";
-				if (findItem(sectors, [16])) ret += "3SC ";
-				if (findItem(sectors, [6, 7, 8])) ret += "20";
+				if (findItem(sectors, [71, 72, 73, 74, 75, 76])) ret += '1 ';
+				if (findItem(sectors, [0, 1, 2, 3, 4, 5])) ret += '3 ';
+				if (findItem(sectors, [16])) ret += '3SC ';
+				if (findItem(sectors, [6, 7, 8])) ret += '20';
 				break;
 			case 30:
-				if (findItem(sectors, [18, 19, 20])) ret += "1 ";
-				if (findItem(sectors, [15, 16, 17])) ret += "7T ";
-				if (findItem(sectors, [0, 1, 2])) ret += "3P ";
-				if (findItem(sectors, [3, 4, 5])) ret += "3S ";
-				if (findItem(sectors, [6, 7, 8])) ret += "7P ";
-				if (findItem(sectors, [9, 10, 11])) ret += "7S ";
-				if (findItem(sectors, [12, 13, 14])) ret += "20";
+				if (findItem(sectors, [21, 24])) ret += 'Small Cell';
+				if (findItem(sectors, [18, 19, 20])) ret += '1 ';
+				if (findItem(sectors, [15, 16, 17])) ret += '7T ';
+				if (findItem(sectors, [0, 1, 2])) ret += '3P ';
+				if (findItem(sectors, [3, 4, 5])) ret += '3S ';
+				if (findItem(sectors, [6, 7, 8])) ret += '7P ';
+				if (findItem(sectors, [9, 10, 11])) ret += '7S ';
+				if (findItem(sectors, [12, 13, 14])) ret += '20';
 				break;
 			default:
 				break;
@@ -474,7 +487,7 @@ let _map = {
 			if (!_map.items.isNodePolygonPaused) {
 				_map.items.pushPolygon(
 					[tLat, tLng],
-					[parseFloat(point.sectors[s][0]), parseFloat(point.sectors[s][1])],
+					[point.sectors[s][0], point.sectors[s][1]],
 					color
 				);
 			}
@@ -485,7 +498,7 @@ let _map = {
 		//	txt += '<br />Located by: ' + v.user.list[point.verified];
 		//}
 
-		let tooltipText = _map.sectorInfo(parseInt(point.mnc), tEnb, Object.keys(point.sectors));
+		let tooltipText = _map.getTooltipText(point.mnc, tEnb, point.sectors);
 		_map.items.pushMarker(tLat, tLng, point, txt, tooltipText);
 	},
 

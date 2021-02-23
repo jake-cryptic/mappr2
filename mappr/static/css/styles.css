@@ -1,9 +1,13 @@
+:root {
+	--mappr-default-font: 'Inter';
+}
+
 body, html {
 	margin: 0;
 	padding: 0;
 	font-size: 1.1em;
 	font-weight: 100;
-	font-family: 'Open Sans', sans-serif !important;
+	font-family: var(--mappr-default-font), sans-serif !important;
 }
 
 select {
@@ -95,10 +99,6 @@ table tr:hover, table tr:focus {
 	background-color: rgba(0, 0, 0, 0.1);
 }
 
-tr td:nth-child(2) {
-	font-weight: 900;
-}
-
 .site_popup .leaflet-popup-content-wrapper {
 	font-size: 1.2em;
 	background: rgba(255, 255, 255, 0.9) !important;
@@ -176,7 +176,11 @@ tr td:nth-child(2) {
 }
 
 .marker_label {
-	font-size: 1.1em;
+	font-family: var(--mappr-default-font), "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 1.25em;
+	font-weight: 400;
+	line-height: 1rem;
+	text-align: center;
 }
 
 @media screen and (max-width: 768px) {

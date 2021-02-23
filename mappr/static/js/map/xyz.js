@@ -7,7 +7,7 @@ const O2_TMS_VER = 167;
 //const EE_TMS_BASE = "https://maps.ee.co.uk//geowebcache/service/gmaps?&zoom={z}&x={x}&y={y}&format=image/png&Layers=";
 const EE_TMS_BASE = "https://coverage.ee.co.uk/geowebcache/service/gmaps?&zoom={z}&x={x}&y={y}&format=image/png&Layers=";
 const THREE_TMS_BASE = "http://www.three.co.uk/static/images/functional_apps/coverage/";
-const CM_TMS_BASE = "https://api.cellmapper.net/v6/getTile?MCC=234&MNC=";
+const CM_TMS_BASE = "https://api.cellmapper.net/v6/getTile?z={z}&x={x}&y={y}";
 
 let _xyz = {
 
@@ -31,31 +31,13 @@ let _xyz = {
 			"VoLTE":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_volte/{z}/{x}/{y}.png"
 		},
 		"Three-UK":{
-			"CM-4G":CM_TMS_BASE + "20&RAT=LTE&z={z}&x={x}&y={y}&band=0",
-			"CM-L18":CM_TMS_BASE + "20&RAT=LTE&z={z}&x={x}&y={y}&band=3",
-			"CM-L21":CM_TMS_BASE + "20&RAT=LTE&z={z}&x={x}&y={y}&band=1",
-			"CM-L14":CM_TMS_BASE + "20&RAT=LTE&z={z}&x={x}&y={y}&band=32",
-			"CM-L08":CM_TMS_BASE + "20&RAT=LTE&z={z}&x={x}&y={y}&band=20",
 			"3g":THREE_TMS_BASE + "Fast/{z}/{x}/{y}.png",
 			"4g":THREE_TMS_BASE + "LTE/{z}/{x}/{y}.png",
 			"4g800":THREE_TMS_BASE + "800/{z}/{x}/{y}.png",
 			"5g":THREE_TMS_BASE + "FiveG/{z}/{x}/{y}.png",
 		},
-		"Vodafone-UK":{
-			"CM-4G":CM_TMS_BASE + "15&RAT=LTE&z={z}&x={x}&y={y}&band=0",
-			"CM-L18":CM_TMS_BASE + "15&RAT=LTE&z={z}&x={x}&y={y}&band=3",
-			"CM-L21":CM_TMS_BASE + "15&RAT=LTE&z={z}&x={x}&y={y}&band=1",
-			"CM-L26":CM_TMS_BASE + "15&RAT=LTE&z={z}&x={x}&y={y}&band=7",
-			"CM-L08":CM_TMS_BASE + "15&RAT=LTE&z={z}&x={x}&y={y}&band=20",
-			"CM-L09":CM_TMS_BASE + "15&RAT=LTE&z={z}&x={x}&y={y}&band=8",
-			"CM-L26T":CM_TMS_BASE + "15&RAT=LTE&z={z}&x={x}&y={y}&band=38",
-		},
+		"Vodafone-UK":{},
 		"EE":{
-			"CM-4G":CM_TMS_BASE + "30&RAT=LTE&z={z}&x={x}&y={y}&band=0",
-			"CM-L21":CM_TMS_BASE + "30&RAT=LTE&z={z}&x={x}&y={y}&band=1",
-			"CM-L18":CM_TMS_BASE + "30&RAT=LTE&z={z}&x={x}&y={y}&band=3",
-			"CM-L26":CM_TMS_BASE + "30&RAT=LTE&z={z}&x={x}&y={y}&band=7",
-			"CM-L08":CM_TMS_BASE + "30&RAT=LTE&z={z}&x={x}&y={y}&band=20",
 			"4g800":EE_TMS_BASE + "4g_800_ltea",
 			"4g1800":EE_TMS_BASE + "4g_1800_ltea",
 			"4g1800ds":EE_TMS_BASE + "4g_1800_ds_ltea",
@@ -69,6 +51,11 @@ let _xyz = {
 			"4G":EE_TMS_BASE + "4g_ee",
 			"5G":EE_TMS_BASE + "5g_ee"
 		}
+	},
+
+	init: function(){
+		_xyz.append_html();
+		$('#cm_tile_add').on('click enter', _xyz.cm.evt)
 	},
 
 	append_html:function(){
@@ -92,6 +79,61 @@ let _xyz = {
 		}
 
 		$("#operator_tile_opacity").on("change", _xyz.update_opacity);
+	},
+
+	cm: {
+
+		layers:[],
+
+		evt: function(){
+			if (_xyz.cm.layers.length === 0) {
+				$('#tile_table').empty();
+			}
+
+			let mcc = $('#cm_input_mcc').val();
+			let mnc = $('#cm_input_mnc').val();
+			let rat = $('#cm_select_rat').val();
+			let band = $('#cm_select_band').val();
+
+			_xyz.cm.add_layer(_xyz.cm.layers.length,mcc, mnc, rat, band);
+			_xyz.cm.update_table(_xyz.cm.layers.length-1, mcc, mnc, rat, band);
+		},
+
+		add_layer: function(newId, mcc, mnc, rat, band){
+			let url = CM_TMS_BASE;
+			url += '&MCC=' + mcc;
+			url += '&MNC=' + mnc;
+			url += '&RAT=' + rat;
+			url += '&band=' + band;
+
+			_xyz.cm.layers.push(
+				new L.TileLayer(url, {
+					attribution: 'CellMapper.net',
+					opacity: 100
+				})
+			);
+			_map.state.map.addLayer(_xyz.cm.layers[newId]);
+		},
+
+		update_table: function (id, mcc, mnc, rat, band) {
+			$('#tile_table').append(
+				$("<tr/>",{
+					"data-id":id
+				}).on("click enter", _xyz.cm.removeFromTable).append(
+					$("<td/>").text(mcc),
+					$("<td/>").text(mnc),
+					$("<td/>").text(rat),
+					$("<td/>").text(band)
+				)
+			);
+		},
+
+		removeFromTable: function(){
+			let id = $(this).data('id');
+			$(this).remove();
+			_map.state.map.removeLayer(_xyz.cm.layers[id]);
+		}
+
 	},
 
 	update_opacity:function(){
