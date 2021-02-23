@@ -56,7 +56,7 @@ let _map = {
 			_map.icons.ico.csv = new techIcon({iconUrl: 'static/img/marker-csv.png'});
 
 			let newicon = L.BeautifyIcon.icon({
-				icon:'far fa-circle',
+				icon:'far fa-circle icon-class',
 				shadowSize: [0,0],
 				iconShape:'marker',
 				borderColor:'#fff',
@@ -387,11 +387,11 @@ let _map = {
 	},
 
 	// TODO: Refactor this
-	getTooltipText: function(mnc, enb, sectors) {
-		let html = '<strong>' + enb + '</strong><br />';
+	getTooltipText: function(point) {
+		let html = '<strong>' + point.node_id + '</strong><br />';
 
-		let sectorIds = Object.keys(sectors);
-		let sectorInfo = _map.sectorInfo(mnc, enb, sectorIds);
+		let sectorIds = Object.keys(point.sectors);
+		let sectorInfo = _map.sectorInfo(point.mnc, point.node_id, sectorIds);
 		if (sectorInfo !== '') {
 			html += sectorInfo;
 		}
@@ -442,29 +442,35 @@ let _map = {
 		return ret;
 	},
 
-	// TODO: Refactor this?
-	getPopupText: function (enb, mcc, mnc, lat, lng) {
-		let t = '<span class="site_popup_title">'+enb+'</span>';
+	getPopupText: function (point) {
+		let lat = point.lat, lng = point.lng;
+		let t = '<span class="site_popup_title mb-2">' + point.node_id + '</span>';
 
 		if (_map.settings.popupCoords === true) {
-			t += '<strong>Coordinates:</strong><br/>\
-			<input class="form-control form-control-sm" type="text" readonly value="' + lat + ', ' + lng + '" />';
+			t += '<input class="form-control text-center form-control-sm mb-2" type="text" readonly value="' + round(lat, 7) + ', ' + round(lng,7) + '" />';
 		}
 
 		if (_map.settings.popupLinks === true) {
 			t += '\
-			<span class="site_popup_links">View on:<br/>\
+			<span class="site_popup_links mb-2">\
 				<a href="' + getGmapsUrl(lat, lng) + '" target="_blank">Google Maps</a> | \
 				<a href="' + getOsmUrl(lat, lng) + '" target="_blank">OSM</a> | \
-				<a href="' + getCellMapperUrl(mcc, mnc, lat, lng) + '" target="_blank">CellMapper</a>\
+				<a href="' + getCellMapperUrl(point.mcc, point.mnc, lat, lng) + '" target="_blank">CellMapper</a>\
 			</span>';
 		}
 
+		let dates = "<div class='mb-2'><strong>Created:</strong>" + getDateTimeString(point.created) + "<br />";
+			dates += "<strong>Updated: </strong>" + getDateTimeString(point.updated) + "</div>";
+
+		t += dates;
+
 		if (_map.settings.popupLinks === true) {
 			t += '\
-			<div class="site_approx_addr btn-group btn-group-sm" role="group" aria-label="eNB Options">\
-				<button type="button" class="btn btn-secondary" onclick="_ui.getSiteAddr(this,' + lat + ',' + lng + ')">Address</button>\
-				<button type="button" class="btn btn-primary btn-sm" onclick="_ui.getSiteHistory(this,'+mcc+',' + mnc + ',' + enb + ')">Location History</button>\
+			<div class="container container-fluid">\
+				<div class="site_approx_addr btn-group btn-group-sm" role="group" aria-label="eNB Options">\
+					<button type="button" class="btn btn-outline-dark" onclick="_ui.getSiteAddr(this,' + lat + ',' + lng + ')">Address</button>\
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick="_ui.getSiteHistory(this,' + point.mcc + ',' + point.mnc + ',' + point.enb + ')">History</button>\
+				</div>\
 			</div>';
 		}
 
@@ -473,36 +479,37 @@ let _map = {
 
 	// TODO: Refactor this as well...
 	addPointToMap: function (point) {
-		let tLat = round(point.lat, 7);
-		let tLng = round(point.lng, 7);
-		let tEnb = point.node_id;
+		let tLat = round(point.lat, 7),
+			tLng = round(point.lng, 7);
 
-		let txt = _map.getPopupText(tEnb, point.mcc, point.mnc, tLat, tLng);
+		let txt = _map.getPopupText(point);
 
 		txt += "<div class='sect_block'>";
 		for (let s in point.sectors) {
-			let color = _map.getSectorColor(point.mnc, s);
+			let sector = point.sectors[s];
 
-			let dates = "First Seen: " + getDateStringUtc(point.sectors[s][2]) + "\n";
-			dates += "Last Seen: " + getDateStringUtc(point.sectors[s][3]) + "\n";
+			let color = _map.getSectorColor(point.mnc, s);
+			let dates = "First Seen: " + getDateStringUtc(sector[2]) + "\n";
+				dates += "Last Seen: " + getDateStringUtc(sector[3]) + "\n";
 
 			txt += "<span class='sect' style='background-color:" + color + "' title='" + dates + "'>" + s + "</span>";
 
 			if (!_map.items.isNodePolygonPaused) {
 				_map.items.pushPolygon(
 					[tLat, tLng],
-					[point.sectors[s][0], point.sectors[s][1]],
+					[sector[0], sector[1]],
 					color
 				);
 			}
 		}
 		txt += "</div>";
 
+		// TODO: Add user location verification
 		//if (v.user.list[point.verified]){
 		//	txt += '<br />Located by: ' + v.user.list[point.verified];
 		//}
 
-		let tooltipText = _map.getTooltipText(point.mnc, tEnb, point.sectors);
+		let tooltipText = _map.getTooltipText(point);
 		_map.items.pushMarker(tLat, tLng, point, txt, tooltipText);
 	},
 

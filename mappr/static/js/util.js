@@ -19,9 +19,27 @@ let round = function(n, dp){
 	return Math.floor(Math.round(n*exp))/exp;
 };
 
+function dsh(s){
+	return s.toString().length === 1 ? "0"+s : s;
+}
+
+function getFriendlyDate(dobj) {
+	let d = dobj.getMonth();
+	let m = dobj.getMonth();
+	let y = dobj.getFullYear();
+	return y + "-" + dsh(m) + "-" + dsh(d);
+}
+
 function getDateString(uts) {
 	let d = uts ? new Date(uts) : new Date();
-	return d.getFullYear() + "-" + d.getMonth() + "-" + (d.getDate().toString().length === 1 ? "0" + d.getDate() : d.getDate());
+	return getFriendlyDate(d);
+}
+
+function getDateTimeString(uts) {
+	let dateObj = new Date();
+	dateObj.setTime(parseInt(uts) * 1000);
+
+	return getFriendlyDate(dateObj) + '; ' + dsh(dateObj.getHours()) + ':' + dsh(dateObj.getMinutes());
 }
 
 function getDateStringUtc(uts) {

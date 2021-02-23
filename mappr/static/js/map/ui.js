@@ -38,6 +38,8 @@ let _ui = {
 					_ui.controls.osmQuery();
 				}
 			});
+
+			console.log('[UI]-> Initialised');
 		},
 
 		moveMapToUser:function(){
@@ -59,6 +61,55 @@ let _ui = {
 			_map.osm.doLocationSearch(
 				$("#world_location_search").val()
 			);
+		},
+
+		updateSectorList: function(){
+			let $list = $("#sector_list");
+			$list.empty();
+
+			let mncs = Object.keys(_api.data.current_mcc);
+			for (let i = 0, l = mncs.length; i < l; i++) {
+				let mncSectors = _api.data.current_mcc[mncs[i]];
+
+				// If an mnc is selected, don't show other mnc sectors
+				if (_app.mnc !== 0) {
+					if (parseInt(mncs[i]) !== _app.mnc) continue;
+				}
+
+				$mnc = $('<div/>', {
+					'id':'sectors_list_mnc' + mncs[i]
+				});
+
+				if (mncSectors.length > 50) {
+					$mnc.append('too many sectors too display here.');
+				} else {
+					for (let j = 0, k = mncSectors.length; j < k; j++) {
+						if (j !== 0 && j % 5 === 0) $mnc.append($("<br />"));
+
+						$mnc.append(
+							$("<label/>", {
+								'for':'sectors_select_mnc' + mncs[i] + 'sid' + mncSectors[j]
+							}).text(mncSectors[j]),
+							$("<input/>",{
+								"type":"checkbox",
+								"id":'sectors_select_mnc' + mncs[i] + 'sid' + mncSectors[j],
+								"class":"form-check-input m-1",
+								"name":"sectors[]",
+								"aria-label":'Sector ' + mncSectors[j],
+								"value":mncSectors[j]
+							})
+						);
+					}
+				}
+
+				$list.append(
+					$("<h4/>",{
+						'class':'h5'
+					}).text('Sector IDs for mnc: ' + mncs[i]),
+					$mnc,
+					$("<hr/>")
+				);
+			}
 		}
 	},
 
@@ -79,11 +130,21 @@ let _ui = {
 		}
 	},
 
+	displayMultipleNodeResults: function(){
+		alert('There are multiple results.');
+	},
+
 	getSiteAddr: function(el, lat, lng){
 		el.innerText = 'Loading...'
+
 		let parent = el.parentElement;
-		_map.osm.getApproxLocation(lat, lng, function(data){
-			parent.innerHTML = "<strong>Site Address:</strong><br/>" + data;
+		_map.osm.getApproxLocation(lat, lng, function(data) {
+			let $newContent = $('<p/>').append(
+				$('<strong/>').text('Site address:'),
+				$('<br/>'),
+				data
+			);
+			parent.replaceWith($newContent[0]);
 		});
 	},
 

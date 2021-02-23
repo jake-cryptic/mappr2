@@ -5,6 +5,52 @@
 let _api = {
 
 	currentRequest: null,
+	timeout:15000,
+
+	init:function (){
+		_api.prepareAjax();
+		_api.data.getMccSectors();
+
+		console.log('[API]-> Initialised');
+	},
+
+	prepareAjax: function (){
+		$.ajaxSetup({
+			cache: false,
+			timeout: _api.timeout
+		});
+	},
+
+	data: {
+		current_mcc: {},
+
+		getMccSectors: function() {
+			$.ajax({
+				url: 'api/get-sectors',
+				type: 'GET',
+				data: {
+					'mcc':_app.mcc
+				},
+				dataType: 'json',
+				success: _api.data.setMccSectors,
+				error: function (e) {
+					console.error(e);
+					alert('Fatal error.');
+				}
+			});
+		},
+
+		setMccSectors: function(resp){
+			if (!resp || resp.error === true){
+				alert('Fatal Error');
+				console.error(resp);
+				return;
+			}
+
+			_api.data.current_mcc = resp.response;
+			_ui.controls.updateSectorList();
+		}
+	},
 
 	getMapBounds: function () {
 		let apiBounds = {};
@@ -80,9 +126,10 @@ let _api = {
 
 	nodeSearch: {
 		doNodeSearch: function() {
-			let enb = $("#enb_search").val();
+			$('#enb_search_submit').prop('disabled', true);
+			let enb = $("#enb_search_input").val();
 			let request_data = {
-				'enb': enb,
+				'node_id': enb,
 				'mcc': _app.mcc
 			};
 
@@ -91,7 +138,7 @@ let _api = {
 			}
 
 			$.ajax({
-				url: 'api/lookup-node/',
+				url: 'api/lookup-node',
 				type: 'GET',
 				data: request_data,
 				dataType: 'json',
@@ -103,15 +150,23 @@ let _api = {
 		},
 
 		success: function(resp) {
-			if (resp.response.length === 0) {
-				alert("No eNodeB with this ID found");
+			if (!resp || resp.error === true) {
+				alert(resp.error === true ? resp.message : 'An error occurred');
 				return;
 			}
 
 			let result = resp.response;
+			if (result.length === 0) {
+				alert("No eNodeB with this ID found");
+			} else if (result.length === 1) {
+				// _app.mnc = result[0].mnc; To change, or not to change?
+				_map.setLocation(result[0].lat, result[0].lng, 15);
+				_map.reloadMap();
+			} else {
+				_ui.displayMultipleNodeResults(result);
+			}
 
-			_map.state.map.setView([result.lat, result.lng], 15);
-			_map.reloadMap();
+			$('#enb_search_submit').prop('disabled', false);
 		},
 	},
 
@@ -137,6 +192,10 @@ let _api = {
 				}
 			});
 		}
+	},
+
+	history: {
+
 	}
 
 };

@@ -46,11 +46,17 @@ def api_lookup_node():
 	if not node_id:
 		return resp(error='No node_id specified')
 
-	node_query = Node.query.filter_by(
-		mcc=mcc,
-		mnc=mnc,
-		node_id=node_id
-	).all()
+	if not mnc:
+		node_query = Node.query.filter_by(
+			mcc=mcc,
+			node_id=node_id
+		).all()
+	else:
+		node_query = Node.query.filter_by(
+			mcc=mcc,
+			mnc=mnc,
+			node_id=node_id
+		).all()
 
 	node_list = [{
 		'mcc': row.mcc,
@@ -133,6 +139,25 @@ def api_get_mnc_list():
 	mnc_query = db.engine.execute(text('SELECT DISTINCT nodes.mcc, nodes.mnc FROM nodes'))
 	mnc_list = [[row[0], row[1]] for row in mnc_query]
 	return resp(mnc_list)
+
+
+@api_bp.route('/get-sectors', methods=['GET'])
+@login_required
+def api_get_sector_list():
+	mcc = request.args.get('mcc')
+
+	if not mcc:
+		resp({}, error='Cannot process this request')
+
+	sector_query = db.engine.execute(text('SELECT DISTINCT(sector_id), mnc FROM sectors WHERE mnc in (SELECT DISTINCT(mnc) as mnc FROM sectors) ORDER BY mnc, sector_id'))
+
+	results = {}
+	for row in sector_query:
+		if row[1] not in results:
+			results[row[1]] = []
+		results[row[1]].append(row[0])
+
+	return resp(results)
 
 
 @api_bp.route('/bookmark/create', methods=['POST'])

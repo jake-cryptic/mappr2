@@ -17,6 +17,7 @@ let _app = {
 			_map.init();
 			_ui.init();
 			_table.init();
+			_api.init();
 			document.title = "Mappr2 | Map";
 		});
 
@@ -33,6 +34,7 @@ let _app = {
 
 	changeMcc: function(){
 		_app.mcc = parseInt($(this).val());
+		_api.data.getMccSectors();
 		_history.updateUrl();
 		_map.reloadMap();
 	},

@@ -21,7 +21,7 @@ select {
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-	color:#fff !important;
+	color: #fff !important;
 	background-color: #1a1a1a !important;
 }
 
@@ -98,7 +98,17 @@ table tr:hover, table tr:focus {
 
 .site_popup .leaflet-popup-content-wrapper {
 	font-size: 1.2em;
+	font-family: 'Inter', sans-serif !important;
 	background: rgba(255, 255, 255, 0.9) !important;
+}
+
+.beautify-marker {
+	margin-top:-16px !important;
+}
+
+.icon-class {
+	margin-top: 6px !important;
+	margin-left: -2px !important;
 }
 
 .loading {
@@ -130,7 +140,7 @@ table tr:hover, table tr:focus {
 }
 
 .site_popup_title {
-	font-size: 1.4em;
+	font-size: 1.5em;
 	font-weight: 600;
 	margin: 0;
 	display: block;
@@ -147,9 +157,9 @@ table tr:hover, table tr:focus {
 
 .sect {
 	display: block;
-	font-size: 1.2em;
+	font-size: 1.25em;
 	line-height: 1.2em;
-	padding: 0.4em 0.5em;
+	padding: 0.4em 0.4em;
 	float: left;
 	background-color: #1a1a1a;
 	color: #fff;
@@ -165,7 +175,7 @@ table tr:hover, table tr:focus {
 .leaflet-tooltip {
 	border-radius: 1em !important;
 	padding: 0.25em 0.3em !important;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+	box-shadow:none !important; /*  0 1px 1px rgba(0, 0, 0, 0.1) */
 }
 
 .leaflet-popup-content {

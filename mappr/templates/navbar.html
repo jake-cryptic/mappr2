@@ -36,10 +36,12 @@
 				</li>
 			</ul>
 				{% if url_for(request.endpoint) == '/map' %}
-				<form class="d-flex">
-					<input class="form-control me-2" type="search" placeholder="{{ url_for(request.endpoint) }}" aria-label="Search" />
-					<button class="btn btn-outline-success" type="submit" />Search</button>
-				</form>
+				<div class="d-flex">
+					<div class="input-group">
+						<input class="form-control" type="search" id="enb_search_input" placeholder="Search for eNb" aria-label="Search" />
+						<button class="btn btn-success" type="submit" id="enb_search_submit"><i class="fas fa-search"></i> Search</button>
+					</div>
+				</div>
 				{% endif %}
 			{% endif %}
 		</div>
