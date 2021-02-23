@@ -35,8 +35,8 @@ let _history = {
 
 		let xyz = _map.getMapXyz();
 		let params = {
-			"mcc": _app.mcc,
-			"mnc": _app.mnc,
+			"mcc": _app.mcc || 234,
+			"mnc": _app.mnc || 0,
 			"paused": _map.state.isNodeLoadingPaused ? 1 : 0,
 			"map": _map.state.map_id,
 			"lat": xyz.lat || -1.5,
@@ -55,8 +55,8 @@ let _history = {
 		if (Object.keys(obj).length > 4) {
 			_history.loadedFromParams = true;
 
-			if (obj.mcc) _app.mcc = parseInt(obj.mcc);
-			if (obj.mnc) _app.mnc = parseInt(obj.mnc);
+			if (obj.mcc) _app.mcc = parseInt(obj.mcc) || 234;
+			if (obj.mnc) _app.mnc = parseInt(obj.mnc) || 0;
 			if (obj.paused) _map.state.isNodeLoadingPaused = parseInt(obj.paused) === 1;
 			if (obj.lat && obj.lng) _map.state.defaultCoords = [obj.lat, obj.lng];
 			if (obj.zoom) _map.state.zoom = parseInt(obj.zoom);

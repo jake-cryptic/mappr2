@@ -21,6 +21,7 @@ let _app = {
 		});
 
 		_csv.init();
+		_bookmarks.init();
 		_xyz.init();
 	},
 

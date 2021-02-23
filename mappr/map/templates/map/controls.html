@@ -217,9 +217,34 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="tab-pane" id="bookmarks" role="tabpanel" aria-labelledby="#bookmarks_toggle">
 
+	<div class="tab-pane" id="bookmarks" role="tabpanel" aria-labelledby="#bookmarks_toggle">
+		<div class="m-2 container container-fluid text-center">
+			<div class="btn-group" role="group" aria-label="Bookmark controls">
+				<button type="button" class="btn btn-success" id="bookmarks_new">
+					<i class="fas fa-plus"></i> New Bookmark
+				</button>
+				<button type="button" class="btn btn-info text-light" id="bookmarks_reload">
+					<i class="fas fa-sync-alt"></i> Reload List
+				</button>
+			</div>
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Network</th>
+					<th>Comment</th>
+					<th>Created</th>
+				</tr>
+			</thead>
+			<tbody id="bookmarks_list">
+				<tr>
+					<td colspan="3">No bookmarks found</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
+
 	<div class="tab-pane" id="files" role="tabpanel" aria-labelledby="#files_toggle">
 		<input type="file" id="csv_import" accept="text/csv" />
 		<table class="table">

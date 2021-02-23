@@ -9,7 +9,6 @@ const mncColors = {
 	}
 };
 
-
 let StatsChart = function () {
 	this.ctx = null;
 	this.chart = null;

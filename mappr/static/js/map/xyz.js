@@ -15,12 +15,6 @@ let _xyz = {
 
 	tiles:{
 		"O2-UK":{
-			"CM-4G":CM_TMS_BASE + "10&RAT=LTE&z={z}&x={x}&y={y}&band=0",
-			"CM-L18":CM_TMS_BASE + "10&RAT=LTE&z={z}&x={x}&y={y}&band=3",
-			"CM-L21":CM_TMS_BASE + "10&RAT=LTE&z={z}&x={x}&y={y}&band=1",
-			"CM-L23":CM_TMS_BASE + "10&RAT=LTE&z={z}&x={x}&y={y}&band=40",
-			"CM-L08":CM_TMS_BASE + "10&RAT=LTE&z={z}&x={x}&y={y}&band=20",
-			"CM-L09":CM_TMS_BASE + "10&RAT=LTE&z={z}&x={x}&y={y}&band=8",
 			"3g2100-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_data/{z}/{x}/{y}.png",
 			"3g2100":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_data/{z}/{x}/{y}.png",
 			"3g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_datacombined/{z}/{x}/{y}.png",
@@ -62,12 +56,12 @@ let _xyz = {
 		// TODO: Move this to UI.js
 		for (let op in _xyz.tiles) {
 			let el = $("<div/>");
-			el.append($("<h4/>").text(op));
+			el.append($("<p/>",{'class':'mt-3 h5'}).text(op));
 
 			for (let tile in _xyz.tiles[op]) {
 				el.append(
 					$("<button/>",{
-						"class":"btn btn-dark btn-sm",
+						"class":"btn m-1 btn-dark btn-sm",
 						"data-op":op,
 						"data-tile":tile,
 						"data-tileserver":_xyz.tiles[op][tile]

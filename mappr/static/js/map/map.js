@@ -280,7 +280,11 @@ let _map = {
 	},
 
 	goToHereData:function(){
-		_map.setLocation($(this).data("lat"), $(this).data("lng"), 16);
+		let lat = $(this).data("lat");
+		let lng = $(this).data("lng");
+		let zoom = $(this).data("zoom") || 16;
+
+		_map.setLocation(lat, lng, zoom);
 	},
 
 	getMapXyz: function(){
