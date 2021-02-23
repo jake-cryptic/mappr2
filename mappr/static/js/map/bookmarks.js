@@ -71,6 +71,21 @@ let _bookmarks = {
 		_bookmarks.add(comment);
 	},
 
+	deleteBookmark: function (){
+		let conf = confirm('Are you sure you want to delete this bookmark?');
+
+		if (!conf) {
+			return;
+		}
+
+		let id = $(this).data('id');
+		let mcc = $(this).data('mcc');
+		let mnc = $(this).data('mnc');
+		let rat = $(this).data('rat');
+
+		_bookmarks.remove(id, rat, mcc, mnc);
+	},
+
 	add:function(comment = 'No comment'){
 		let xyz = _map.getMapXyz();
 
@@ -92,11 +107,11 @@ let _bookmarks = {
 		});
 	},
 
-	remove:function(removeId){
+	remove:function(removeId, rat, mcc, mnc){
 		let postData = {
-			'rat': _app.rat,
-			'mcc': _app.mcc,
-			'mnc': _app.mnc,
+			'rat': rat,
+			'mcc': mcc,
+			'mnc': mnc,
 			'id': removeId
 		};
 

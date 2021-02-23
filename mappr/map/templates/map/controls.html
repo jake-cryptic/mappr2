@@ -1,14 +1,14 @@
 <nav class="nav nav-pills nav-fill nav-justified">
-	<a class="nav-item nav-link active" id="map_settings_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#map_settings" aria-selected="true">
+	<a class="nav-item nav-link text-dark active" id="map_settings_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#map_settings" aria-selected="true">
 		<i class="fas fa-map-marked-alt"></i><span class="sr-only">Map Settings</span>
 	</a>
-	<a class="nav-item nav-link" id="results_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#results" aria-selected="false">
+	<a class="nav-item nav-link text-dark" id="results_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#results" aria-selected="false">
 		<i class="fas fa-broadcast-tower"></i><span class="sr-only">Table of Results</span>
 	</a>
-	<a class="nav-item nav-link" id="bookmarks_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#bookmarks" aria-selected="false">
+	<a class="nav-item nav-link text-dark" id="bookmarks_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#bookmarks" aria-selected="false">
 		<i class="fas fa-bookmark"></i><span class="sr-only">Bookmarks</span>
 	</a>
-	<a class="nav-item nav-link" id="files_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#files" aria-selected="false">
+	<a class="nav-item nav-link text-dark" id="files_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#files" aria-selected="false">
 		<i class="fas fa-file"></i><span class="sr-only">CSV Files</span>
 	</a>
 </nav>
@@ -201,24 +201,27 @@
 
 	</div>
 	<div class="tab-pane" id="results" role="tabpanel" aria-labelledby="#results_toggle">
+		<h2 class="h4 text-center">Node List</h2>
+
 		<table class="table">
 			<thead>
 				<tr>
-					<th>MCC</th>
-					<th>MNC</th>
+					<th>Network</th>
 					<th>eNB</th>
 					<th>Sectors</th>
 				</tr>
 			</thead>
 			<tbody id="results_tbl">
 				<tr>
-					<td colspan="4">No data</td>
+					<td colspan="4">No nodes in map area</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 
 	<div class="tab-pane" id="bookmarks" role="tabpanel" aria-labelledby="#bookmarks_toggle">
+		<h2 class="h4 text-center">Bookmarked Locations</h2>
+
 		<div class="m-2 container container-fluid text-center">
 			<div class="btn-group" role="group" aria-label="Bookmark controls">
 				<button type="button" class="btn btn-success" id="bookmarks_new">
@@ -246,6 +249,8 @@
 	</div>
 
 	<div class="tab-pane" id="files" role="tabpanel" aria-labelledby="#files_toggle">
+		<h2 class="h4 text-center">CSV Import</h2>
+
 		<input type="file" id="csv_import" accept="text/csv" />
 		<table class="table">
 			<thead>

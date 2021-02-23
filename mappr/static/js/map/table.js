@@ -14,6 +14,16 @@ let _table = {
 	addData:function(data) {
 		_table.html.empty();
 
+		if (!data || data.length === 0) {
+			_table.html.append(
+				$('<tr/>').append(
+					$('<td/>',{
+						'colspan':3
+					}).text('No nodes in map area')
+				)
+			);
+		}
+
 		for (let i = 0; i < data.length; i++) {
 			_table.addPointToTable(data[i]);
 		}
@@ -31,8 +41,7 @@ let _table = {
 				"data-lat":point.lat,
 				"data-lng":point.lng
 			}).on("click enter",_map.goToHereData).append(
-				$("<td/>").text(point.mcc),
-				$("<td/>").text(point.mnc),
+				$("<td/>").text(point.mcc + ' ' + point.mnc),
 				$("<td/>").text(point.node_id),
 				$("<td/>").text(getSectors())
 			)
