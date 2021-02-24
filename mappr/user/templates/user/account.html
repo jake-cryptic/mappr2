@@ -6,7 +6,7 @@
 <div class="container-fluid bg-light p-5">
 	<div class="container">
 		<h1 class="display-3">Account Settings</h1>
-		{% include "alert.html" %}
+		{% include "components/alert.html" %}
 		<hr />
 		<h2 class="h3">User Details</h2>
 		<form id="email_form" action="{{ url_for('user_bp.account') }}" method="POST">

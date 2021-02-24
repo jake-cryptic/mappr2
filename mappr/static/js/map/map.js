@@ -459,7 +459,7 @@ let _map = {
 			</span>';
 		}
 
-		let dates = "<div class='mb-2'><strong>Created:</strong>" + getDateTimeString(point.created) + "<br />";
+		let dates = "<div class='mb-2'><strong>Created: </strong>" + getDateTimeString(point.created) + "<br />";
 			dates += "<strong>Updated: </strong>" + getDateTimeString(point.updated) + "</div>";
 
 		t += dates;
@@ -469,7 +469,7 @@ let _map = {
 			<div class="container container-fluid">\
 				<div class="site_approx_addr btn-group btn-group-sm" role="group" aria-label="eNB Options">\
 					<button type="button" class="btn btn-outline-dark" onclick="_ui.getSiteAddr(this,' + lat + ',' + lng + ')">Address</button>\
-					<button type="button" class="btn btn-outline-primary btn-sm" onclick="_ui.getSiteHistory(this,' + point.mcc + ',' + point.mnc + ',' + point.enb + ')">History</button>\
+					<button type="button" class="btn btn-outline-primary btn-sm" onclick="_ui.getSiteHistory(this,' + point.mcc + ',' + point.mnc + ',' + point.node_id + ')">History</button>\
 				</div>\
 			</div>';
 		}

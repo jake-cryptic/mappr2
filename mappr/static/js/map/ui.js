@@ -4,6 +4,8 @@
 
 let _ui = {
 
+	current_modal: null,
+
 	init:function(){
 		_ui.controls.init();
 		console.log('[UI]-> Initialised');
@@ -130,8 +132,44 @@ let _ui = {
 		}
 	},
 
-	displayMultipleNodeResults: function(){
-		alert('There are multiple results.');
+	displayMultipleNodeResults: function(results) {
+		$html = $('<tbody/>');
+
+		results.forEach(function(r){
+			$html.append(
+				$('<tr/>',{
+					'data-lat':r.lat,
+					'data-lng':r.lng
+				}).on('click enter', _map.goToHereData).append(
+					$('<td/>').text(r.mnc),
+					$('<td/>').text(r.node_id),
+					$('<td/>').text(r.lat),
+					$('<td/>').text(r.lng)
+				)
+			)
+		});
+
+		_ui.openModal(
+			'eNb Search Results',
+			$('<div/>').append(
+				$('<h4/>',{
+					'class':'h5'
+				}).text('Click a result to go to it'),
+				$('<table/>', {
+					'class':'table table-striped'
+				}).append(
+					$('<thead/>').append(
+						$('<tr/>').append(
+							$('<th/>').text('MNC'),
+							$('<th/>').text('eNB'),
+							$('<th/>').text('Lat'),
+							$('<th/>').text('Lng')
+						)
+					),
+					$html
+				)
+			)
+		);
 	},
 
 	getSiteAddr: function(el, lat, lng){
@@ -148,8 +186,59 @@ let _ui = {
 		});
 	},
 
-	getSiteHistory: function(el, mnc, enb){
+	getSiteHistory: function(el, mcc, mnc, enb) {
+		$html = $('<tbody/>');
+
+		results = [];
+		results.forEach(function(r){
+			$html.append(
+				$('<tr/>',{
+					'data-lat':r.lat,
+					'data-lng':r.lng,
+					'data-zoom': 17
+				}).on('click enter', _map.goToHereData).append(
+					$('<td/>').text(r.mnc),
+					$('<td/>').text(r.node_id),
+					$('<td/>').text(r.lat),
+					$('<td/>').text(r.lng)
+				)
+			)
+		});
+
+		_ui.openModal(
+			'Site History for: ' + mcc + '-' + mnc + ':' + enb,
+			$('<div/>').append(
+				$('<table/>', {
+					'class':'table table-striped'
+				}).append(
+					$('<thead/>').append(
+						$('<tr/>').append(
+							$('<th/>').text('eNB'),
+							$('<th/>').text('User'),
+							$('<th/>').text('Lat'),
+							$('<th/>').text('Lng')
+						)
+					),
+					$html
+				)
+			)
+		);
 		alert("Not yet " + mnc + " " + enb);
+	},
+
+	openModal: function(title, $body) {
+		$('#mappr_modal_title').text(title);
+		$('#mappr_modal_body').empty().html($body);
+
+		_ui.current_modal = new bootstrap.Modal(
+			document.getElementById('mappr_modal'),
+			{
+				keyboard: true,
+				focus: true
+			}
+		);
+
+		_ui.current_modal.show();
 	},
 
 	freshToast: function($toastBody, autohide, type = ''){
@@ -222,7 +311,11 @@ let _ui = {
 
 		// Delete the toasts once they have served their purpose
 		setTimeout(function() {
-			$('#toast_alerts').find('.toast').first().remove();
+			let tt = $('#toast_alerts').find('.toast').first();
+			tt.fadeOut(500);
+			setTimeout(function () {
+				tt.remove();
+			}, 500);
 		},autohide + 1000);
 	},
 

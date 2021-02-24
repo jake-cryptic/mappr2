@@ -156,11 +156,10 @@ table tr:hover, table tr:focus {
 }
 
 .sect {
-	display: block;
-	font-size: 1.25em;
-	line-height: 1.2em;
+	display: inline-block;
+	font-size: 1rem;
+	line-height: 1rem;
 	padding: 0.4em 0.4em;
-	float: left;
 	background-color: #1a1a1a;
 	color: #fff;
 }
@@ -169,6 +168,7 @@ table tr:hover, table tr:focus {
 	margin-top: 0.2rem;
 	display: inline-block;
 	height: auto;
+	max-width:14rem;
 	min-height: 2em;
 }
 

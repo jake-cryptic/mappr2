@@ -48,7 +48,8 @@
 		<div id="app">
 
 			<main>
-				{% include "navbar.html" %}
+				{% include "components/navbar.html" %}
+				{% include "components/modal.html" %}
 				<div class="toast-container" id="toast_alerts"></div>
 				<div class="toast-container" id="toast_actions"></div>
 				{% block content %}{% endblock %}
