@@ -110,7 +110,7 @@ let _api = {
 		},
 
 		success:function(resp) {
-			_ui.popToastMessage('Parsing data from server...', false, true);
+			_ui.popToastMessage('Data loaded, processing...', 750, true, 'secondary');
 
 			if (!resp || resp.error) {
 				_ui.popToastMessage(resp.msg || 'Unknown API error', false);

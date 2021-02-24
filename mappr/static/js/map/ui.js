@@ -14,6 +14,7 @@ let _ui = {
 	controls: {
 		init:function() {
 			// Button press events
+			$('#sidebar_toggle').on('click enter', _ui.sidebar.toggleView);
 			$('#locate_user_manual').on('click enter', _ui.controls.moveMapToUser);
 			$('#toggle_geo_watch').on('click enter', _ui.controls.watchGeoUser);
 			$('#node_markers_clear').on('click enter', _map.items.removeMapItems);
@@ -116,7 +117,7 @@ let _ui = {
 	},
 
 	sidebar: {
-		toggleView:function(){
+		toggleView:function() {
 			if (window.innerWidth > 768) {
 				if ($("#sidebar").is(":visible")) {
 					$("#sidebar").hide();
@@ -126,8 +127,19 @@ let _ui = {
 					$("#map").css("width", "80%");
 				}
 			} else {
-				$("#sidebar").toggle();
-				$("#map").toggle();
+				if ($("#sidebar").is(":visible")) {
+					$("#sidebar").fadeOut(500);
+				} else {
+					$('#sidebar').css({
+						'position':'absolute',
+						'z-index':1001,
+						'background-color':'rgba(255,255,255,0.95)',
+						'height':'auto'
+					}).fadeIn(500);
+				}
+
+				// $("#map").toggle();
+				// $("#sidebar").toggle();
 			}
 		}
 	},
@@ -311,12 +323,14 @@ let _ui = {
 
 		// Delete the toasts once they have served their purpose
 		setTimeout(function() {
-			let tt = $('#toast_alerts').find('.toast').first();
-			tt.fadeOut(500);
+			console.log('removing',txt);
+			let tt = $('#toast_alerts').find('.toast:not(.pendingremoval)').first();
+			tt.addClass('pendingremoval').fadeOut(500);
+			console.log(tt.text());
 			setTimeout(function () {
 				tt.remove();
 			}, 500);
-		},autohide + 1000);
+		},autohide + 500);
 	},
 
 	// TODO: Figure out why these auto-close, they shouldn't!

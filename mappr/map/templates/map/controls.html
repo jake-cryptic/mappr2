@@ -3,7 +3,7 @@
 		<i class="fas fa-map-marked-alt"></i><span class="sr-only">Map Settings</span>
 	</a>
 	<a class="nav-item nav-link text-dark" id="results_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#results" aria-selected="false">
-		<i class="fas fa-broadcast-tower"></i><span class="sr-only">Table of Results</span>
+		<i class="fas fa-table"></i><span class="sr-only">Table of Results</span>
 	</a>
 	<a class="nav-item nav-link text-dark" id="bookmarks_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#bookmarks" aria-selected="false">
 		<i class="fas fa-bookmark"></i><span class="sr-only">Bookmarks</span>
@@ -19,9 +19,9 @@
 		<div class="accordion accordion-flush" id="sidebar_accordion">
 			<div class="accordion-item">
 				<h2 class="accordion-header" id="accord_head_map_items">
-					<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_one" aria-expanded="true" aria-controls="collapse_one">Map Objects</button>
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_one" aria-expanded="true" aria-controls="collapse_one">Map Objects</button>
 				</h2>
-				<div id="collapse_one" class="accordion-collapse collapse show" aria-labelledby="accord_head_map_items" data-bs-parent="#sidebar_accordion">
+				<div id="collapse_one" class="accordion-collapse collapse" aria-labelledby="accord_head_map_items" data-bs-parent="#sidebar_accordion">
 					<div class="accordion-body">
 						<div class="btn-group" role="group" aria-label="Map item controls">
 							<button aria-label="Pause / Unpause node loading" id="node_loading_pause" class="btn btn-primary btn-block btn-sm">
@@ -95,6 +95,7 @@
 							</select>
 							<select id="select_mnc" class="form-select mb-2" aria-label="Choose a mobile network">
 								<option value='0' selected>All</option>
+								<option value='04'>Shared Access</option>
 								<option value='10'>O2-UK</option>
 								<option value='15'>Vodafone-UK</option>
 								<option value='20'>Three</option>
@@ -113,21 +114,60 @@
 				</h2>
 				<div id="collapse_four" class="accordion-collapse collapse" aria-labelledby="accord_head_filter" data-bs-parent="#sidebar_accordion">
 					<div class="accordion-body">
-						<div class="container container-fluid">
-							<h2 class="h4">Markers</h2>
-							<label for="adv_map_show_verified">Show Located Nodes</label>
-							<input type="checkbox" name="adv_map_show_verified" id="adv_map_show_verified" checked="checked"/>
-							<label for="adv_map_show_mls">Show MLS Nodes</label>
-							<input type="checkbox" name="adv_map_show_mls" id="adv_map_show_mls" checked="checked"/>
-						</div>
-						<div class="container container-fluid mt-3">
-							<h2 class="h4">Date Filter</h2>
-							<label for="node_first_seen">Show nodes first seen after:</label>
-							<input type="date" class="form-control" id="node_first_seen" name="node_first_seen" value="2010-01-01" />
-							<label for="node_last_updated">Show nodes updated before:</label>
-							<input type="date" class="form-control" id="node_last_updated" name="node_last_updated" value="2030-01-01" />
-							<div id="sector_list">
-								No data loaded yet.
+
+						<nav class="nav nav-pills nav-fill nav-justified">
+							<a class="nav-item nav-link text-dark active" id="date_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#date_filter" aria-selected="true">
+								<i class="fas fa-calendar-alt"></i><span class="sr-only">Dates</span>
+							</a>
+							<a class="nav-item nav-link text-dark" id="sector_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#sector_filter" aria-selected="false">
+								<i class="fas fa-vector-square"></i><span class="sr-only">Sectors</span>
+							</a>
+							<a class="nav-item nav-link text-dark" id="node_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#node_filter" aria-selected="false">
+								<i class="fas fa-broadcast-tower"></i><span class="sr-only">Nodes</span>
+							</a>
+							<a class="nav-item nav-link text-dark" id="other_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#other_filter" aria-selected="false">
+								<i class="fas fa-map-pin"></i><span class="sr-only">Other</span>
+							</a>
+						</nav>
+
+						<div class="tab-content">
+							<div class="tab-pane active" id="date_filter" role="tabpanel" aria-labelledby="date_filter_toggle">
+								<h3 class="h4">Date Filter</h3>
+								<label for="node_first_seen">Show nodes first seen after:</label>
+								<input type="date" class="form-control" id="node_first_seen" name="node_first_seen" value="2010-01-01" />
+								<label for="node_last_updated">Show nodes updated before:</label>
+								<input type="date" class="form-control" id="node_last_updated" name="node_last_updated" value="2030-01-01" />
+							</div>
+
+							<div class="tab-pane" id="sector_filter" role="tabpanel" aria-labelledby="sector_filter_toggle">
+								<div id="sector_list">No data loaded yet.</div>
+							</div>
+
+							<div class="tab-pane" id="node_filter" role="tabpanel" aria-labelledby="node_filter_toggle">
+								<h3 class="h4">Node Filter</h3>
+
+								<span>Show only nodes in the range:</span>
+								<div class="row">
+									<div class="col">
+										<input type="number" class="form-control" placeholder="Lower Node ID" aria-label="Lower bound node id">
+									</div>
+									<div class="col">
+										<input type="number" class="form-control" placeholder="Upper Node ID" aria-label="Upper bound node id">
+									</div>
+								</div>
+
+								<hr />
+
+								<span>Show only nodes in the list:</span>
+								<input type="number" class="form-control" placeholder="Singular Node ID" aria-label="Enter a node id">
+							</div>
+
+							<div class="tab-pane" id="other_filter" role="tabpanel" aria-labelledby="other_filter">
+								<h2 class="h4">Settings</h2>
+								<label for="adv_map_show_verified">Show Located Nodes</label>
+								<input type="checkbox" name="adv_map_show_verified" id="adv_map_show_verified" checked="checked"/>
+								<label for="adv_map_show_mls">Show MLS Nodes</label>
+								<input type="checkbox" name="adv_map_show_mls" id="adv_map_show_mls" checked="checked"/>
 							</div>
 						</div>
 					</div>
@@ -203,6 +243,7 @@
 		</div>
 
 	</div>
+
 	<div class="tab-pane" id="results" role="tabpanel" aria-labelledby="#results_toggle">
 		<h2 class="h4 text-center">Node List</h2>
 

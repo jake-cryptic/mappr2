@@ -49,6 +49,10 @@ select {
 	transition: .2s opacity ease-in-out;
 }
 
+#sidebar_toggle {
+	display: none;
+}
+
 #sidebar {
 	display: block;
 	float: left;
@@ -193,6 +197,22 @@ table tr:hover, table tr:focus {
 @media screen and (max-width: 768px) {
 	select {
 		font-size: 1.1em;
+	}
+
+	.toast {
+		font-size: .8rem !important;
+	}
+
+	.toast-body {
+    	padding: .5rem !important;
+	}
+
+	.toast-container>:not(:last-child) {
+    	margin-bottom: .25rem !important;
+	}
+
+	#sidebar_toggle {
+		display: block;
 	}
 
 	#sidebar {

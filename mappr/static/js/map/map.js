@@ -346,7 +346,7 @@ let _map = {
 		}
 
 		document.title = "Reloading Map...";
-		_ui.popToastMessage("Loading map data...", 1000, true);
+		_ui.popToastMessage("Loading map data...", 400, true, 'secondary');
 		_map.items.removeMapItems();
 		_api.map.loadArea();
 	},
