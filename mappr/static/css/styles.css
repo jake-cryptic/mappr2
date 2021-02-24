@@ -30,10 +30,10 @@ select {
 	position: absolute;
 }
 
-.toast {
+.toast-container {
 	z-index: 9999;
-	position: absolute;
-	top: 5rem;
+	position:absolute;
+	top:5rem;
 }
 
 #page {

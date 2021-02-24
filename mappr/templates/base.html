@@ -46,11 +46,11 @@
 	<body>
 
 		<div id="app">
-			<div class="toast-container" id="toast_alerts"></div>
-			<div class="toast-container" id="toast_actions"></div>
 
 			<main>
 				{% include "navbar.html" %}
+				<div class="toast-container" id="toast_alerts"></div>
+				<div class="toast-container" id="toast_actions"></div>
 				{% block content %}{% endblock %}
 			</main>
 

@@ -27,20 +27,34 @@ let _app = {
 	},
 
 	changeRat: function(){
-		_app.rat = $(this).val();
+		_app._changeRat($(this).val());
+	},
+
+	_changeRat: function(newRat){
+		_app.rat = newRat;
 		_history.updateUrl();
 		_map.reloadMap();
 	},
 
 	changeMcc: function(){
-		_app.mcc = parseInt($(this).val());
+		_app._changeMcc($(this).val());
+	},
+
+	_changeMcc: function(newMcc){
+		_app.mcc = parseInt(newMcc);
+		_ui.popToastMessage('Mobile Country Code changed to: ' + newMcc, 1000, true,'info');
 		_api.data.getMccSectors();
 		_history.updateUrl();
 		_map.reloadMap();
 	},
 
 	changeMnc: function(){
-		_app.mnc = parseInt($(this).val());
+		_app._changeMnc($(this).val());
+	},
+
+	_changeMnc: function(newMnc) {
+		_app.mnc = parseInt(newMnc);
+		_ui.popToastMessage('Mobile Network Code changed to: ' + newMnc, 1000, true,'info');
 		_history.updateUrl();
 		_map.reloadMap();
 	}
