@@ -84,7 +84,7 @@ let _ui = {
 				});
 
 				if (mncSectors.length > 50) {
-					$mnc.append('too many sectors too display here.');
+					$mnc.append('too many sectors to display here.');
 				} else {
 					for (let j = 0, k = mncSectors.length; j < k; j++) {
 						if (j !== 0 && j % 5 === 0) $mnc.append($("<br />"));

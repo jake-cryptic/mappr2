@@ -358,7 +358,7 @@ let _map = {
 			rat:_app.rat,
 			mcc:evt.target.options.mcc,
 			mnc:evt.target.options.mnc,
-			enb:evt.target.options.enb,
+			node_id:evt.target.options.enb,
 			lat:evt.target._latlng.lat,
 			lng:evt.target._latlng.lng
 		};

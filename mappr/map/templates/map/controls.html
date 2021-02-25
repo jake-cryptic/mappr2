@@ -92,10 +92,12 @@
 							</select>
 							<select id="select_mcc" class="form-select mb-2" aria-label="Choose a country">
 								<option value='234' selected>United Kingdom</option>
+								<option value='368'>Cuba</option>
 							</select>
 							<select id="select_mnc" class="form-select mb-2" aria-label="Choose a mobile network">
 								<option value='0' selected>All</option>
-								<option value='04'>Shared Access</option>
+								<option value='1'>Cubacel</option>
+								<option value='4'>Shared Access</option>
 								<option value='10'>O2-UK</option>
 								<option value='15'>Vodafone-UK</option>
 								<option value='20'>Three</option>
@@ -125,6 +127,9 @@
 							<a class="nav-item nav-link text-dark" id="node_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#node_filter" aria-selected="false">
 								<i class="fas fa-broadcast-tower"></i><span class="sr-only">Nodes</span>
 							</a>
+							<a class="nav-item nav-link text-dark" id="pci_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#node_filter" aria-selected="false">
+								<i class="fas fa-id-card"></i><span class="sr-only">PCIs</span>
+							</a>
 							<a class="nav-item nav-link text-dark" id="other_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#other_filter" aria-selected="false">
 								<i class="fas fa-map-pin"></i><span class="sr-only">Other</span>
 							</a>
@@ -149,17 +154,17 @@
 								<span>Show only nodes in the range:</span>
 								<div class="row">
 									<div class="col">
-										<input type="number" class="form-control" placeholder="Lower Node ID" aria-label="Lower bound node id">
+										<input type="number" class="form-control" id="node_filter_range_lower" placeholder="Lower Node ID" aria-label="Lower bound node id">
 									</div>
 									<div class="col">
-										<input type="number" class="form-control" placeholder="Upper Node ID" aria-label="Upper bound node id">
+										<input type="number" class="form-control" id="node_filter_range_upper" placeholder="Upper Node ID" aria-label="Upper bound node id">
 									</div>
 								</div>
 
 								<hr />
 
 								<span>Show only nodes in the list:</span>
-								<input type="number" class="form-control" placeholder="Singular Node ID" aria-label="Enter a node id">
+								<input type="number" class="form-control" id="node_filter_list" placeholder="Singular Node ID" aria-label="Enter a node id">
 							</div>
 
 							<div class="tab-pane" id="other_filter" role="tabpanel" aria-labelledby="other_filter">

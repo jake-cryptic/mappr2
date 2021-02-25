@@ -75,16 +75,34 @@ let _api = {
 			data['mnc'] = _app.mnc;
 
 			// Get any node_id constraints
+			if ($("#node_filter_range_lower").val().length !== 0 && $("#node_filter_range_upper").val().length !== 0) {
+				data["enb_range"] = [
+					$("#node_filter_range_lower").val(),
+					$("#node_filter_range_upper").val()
+				];
+			}
+
+			// Specific node_id
+			// TODO: Implement list of node_ids split by space or comma
+			if ($("#node_filter_list").val().length !== 0) {
+				data["enb"] = $("#node_filter_list").val();
+			}
 
 
 			// Get any sector_id constraints
-
+			let sectors = $("input[type='checkbox'][name='sectors[]']").serializeArray();
+			data["sectors"] = sectors.map(function(x){
+				return parseInt(x.value);
+			});
 
 			// Get any pci constraints
 
 
 			// Get any time constraints
-
+			data['date'] = {
+				'lower':getUnixTimeFromDate($('#node_first_seen')),
+				'upper':getUnixTimeFromDate($('#node_last_updated'))
+			};
 
 
 			return Object.assign(
@@ -177,7 +195,7 @@ let _api = {
 			_ui.popToastMessage("Updating Node....", false, true, 'warning');
 
 			$.ajax({
-				url: 'api/update-node/',
+				url: 'api/update-node',
 				type: 'POST',
 				data: _api.move_attempt,
 				dataType: 'json',

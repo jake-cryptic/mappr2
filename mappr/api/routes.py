@@ -1,7 +1,7 @@
 from flask import Blueprint, request, abort, jsonify
 from flask_login import current_user, login_required
 from sqlalchemy import text
-from ..models import db, Node, Sector, Bookmark
+from ..models import db, Node, Sector, Bookmark, NodeLocation
 
 api_bp = Blueprint("api_bp", __name__, template_folder="templates", url_prefix='/api')
 
@@ -33,7 +33,24 @@ def _handle_api_error(ex):
 @api_bp.route('/update-node', methods=['POST'])
 @login_required
 def api_update_node():
-	pass
+	user_id = current_user.id
+	rat = request.form.get('rat')
+	mcc = request.form.get('mcc')
+	mnc = request.form.get('mnc')
+	node_id = request.form.get('node_id')
+
+	lat = float(request.form.get('lat'))
+	lng = float(request.form.get('lng'))
+
+	new_location = NodeLocation(user_id=user_id, mcc=mcc, mnc=mnc, node_id=node_id, lat=lat, lng=lng)
+	db.session.add(new_location)
+	db.session.commit()
+
+	return resp({
+		'node_id':node_id,
+		'lat':lat,
+		'lng':lng
+	})
 
 
 @api_bp.route('/lookup-node', methods=['GET'])

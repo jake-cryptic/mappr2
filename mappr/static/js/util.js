@@ -48,6 +48,10 @@ function getDateStringUtc(uts) {
 	return dateObj.toUTCString();
 }
 
+function getUnixTimeFromDate(date) {
+	return new Date(date).getTime();
+}
+
 function getGmapsUrl(lat, lng) {
 	return 'https://www.google.co.uk/maps/search/' + lat + ',' + lng + '/'
 }
