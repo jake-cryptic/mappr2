@@ -98,14 +98,13 @@ let _map = {
 		// TODO: Consider moving this to UI.js
 		toggleNodeLoading:function(){
 			_map.state.isNodeLoadingPaused = !_map.state.isNodeLoadingPaused;
-			$("#node_loading_pause").text(_map.state.isNodeLoadingPaused ? "Unpause Node Loading" : "Pause Node Loading");
-
+			_ui.controls.setNodeLoadingState();
 			_history.updateUrl();
 		},
 
 		togglePolygonPause:function(){
 			_map.state.isNodePolygonPaused = !_map.state.isNodePolygonPaused;
-			$("#node_polygons_pause").text(_map.state.isNodePolygonPaused ? "Enable Node Polygons" : "Disable Node Polygons");
+			_ui.controls.setPolygonPauseState();
 			_map.items.removeMapPolygons();
 			//_history.updateUrl();
 		},

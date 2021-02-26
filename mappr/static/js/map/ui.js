@@ -20,6 +20,7 @@ let _ui = {
 			$('#node_markers_clear').on('click enter', _map.items.removeMapItems);
 			$('#node_loading_pause').on('click enter', _map.items.toggleNodeLoading);
 			$('#node_polygons_pause').on('click enter', _map.items.togglePolygonPause);
+			$('#ui_show_toasts').on('click enter', _ui.toasts.toggle);
 
 			// TODO: set value depending on load from history URL
 			// Select box change events
@@ -43,6 +44,30 @@ let _ui = {
 			});
 
 			console.log('[UI]-> Initialised');
+		},
+
+		setNodeLoadingState:function (){
+			$("#node_loading_pause").html(
+				_map.state.isNodeLoadingPaused ?
+					"<i class='fas fa-play'></i> Unpause Node Loading" :
+					"<i class='fas fa-pause'></i> Pause Node Loading"
+			);
+		},
+
+		setPolygonPauseState:function (){
+			$("#node_polygons_pause").html(
+				_map.state.isNodePolygonPaused ?
+					"<i class='fas fa-shapes'></i> Enable Node Polygons" :
+					"<i class='fas fa-shapes'></i> Disable Node Polygons"
+			);
+		},
+
+		setToastPauseState:function (){
+			$("#ui_show_toasts").html(
+				_ui.toasts.toasts_allowed ?
+					"<i class='fas fa-bread-slice'></i> Disable Toast Alerts" :
+					"<i class='fas fa-bread-slice'></i> Enable Toast Alerts"
+			);
 		},
 
 		moveMapToUser:function(){
@@ -142,6 +167,11 @@ let _ui = {
 				// $("#sidebar").toggle();
 			}
 		}
+	},
+
+	updateUiOnLoad: function (){
+		_ui.controls.setNodeLoadingState();
+		_ui.controls.setPolygonPauseState();
 	},
 
 	displayMultipleNodeResults: function(results) {
@@ -253,6 +283,17 @@ let _ui = {
 		_ui.current_modal.show();
 	},
 
+	toasts:{
+
+		toasts_allowed: true,
+
+		toggle:function(){
+			_ui.toasts.toasts_allowed = !_ui.toasts.toasts_allowed;
+			_ui.controls.setToastPauseState();
+		}
+
+	},
+
 	freshToast: function($toastBody, autohide, type = ''){
 		let toastOpts = {
 			'class':'toast mx-5',
@@ -311,7 +352,7 @@ let _ui = {
 	},
 
 	popToastMessage:function(txt, autohide, small = false, type = 'primary'){
-		console.log(txt);
+		if (!_ui.toasts.toasts_allowed) return false;
 		let $toastBody = $('<div/>',{
 			'class':'toast-body'
 		}).text(txt);
