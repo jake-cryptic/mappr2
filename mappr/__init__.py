@@ -1,11 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_admin import Admin
 from flask_wtf import CSRFProtect
 
 db = SQLAlchemy()
 # csrf = CSRFProtect()
 login_manager = LoginManager()
+admin = Admin(name='Mappr2', template_mode='bootstrap4')
 
 
 def create_app():
@@ -14,10 +16,11 @@ def create_app():
 
 	db.init_app(app)
 	login_manager.init_app(app)
+	admin.init_app(app)
 	# csrf.init_app(app)
 
 	with app.app_context():
-		from . import routes
+		from . import routes, views
 		from .api import routes as api_routes
 		from .auth import routes as auth_routes
 		from .map import routes as map_routes

@@ -15,42 +15,48 @@
 			<a class="navbar-brand" href="/">
 				<i class="text-light far fa-map"></i> mappr2
 			</a>
+
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			{% if current_user.is_authenticated %}
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item">
-						<a class="nav-link" href="{{ url_for('map_bp.map') }}">
-							<i class="fas fa-compass"></i> Map <span class="sr-only">(current)</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ url_for('user_bp.account') }}">
-							<i class="fas fa-user-alt"></i> Account
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ url_for('statistics_bp.network_stats') }}">
-							<i class="fas fa-broadcast-tower"></i> Network Statistics
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ url_for('statistics_bp.user_stats') }}">
-							<i class="fas fa-chart-area"></i> User Statistics
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ url_for('auth_bp.logout') }}">
-							<i class="fas fa-sign-out-alt"></i> Logout
-						</a>
-					</li>
-				</ul>
-				{% if url_for(request.endpoint) == '/map' %}
-					<div class="d-flex">
-						<div class="input-group">
-							<input class="form-control" type="search" id="enb_search_input" placeholder="Search for eNb" aria-label="Search" />
-							<button class="btn btn-success" type="submit" id="enb_search_submit"><i class="fas fa-search"></i> Search</button>
-						</div>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('map_bp.map') }}">
+						<i class="fas fa-compass"></i> Map <span class="sr-only">(current)</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('user_bp.account') }}">
+						<i class="fas fa-user-alt"></i> Account
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('statistics_bp.network_stats') }}">
+						<i class="fas fa-broadcast-tower"></i> Network Statistics
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('statistics_bp.user_stats') }}">
+						<i class="fas fa-chart-area"></i> User Statistics
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('auth_bp.logout') }}">
+						<i class="fas fa-sign-out-alt"></i> Logout
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('main_bp.contribute') }}">
+						<i class="fas fa-hands-helping"></i> Contribute
+					</a>
+				</li>
+			</ul>
+			{% endif %}
+			{% if url_for(request.endpoint) == '/map' %}
+				<div class="d-flex">
+					<div class="input-group">
+						<input class="form-control" type="search" id="enb_search_input" placeholder="Search for eNb" aria-label="Search" />
+						<button class="btn btn-success" type="submit" id="enb_search_submit"><i class="fas fa-search"></i> Search</button>
 					</div>
-				{% endif %}
+				</div>
 			{% endif %}
 		</div>
 	</div>

@@ -15,3 +15,8 @@ def page_not_found(e):
 def index():
 	"""Landing page."""
 	return redirect(url_for('map_bp.map'))
+
+
+@main_bp.route("/contribute")
+def contribute():
+	return render_template('help/contribute.html')
