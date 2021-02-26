@@ -57,8 +57,8 @@ let _ui = {
 		setPolygonPauseState:function (){
 			$("#node_polygons_pause").html(
 				_map.state.isNodePolygonPaused ?
-					"<i class='fas fa-shapes'></i> Enable Node Polygons" :
-					"<i class='fas fa-shapes'></i> Disable Node Polygons"
+					"<i class='fas fa-shapes'></i> Enable Polygons" :
+					"<i class='fas fa-shapes'></i> Disable Polygons"
 			);
 		},
 
@@ -68,6 +68,18 @@ let _ui = {
 					"<i class='fas fa-bread-slice'></i> Disable Toast Alerts" :
 					"<i class='fas fa-bread-slice'></i> Enable Toast Alerts"
 			);
+		},
+
+		setRatSelector: function() {
+			$('#select_rat').val(_app.rat);
+		},
+
+		setMccSelector: function() {
+			$('#select_mcc').val(_app.mcc);
+		},
+
+		setMncSelector: function() {
+			$('#select_mnc').val(_app.mnc);
 		},
 
 		moveMapToUser:function(){
@@ -172,6 +184,10 @@ let _ui = {
 	updateUiOnLoad: function (){
 		_ui.controls.setNodeLoadingState();
 		_ui.controls.setPolygonPauseState();
+
+		_ui.controls.setRatSelector();
+		_ui.controls.setMccSelector();
+		_ui.controls.setMncSelector();
 	},
 
 	displayMultipleNodeResults: function(results) {
