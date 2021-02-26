@@ -15,7 +15,6 @@ def create_app():
 	db.init_app(app)
 	login_manager.init_app(app)
 	# csrf.init_app(app)
-	app.testing = True
 
 	with app.app_context():
 		from . import routes
