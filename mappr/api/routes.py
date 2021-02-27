@@ -6,6 +6,18 @@ from ..models import db, Node, Sector, Bookmark, NodeLocation
 api_bp = Blueprint("api_bp", __name__, template_folder="templates", url_prefix='/api')
 
 
+required_arguments = {
+	'map': ['time', 'rat', 'mcc', 'mnc', 'ne_lat', 'ne_lng', 'sw_lat', 'sw_lng', 'show_mls', 'show_mappr']
+}
+
+def check_request_args(user_args, args):
+	for argument in args:
+		if argument not in user_args:
+			print(argument)
+			return False
+
+	return True
+
 def resp(data=None, **kwargs):
 	err = False
 	msg = ''
@@ -89,6 +101,10 @@ def api_lookup_node():
 @api_bp.route('/map', methods=['GET'])
 @login_required
 def api_get_map_area():
+	if not check_request_args(request.args, required_arguments['map']):
+		return abort(400)
+
+	rat = request.args.get('rat')
 	mcc = request.args.get('mcc')
 	mnc = request.args.get('mnc')
 
@@ -114,7 +130,6 @@ def api_get_map_area():
 			Node.lat <= ne_lat,
 			Node.lng <= ne_lng
 		).all()
-
 
 	def get_sectors_for_node(mcc, mnc, node_id):
 		sectors_query = db.session.query(Sector).filter(

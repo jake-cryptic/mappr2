@@ -69,6 +69,8 @@ let _api = {
 		getParams: function (){
 			let data = {};
 
+			data['time'] = new Date().getTime();
+
 			// Get selected RAT / MCC / MNC
 			data['rat'] = _app.rat;
 			data['mcc'] = _app.mcc;
@@ -96,15 +98,19 @@ let _api = {
 			});
 
 			// Get any pci constraints
-
+			data['pci'] = $('#pci_filter_list').val();
 
 			// Get any time constraints
 			data['date'] = {
-				'lower':getUnixTimeFromDate($('#node_first_seen')),
-				'upper':getUnixTimeFromDate($('#node_last_updated'))
+				'lower': Math.floor(getUnixTimeFromDate($('#node_first_seen').val()) / 1000),
+				'upper': Math.floor(getUnixTimeFromDate($('#node_last_updated').val()) / 1000)
 			};
 
+			// What nodes does the user want to see?
+			data['show_mls'] = $('#node_toggle_mls').is(':checked');
+			data['show_mappr'] = $('#node_toggle_mappr').is(':checked');
 
+			// Add map bounds and send request
 			return Object.assign(
 				data,
 				_api.getMapBounds()
@@ -123,6 +129,10 @@ let _api = {
 				error: function (e) {
 					document.title = 'API Error!';
 					console.error(e);
+					if (!navigator.onLine) {
+						_ui.popToastMessage('You are not online!', 5000);
+					}
+					_ui.popToastMessage(e.statusText || 'Unknown API error', false);
 				}
 			});
 		},
