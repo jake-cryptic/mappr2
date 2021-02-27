@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy{% endblock %}
+
+{% block description %}Mappr's Privacy Policy, information on how your data is processed.{% endblock %}
+
+{% block content %}
+	<div class="container">
+		<div class="display-4 py-5">Privacy</div>
+		<p class="lead">
+			A quick privacy policy, I'll write a proper one later.
+		</p>
+		No analytics are currently in use on the site. All that is collected is the information you provide:
+		<ul>
+			<li>Your Name</li>
+			<li>Email Address</li>
+		</ul>
+		Your password is not 'stored', a cryptographic hash of it is stored so that we can verify you upon login.<br />
+		If you want access to your information, there is a GDPR download in the account settings.
+		<blockquote class="my-4">
+			Date Effective: 2021/02/07
+		</blockquote>
+	</div>
+{% endblock %}

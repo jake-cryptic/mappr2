@@ -13,10 +13,14 @@ def page_not_found(e):
 @main_bp.route("/")
 @login_required
 def index():
-	"""Landing page."""
 	return redirect(url_for('map_bp.map'))
 
 
 @main_bp.route("/contribute")
 def contribute():
 	return render_template('help/contribute.html')
+
+
+@main_bp.route("/privacy-policy")
+def privacy():
+	return render_template('help/privacy.html')

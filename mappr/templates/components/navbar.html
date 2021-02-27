@@ -43,11 +43,34 @@
 						<i class="fas fa-sign-out-alt"></i> Logout
 					</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('main_bp.contribute') }}">
-						<i class="fas fa-hands-helping"></i> Contribute
-					</a>
-				</li>
+				<li class="nav-item dropdown">
+          			<a class="nav-link dropdown-toggle" href="#" id="information_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            			<i class="fas fa-info-circle"></i> Information
+          			</a>
+					<ul class="dropdown-menu" aria-labelledby="information_dropdown">
+						<li>
+							<a class="dropdown-item" href="{{ url_for('main_bp.contribute') }}">
+								<i class="fas fa-hands-helping"></i> Contributing
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="{{ url_for('main_bp.privacy') }}">
+								<i class="fas fa-user-secret"></i> Privacy Policy
+							</a>
+						</li>
+						<!--<li>
+							<a class="dropdown-item" href="{{ url_for('main_bp.privacy') }}">
+								<i class="fas fa-file-contract"></i> Terms of Use
+							</a>
+						</li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li>
+							<a class="dropdown-item" href="#">Support pages?</a>
+						</li>-->
+          			</ul>
+        		</li>
 			</ul>
 			{% endif %}
 			{% if url_for(request.endpoint) == '/map' %}
