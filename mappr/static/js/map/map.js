@@ -488,8 +488,8 @@ let _map = {
 			let sector = point.sectors[s];
 
 			let color = _map.getSectorColor(point.mnc, s);
-			let dates = "First Seen: " + getDateStringUtc(sector[2]) + "\n";
-				dates += "Last Seen: " + getDateStringUtc(sector[3]) + "\n";
+			let dates = "Created: " + getDateStringUtc(sector[2]) + "\n";
+				dates += "Updated: " + getDateStringUtc(sector[3]) + "\n";
 
 			txt += "<span class='sect' style='background-color:" + color + "' title='" + dates + "'>" + s + "</span>";
 
@@ -504,8 +504,8 @@ let _map = {
 		txt += "</div>";
 
 		// TODO: Add user location verification
-		//if (v.user.list[point.verified]){
-		//	txt += '<br />Located by: ' + v.user.list[point.verified];
+		//if (_api.users.getUserFromId(point.verified)){
+		//	txt += '<br />Located by: ' + _api.users.getUserFromId(point.verified);
 		//}
 
 		let tooltipText = _map.getTooltipText(point);

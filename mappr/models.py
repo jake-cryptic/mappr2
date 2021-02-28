@@ -117,6 +117,22 @@ class NodeLocation(db.Model):
 		return "<NodeLocation(id='%s', node_id='%s', lat='%s', lng='%s')>" % (self.id, self.node_id, self.lat, self.lng)
 
 
+class CellIdBlockList(db.Model):
+	__tablename__ = 'blocked_cells'
+
+	id = db.Column(Integer, Sequence('cell_blocked_id_seq'), primary_key=True)
+	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+
+	mcc = db.Column(SmallInteger, nullable=False)
+	mnc = db.Column(SmallInteger, nullable=False)
+	cell_id = db.Column(Integer, nullable=False)
+
+	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+	def __repr__(self):
+		return "<BlockedCellId(id='%s', user_id='%s', cell_id='%s')>" % (self.id, self.user_id, self.cell_id)
+
+
 class Bookmark(db.Model):
 	__tablename__ = 'bookmarks'
 

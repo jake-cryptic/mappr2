@@ -29,6 +29,40 @@ let _api = {
 		_ui.popToastMessage(msg + ' ' + (e.statusText || 'Unknown API error'), false);
 	},
 
+	users: {
+		cache:{},
+
+		getUserFromId: function(id) {
+			if (_api.users.cache[id] === undefined) {
+				return 'Unknown user';
+			}
+
+			return _api.users.cache[id]['name'];
+		},
+
+		getUsers: function (users) {
+			let queryList = {
+				'users':users
+			};
+
+			$.ajax({
+				url: 'api/get-users',
+				type: 'GET',
+				data: queryList,
+				dataType: 'json',
+				success: function(resp) {
+					if (!resp || resp.error === true) {
+						console.error(resp);
+						return;
+					}
+				},
+				error: function (e) {
+					_api.error(e, 'Failed to load user information!');
+				}
+			});
+		}
+	},
+
 	data: {
 		current_mcc: {},
 

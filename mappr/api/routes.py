@@ -31,6 +31,20 @@ def _handle_api_error(ex):
 		return ex
 
 
+@api_bp.route('/stats/networks', methods=['GET'])
+@login_required
+def api_stats_networks():
+
+	pass
+
+
+@api_bp.route('/stats/users', methods=['GET'])
+@login_required
+def api_stats_users():
+
+	pass
+
+
 @api_bp.route('/update-node', methods=['POST'])
 @login_required
 def api_update_node():

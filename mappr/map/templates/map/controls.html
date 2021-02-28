@@ -117,6 +117,9 @@
 				</h2>
 				<div id="collapse_four" class="accordion-collapse collapse" aria-labelledby="accord_head_filter" data-bs-parent="#sidebar_accordion">
 					<div class="accordion-body">
+						<button class="btn btn-info btn-block text-light mb-2" id="filter_force_reload" disabled>
+							<i class="fas fa-redo-alt"></i> Force Map Reload
+						</button>
 
 						<nav class="nav nav-pills nav-fill nav-justified">
 							<a class="nav-item nav-link text-dark active" id="date_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#date_filter" aria-selected="true">
@@ -176,10 +179,13 @@
 							<div class="tab-pane" id="other_filter" role="tabpanel" aria-labelledby="other_filter">
 								<h2 class="h4">Settings</h2>
 								<label for="node_toggle_mappr">Show located nodes</label>
-								<input type="checkbox" class="form-check" name="node_toggle_mappr" id="node_toggle_mappr" checked="checked" />
+								<input type="checkbox" class="form-check-input m-1" name="node_toggle_mappr" id="node_toggle_mappr" checked="checked" />
 
 								<label for="node_toggle_mls">Show MLS nodes</label>
-								<input type="checkbox" class="form-check" name="node_toggle_mls" id="node_toggle_mls" checked="checked" />
+								<input type="checkbox" class="form-check-input m-1" name="node_toggle_mls" id="node_toggle_mls" checked="checked" />
+
+								<label for="node_toggle_low_accuracy">Show <abbr title="Nodes with less than 50 samples">'low accuracy'</abbr> nodes</label>
+								<input type="checkbox" class="form-check-input m-1" name="node_toggle_low_accuracy" id="node_toggle_low_accuracy" checked="checked" />
 							</div>
 						</div>
 					</div>
