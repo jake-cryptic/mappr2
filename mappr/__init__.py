@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_admin import Admin
@@ -41,6 +41,18 @@ def create_app():
 		db.create_all()
 
 	login_manager.login_view = "auth_bp.auth"
+
+	@app.after_request
+	def apply_headers(response):
+		if not request.path.startswith('/static/') and not request.path.startswith('/api/'):
+			# TODO: Change 'Feature-Policy' to 'Permissions-Policy' soon
+			response.headers["Feature-Policy"] = "fullscreen 'self'; geolocation 'self'; microphone 'none'; camera 'none'"
+			response.headers["Referrer-Policy"] = "no-referrer-when-downgrade"
+			response.headers["X-Frame-Options"] = "Deny"
+			response.headers["X-XSS-Protection"] = "1; mode=block"
+			response.headers["X-Content-Type-Options"] = "nosniff"
+
+		return response
 
 	return app
 
