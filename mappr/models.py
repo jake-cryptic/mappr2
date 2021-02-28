@@ -49,7 +49,7 @@ class Sector(db.Model):
 
 	node_id = db.Column(Integer, nullable=False)
 	sector_id = db.Column(SmallInteger, nullable=False)
-	pci = db.Column(SmallInteger, nullable=False)
+	pci = db.Column(SmallInteger, default=-1, nullable=False)
 
 	lat = db.Column(DECIMAL(8, 6))
 	lng = db.Column(DECIMAL(9, 6))
@@ -64,8 +64,7 @@ class Sector(db.Model):
 
 	__table_args__ = (
 		Index('sectors_index', 'mcc', 'mnc', 'node_id', 'sector_id'),
-		UniqueConstraint('mcc', 'mnc', 'node_id', 'sector_id', name='unique_sector'),
-    	ForeignKeyConstraint(['mcc', 'mnc', 'node_id',], ['nodes.mcc', 'nodes.mnc', 'nodes.node_id'])
+		UniqueConstraint('mcc', 'mnc', 'node_id', 'sector_id', name='unique_sector')
 	)
 
 

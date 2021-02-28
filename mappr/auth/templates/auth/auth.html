@@ -52,7 +52,12 @@
 						{{ create_user.password.label(class="form-label") }}
 						{{ create_user.password(class="form-control") }}
 					</div>
-					<button type="submit" class="btn btn-info">Request Access</button>
+					<button type="submit" class="btn btn-info text-light">Request Access</button>
+					<br />
+					<small>
+						By signing up to Mappr, you are agreeing to the <a href="{{ url_for('main_bp.privacy') }}">Privacy Policy</a>
+						and <a href="{{ url_for('main_bp.terms') }}">Terms of Use</a>.
+					</small>
 				</form>
 			</div>
 			<div class="tab-pane fade" id="forgot_pane" role="tabpanel" aria-labelledby="forgot_tab">
