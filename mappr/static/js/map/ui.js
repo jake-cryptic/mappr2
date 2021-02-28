@@ -231,7 +231,7 @@ let _ui = {
 	},
 
 	getSiteAddr: function(el, lat, lng){
-		el.innerText = 'Loading...'
+		el.innerText = 'Loading...';
 
 		let parent = el.parentElement;
 		_map.osm.getApproxLocation(lat, lng, function(data) {
@@ -245,23 +245,39 @@ let _ui = {
 	},
 
 	getSiteHistory: function(el, mcc, mnc, enb) {
+		el.innerText = 'Loading...';
+		_api.history.doLookupNode(mcc, mnc, enb, _ui.displaySiteHistory);
+		setTimeout(function () {
+			el.innerText = 'History';
+		},500);
+	},
+
+	displaySiteHistory: function(results, mcc, mnc, enb) {
 		$html = $('<tbody/>');
 
-		results = [];
-		results.forEach(function(r){
+		if (!results || results.length === 0) {
 			$html.append(
-				$('<tr/>',{
-					'data-lat':r.lat,
-					'data-lng':r.lng,
-					'data-zoom': 17
-				}).on('click enter', _map.goToHereData).append(
-					$('<td/>').text(r.mnc),
-					$('<td/>').text(r.node_id),
-					$('<td/>').text(r.lat),
-					$('<td/>').text(r.lng)
+				$('<tr/>').append(
+					$('<td/>', {'colspan':5}).text('This site has not been moved')
 				)
-			)
-		});
+			);
+		} else {
+			results.forEach(function(r){
+				$html.append(
+					$('<tr/>',{
+						'data-lat':r.lat,
+						'data-lng':r.lng,
+						'data-zoom': 17
+					}).on('click enter', _map.goToHereData).append(
+						$('<td/>').text(r.time),
+						$('<td/>').text(r.node_id),
+						$('<td/>').text(r.user_id),
+						$('<td/>').text(r.lat),
+						$('<td/>').text(r.lng)
+					)
+				)
+			});
+		}
 
 		_ui.openModal(
 			'Site History for: ' + mcc + '-' + mnc + ':' + enb,
@@ -271,6 +287,7 @@ let _ui = {
 				}).append(
 					$('<thead/>').append(
 						$('<tr/>').append(
+							$('<th/>').text('Time'),
 							$('<th/>').text('eNB'),
 							$('<th/>').text('User'),
 							$('<th/>').text('Lat'),
@@ -281,7 +298,6 @@ let _ui = {
 				)
 			)
 		);
-		alert("Not yet " + mnc + " " + enb);
 	},
 
 	openModal: function(title, $body) {

@@ -21,6 +21,14 @@ let _api = {
 		});
 	},
 
+	error: function(e, msg){
+		console.error(e);
+		if (!navigator.onLine) {
+			_ui.popToastMessage('You are not online!', 5000);
+		}
+		_ui.popToastMessage(msg + ' ' + (e.statusText || 'Unknown API error'), false);
+	},
+
 	data: {
 		current_mcc: {},
 
@@ -34,8 +42,7 @@ let _api = {
 				dataType: 'json',
 				success: _api.data.setMccSectors,
 				error: function (e) {
-					console.error(e);
-					alert('Fatal error.');
+					_api.error(e, 'Failed to load data for mcc!');
 				}
 			});
 		},
@@ -128,11 +135,7 @@ let _api = {
 				success: _api.map.success,
 				error: function (e) {
 					document.title = 'API Error!';
-					console.error(e);
-					if (!navigator.onLine) {
-						_ui.popToastMessage('You are not online!', 5000);
-					}
-					_ui.popToastMessage(e.statusText || 'Unknown API error', false);
+					_api.error(e, 'Failed to load map area!');
 				}
 			});
 		},
@@ -172,7 +175,7 @@ let _api = {
 				dataType: 'json',
 				success: _api.nodeSearch.success,
 				error: function (e) {
-					console.error(e);
+					_api.error(e, 'Failed to lookup node!');
 				}
 			});
 		},
@@ -195,7 +198,7 @@ let _api = {
 			}
 
 			$('#enb_search_submit').prop('disabled', false);
-		},
+		}
 	},
 
 	nodeUpdate: {
@@ -211,19 +214,44 @@ let _api = {
 				dataType: 'json',
 				success: function (resp) {
 					console.log(resp);
-					_ui.popToastMessage("Update Success", true, true, 'success');
+					_ui.popToastMessage("Update Success", 5000, true, 'success');
 					_map.reloadMap();
 				},
 				error: function (e) {
-					_ui.popToastMessage("Failed to update node!", true, true, 'danger');
-					console.error(e);
+					_api.error(e, 'Failed to update node!');
 				}
 			});
 		}
 	},
 
 	history: {
+		doLookupNode: function(mcc, mnc, node_id, cb) {
+			let request_data = {
+				'node_id': node_id,
+				'mcc': mcc,
+				'mnc': mnc
+			};
 
+			_ui.popToastMessage('Loading location history..', 250, true, 'warning');
+
+			$.ajax({
+				url: 'api/lookup-history',
+				type: 'GET',
+				data: request_data,
+				dataType: 'json',
+				success: function(resp) {
+					if (!resp || resp.error === true) {
+						alert(resp.error === true ? resp.message : 'An error occurred');
+						return;
+					}
+
+					cb(resp.response, mcc, mnc, node_id);
+				},
+				error: function (e) {
+					_api.error(e, 'Failed to load location history!');
+				}
+			});
+		}
 	}
 
 };

@@ -8,7 +8,8 @@ api_bp = Blueprint("api_bp", __name__, template_folder="templates", url_prefix='
 
 
 required_arguments = {
-	'map': ['time', 'rat', 'mcc', 'mnc', 'ne_lat', 'ne_lng', 'sw_lat', 'sw_lng', 'show_mls', 'show_mappr']
+	'map': ['time', 'rat', 'mcc', 'mnc', 'ne_lat', 'ne_lng', 'sw_lat', 'sw_lng', 'show_mls', 'show_mappr'],
+	'history': ['mcc', 'mnc', 'node_id']
 }
 
 
@@ -51,6 +52,35 @@ def api_update_node():
 		'lat':lat,
 		'lng':lng
 	})
+
+
+@api_bp.route('/lookup-history', methods=['GET'])
+@login_required
+def api_node_history():
+	if not check_request_args(request.args, required_arguments['history']):
+		return abort(400)
+
+	mcc = request.args.get('mcc')
+	mnc = request.args.get('mnc')
+	node_id = request.args.get('node_id')
+
+	history_query = NodeLocation.query.filter_by(
+		mcc=mcc,
+		mnc=mnc,
+		node_id=node_id
+	).all()
+
+	history_list = [{
+		'mcc': row.mcc,
+		'mnc': row.mnc,
+		'node_id': row.node_id,
+		'user_id': row.user_id,
+		'time': row.time_created,
+		'lat': float(row.lat),
+		'lng': float(row.lng),
+	} for row in history_query]
+
+	return resp(history_list)
 
 
 @api_bp.route('/lookup-node', methods=['GET'])
