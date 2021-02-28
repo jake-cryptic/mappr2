@@ -13,6 +13,11 @@ class Config:
 	DEBUG = environ.get('FLASK_DEBUG')
 	SECRET_KEY = environ.get('SECRET_KEY')
 
+	# https://flask.palletsprojects.com/en/master/config/#SESSION_COOKIE_SECURE
+	SESSION_COOKIE_NAME = environ.get('SESSION_COOKIE_NAME')
+	SESSION_COOKIE_SECURE = environ.get('SESSION_COOKIE_SECURE')
+	# SESSION_COOKIE_HTTPONLY = environ.get('SESSION_COOKIE_HTTPONLY')
+
 	# 5MB
 	MAX_CONTENT_LENGTH = 1024 * 1024 * 5
 	UPLOAD_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp']
