@@ -1,6 +1,7 @@
 from flask import Blueprint, request, abort, jsonify
 from flask_login import current_user, login_required
 from sqlalchemy import text
+from ..functions import resp
 from ..models import db, Node, Sector, Bookmark, NodeLocation
 
 api_bp = Blueprint("api_bp", __name__, template_folder="templates", url_prefix='/api')
@@ -10,6 +11,7 @@ required_arguments = {
 	'map': ['time', 'rat', 'mcc', 'mnc', 'ne_lat', 'ne_lng', 'sw_lat', 'sw_lng', 'show_mls', 'show_mappr']
 }
 
+
 def check_request_args(user_args, args):
 	for argument in args:
 		if argument not in user_args:
@@ -18,23 +20,9 @@ def check_request_args(user_args, args):
 
 	return True
 
-def resp(data=None, **kwargs):
-	err = False
-	msg = ''
-	if 'error' in kwargs:
-		err = True
-		msg = kwargs['error']
 
-	return jsonify({
-		'license': 'This API data is private and only available for use with permission',
-		'error': err,
-		'message': msg,
-		'response': data
-	})
-
-
-@api_bp.errorhandler(404)
-@api_bp.errorhandler(405)
+@api_bp.app_errorhandler(404)
+@api_bp.app_errorhandler(405)
 def _handle_api_error(ex):
 	if request.path.startswith('/api/'):
 		return resp({}, error='Unknown')

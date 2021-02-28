@@ -4,7 +4,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
-		{% if url_for(request.endpoint) == '/map' %}
+		{% if request.endpoint != None and url_for(request.endpoint) == '/map' %}
 			<div class="align-content-end">
 				<button class="btn text-light" type="button" id="sidebar_toggle" aria-label="Toggle sidebar">
 					<i class="fas fa-ellipsis-v"></i>
@@ -80,7 +80,7 @@
 				</li>
 			</ul>
 			{% endif %}
-			{% if url_for(request.endpoint) == '/map' %}
+			{% if request.endpoint != None and url_for(request.endpoint) == '/map' %}
 				<div class="d-flex">
 					<div class="input-group">
 						<input class="form-control" type="search" id="enb_search_input" placeholder="Search for eNb" aria-label="Search" />
