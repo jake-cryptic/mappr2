@@ -10,10 +10,10 @@
 
 		<ul class="nav nav-pills mb-3" id="tabs_list" role="tablist">
 			<li class="nav-item" role="presentation">
-				<a class="nav-link active" id="login_tab" data-bs-toggle="pill" data-bs-target="#login_pane" href="#login_pane" role="tab" aria-controls="login_pane" aria-selected="true">Login</a>
+				<a class="nav-link{% if active_pane == 'login' %} active{% endif %}" id="login_tab" data-bs-toggle="pill" data-bs-target="#login_pane" href="#login_pane" role="tab" aria-controls="login_pane" aria-selected="true">Login</a>
 			</li>
 			<li class="nav-item" role="presentation">
-				<a class="nav-link" id="create_tab" data-bs-toggle="pill" data-bs-target="#create_pane" href="#create_pane"  role="tab" aria-controls="create_pane" aria-selected="false">Create</a>
+				<a class="nav-link{% if active_pane == 'create' %} active{% endif %}" id="create_tab" data-bs-toggle="pill" data-bs-target="#create_pane" href="#create_pane"  role="tab" aria-controls="create_pane" aria-selected="false">Create</a>
 			</li>
 			<li class="nav-item" role="presentation">
 				<a class="nav-link" id="forgot_tab" data-bs-toggle="pill" data-bs-target="#forgot_pane" href="#forgot_pane"  role="tab" aria-controls="forgot_pane" aria-selected="false">Forgot</a>
@@ -21,8 +21,15 @@
 		</ul>
 
 		<div class="tab-content" id="content">
-			<div class="tab-pane fade show active" id="login_pane" role="tabpanel" aria-labelledby="login_tab">
-				<form id="login_form" action="{{ url_for('auth_bp.auth') }}" method="POST">
+			<div class="tab-pane fade{% if active_pane == 'login' %} show active{% endif %}" id="login_pane" role="tabpanel" aria-labelledby="login_tab">
+				{% for field, errors in login_user.errors.items() %}
+					<div class="alert alert-info alert-danger alert-dismissible fade show" role="alert">
+						{{ login_user[field].label }}: {{ ', '.join(errors) }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+				<form id="login_form" action="{{ url_for('auth_bp.auth') }}" name="login_form" method="POST">
+					<input type="hidden" class="d-none" name="form_name" value="login" />
 					{{ login_user.csrf_token }}
 					<div class="mb-3 ">
 						{{ login_user.email.label(class="form-label") }}
@@ -33,11 +40,18 @@
 						{{ login_user.password.label(class="form-label") }}
 						{{ login_user.password(class="form-control") }}
 					</div>
-					<button type="submit" class="btn btn-primary">Login</button>
+					{{ login_user.submit(class='btn btn-primary') }}
 				</form>
 			</div>
-			<div class="tab-pane fade" id="create_pane" role="tabpanel" aria-labelledby="create_tab">
-				<form id="create_form" action="{{ url_for('auth_bp.auth') }}" method="POST">
+			<div class="tab-pane fade{% if active_pane == 'create' %} show active{% endif %}" id="create_pane" role="tabpanel" aria-labelledby="create_tab">
+				{% for field, errors in create_user.errors.items() %}
+					<div class="alert alert-info alert-danger alert-dismissible fade show" role="alert">
+						{{ create_user[field].label }} error: {{ ', '.join(errors) }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+				<form id="create_form" action="{{ url_for('auth_bp.auth') }}" name="create_form" method="POST">
+					<input type="hidden" class="d-none" name="form_name" value="create" />
 					{{ create_user.csrf_token }}
 					<div class="mb-3 ">
 						{{ create_user.name.label(class="form-label") }}
@@ -52,7 +66,7 @@
 						{{ create_user.password.label(class="form-label") }}
 						{{ create_user.password(class="form-control") }}
 					</div>
-					<button type="submit" class="btn btn-info text-light">Request Access</button>
+					{{ create_user.submit(class='btn btn-info text-light') }}
 					<br />
 					<small>
 						By signing up to Mappr, you are agreeing to the <a href="{{ url_for('main_bp.privacy') }}">Privacy Policy</a>

@@ -13,12 +13,15 @@ def auth():
 	login_form = LoginUserForm(prefix="login")
 	create_form = CreateUserForm(prefix="create")
 
+	active_pane = 'login' if request.form.get('form_name') is None else request.form.get('form_name')
+
 	if current_user.is_authenticated:
 		flash('You are already logged in!', 'warning')
 		return redirect(url_for('user_bp.account'))
 
 	if request.method == 'POST':
-		if create_form.validate_on_submit():
+		if request.form.get('form_name') == 'create' and create_form.validate_on_submit():
+			active_pane = 'create'
 			user = User.query.filter_by(email=create_form.email.data).first()
 
 			if user is None:
@@ -40,7 +43,7 @@ def auth():
 
 			return redirect(url_for('auth_bp.auth'))
 
-		if login_form.validate_on_submit():
+		if request.form.get('form_name') == 'login' and login_form.validate_on_submit():
 			user = User.query.filter_by(email=login_form.email.data).first()
 
 			if user is None:
@@ -58,9 +61,7 @@ def auth():
 
 				return redirect(next or url_for('main_bp.index'))
 
-		return render_template('auth/auth.html', title='Login Required', login_user=login_form, create_user=create_form)
-
-	return render_template('auth/auth.html', title='Login Required', login_user=login_form, create_user=create_form)
+	return render_template('auth/auth.html', title='Login Required', login_user=login_form, create_user=create_form, active_pane=active_pane)
 
 
 @auth_bp.route("/logout")
