@@ -62,9 +62,9 @@ def api_update_node():
 	db.session.commit()
 
 	return resp({
-		'node_id':node_id,
-		'lat':lat,
-		'lng':lng
+		'node_id': node_id,
+		'lat': lat,
+		'lng': lng
 	})
 
 

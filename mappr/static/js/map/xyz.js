@@ -7,7 +7,7 @@ const O2_TMS_VER = 167;
 //const EE_TMS_BASE = "https://maps.ee.co.uk//geowebcache/service/gmaps?&zoom={z}&x={x}&y={y}&format=image/png&Layers=";
 const EE_TMS_BASE = "https://coverage.ee.co.uk/geowebcache/service/gmaps?&zoom={z}&x={x}&y={y}&format=image/png&Layers=";
 const THREE_TMS_BASE = "http://www.three.co.uk/static/images/functional_apps/coverage/";
-const VODAFONE_ESRI_BASE = 'http://mapserver.vodafone.co.uk/arcgis/rest/services/';
+const VODAFONE_ESRI_BASE = 'https://mapserver.vodafone.co.uk/arcgis/rest/services/';
 const CM_TMS_BASE = "https://api.cellmapper.net/v6/getTile?z={z}&x={x}&y={y}";
 
 let _xyz = {

@@ -20,6 +20,7 @@ let _ui = {
 			$('#node_markers_clear').on('click enter', _map.items.removeMapItems);
 			$('#node_loading_pause').on('click enter', _map.items.toggleNodeLoading);
 			$('#node_polygons_pause').on('click enter', _map.items.togglePolygonPause);
+			$('#map_clustering_toggle').on('click enter', _map.items.toggleMarkerCluster);
 			$('#ui_show_toasts').on('click enter', _ui.toasts.toggle);
 
 			// TODO: set value depending on load from history URL
@@ -59,6 +60,14 @@ let _ui = {
 				_map.state.isNodePolygonPaused ?
 					"<i class='fas fa-shapes'></i> Enable Polygons" :
 					"<i class='fas fa-shapes'></i> Disable Polygons"
+			);
+		},
+
+		setMarkerClusterState:function (){
+			$("#map_clustering_toggle").html(
+				_map.settings.markerCluster ?
+					"<i class='fas fa-circle'></i> Enable Clustering" :
+					"<i class='fas fa-circle'></i> Disable Clustering"
 			);
 		},
 

@@ -16,6 +16,7 @@
 		<meta name="apple-mobile-web-app-title" content="Mappr">
 
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/markercluster.css') }}" />
 		<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}" />
 
 		<!-- Fonts -->
@@ -41,6 +42,10 @@
 
 		<!-- Leaflet ESRI -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet/3.0.1/esri-leaflet.min.js" integrity="sha512-yYYNKoOkoAzpeGuQNJNahD+hoiHP+yyeX/BP79gqd93EgOZGrL9VqSm35Smw0+4S9lgsNIKrSsVtmOLksLsjiw==" crossorigin="anonymous"></script>
+
+		<!-- Leaflet Marker Cluster -->
+		<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+		<link href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" rel="stylesheet" />
 
 		<!-- Uppy -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/uppy/1.26.0/uppy.min.js" integrity="sha512-AD2GhRC2S1HdsXAwPzyMFjd6cKwuaudWgQGC5Mgfo1TzaxPgQ1KH1sQoslsTcBxWIdCop8kBbTRHlTfopxxCgg==" crossorigin="anonymous"></script>

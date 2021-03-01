@@ -26,7 +26,9 @@ let _map = {
 	settings: {
 		popupCoords: true,
 		popupLinks: true,
-		popupOptions: true
+		popupOptions: true,
+
+		markerCluster: false
 	},
 
 	attr: {
@@ -85,11 +87,27 @@ let _map = {
 		markers: [],
 		polygons: [],
 
+		markerLayer: null,
+
 		updateMap:function(){
 			// Draw items on the map
+			_map.items.drawMarkers();
+			_map.items.drawPolygons();
+		},
+
+		drawMarkers: function() {
 			_map.items.markers.forEach(function (marker) {
-				_map.state.map.addLayer(marker);
+				_map.items.markerLayer.addLayer(marker);
 			});
+
+			if (_map.settings.markerCluster === true) {
+				_map.state.map.addLayer(_map.state.markers);
+			}
+		},
+
+		drawPolygons: function() {
+			if (_map.state.isNodePolygonPaused === true) return;
+
 			_map.items.polygons.forEach(function (polygon) {
 				_map.state.map.addLayer(polygon);
 			});
@@ -103,10 +121,43 @@ let _map = {
 		},
 
 		togglePolygonPause:function(){
+			console.log('Setting polygon pause to: ', !_map.state.isNodePolygonPaused);
 			_map.state.isNodePolygonPaused = !_map.state.isNodePolygonPaused;
 			_ui.controls.setPolygonPauseState();
-			_map.items.removeMapPolygons();
-			//_history.updateUrl();
+
+			// Remove / re-draw polygons depending on variable
+			if (_map.state.isNodePolygonPaused === true) {
+				_map.items.removeMapPolygons(false);
+			} else {
+				_map.items.drawPolygons();
+			}
+
+			// Disable marker cluster if user wants to enable polygons
+			if (_map.settings.markerCluster === true && _map.state.isNodePolygonPaused === false) {
+				_map.items.toggleMarkerCluster();
+			}
+		},
+
+		toggleMarkerCluster:function(){
+			console.log('Setting marker cluster to: ', !_map.settings.markerCluster);
+			_map.settings.markerCluster = !_map.settings.markerCluster;
+
+			_map.items.removeMapMarkers(true);
+			if (_map.settings.markerCluster === true) {
+				// Disable polygons on marker cluster map
+				if (_map.state.isNodePolygonPaused !== true) {
+					_map.items.togglePolygonPause();
+				}
+
+				_ui.popToastMessage('Markers will now cluster', 1000, true, 'info');
+				_map.items.markerLayer = _map.state.markers;
+			} else {
+				_ui.popToastMessage('Markers will no longer cluster', 1000, true, 'info');
+				_map.items.markerLayer = _map.state.map;
+			}
+
+			_ui.controls.setMarkerClusterState();
+			_map.items.updateMap();
 		},
 
 		removeMapItems:function(){
@@ -115,20 +166,20 @@ let _map = {
 		},
 
 		// TODO: Don't clear markers on map move if they are staying in viewport
-		removeMapMarkers: function() {
+		removeMapMarkers: function(clean = true) {
 			for (let marker in _map.items.markers) {
-				_map.state.map.removeLayer(_map.items.markers[marker]);
+				_map.items.markerLayer.removeLayer(_map.items.markers[marker]);
 			}
 
-			_map.items.markers = [];
+			if (clean === true) _map.items.markers = [];
 		},
 
-		removeMapPolygons: function(){
+		removeMapPolygons: function(clean = true){
 			for (let polygon in _map.items.polygons) {
 				_map.state.map.removeLayer(_map.items.polygons[polygon]);
 			}
 
-			_map.items.polygons = [];
+			if (clean === true) _map.items.polygons = [];
 		},
 
 		createMarker: function(lat, lng, point, popupText, tooltipText) {
@@ -180,6 +231,7 @@ let _map = {
 
 		base: null,
 		map: null,
+		markers: null,
 		map_id: "rdi"
 	},
 
@@ -221,6 +273,9 @@ let _map = {
 
 		_map.changeMap(_map.state.map_id);
 		_map.icons.init();
+
+		_map.state.markers = L.markerClusterGroup();
+		_map.items.markerLayer = _map.state.map;
 
 		console.log('[Map]-> Initialised');
 	},
