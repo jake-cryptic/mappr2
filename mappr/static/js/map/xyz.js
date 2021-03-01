@@ -7,6 +7,7 @@ const O2_TMS_VER = 167;
 //const EE_TMS_BASE = "https://maps.ee.co.uk//geowebcache/service/gmaps?&zoom={z}&x={x}&y={y}&format=image/png&Layers=";
 const EE_TMS_BASE = "https://coverage.ee.co.uk/geowebcache/service/gmaps?&zoom={z}&x={x}&y={y}&format=image/png&Layers=";
 const THREE_TMS_BASE = "http://www.three.co.uk/static/images/functional_apps/coverage/";
+const VODAFONE_ESRI_BASE = 'http://mapserver.vodafone.co.uk/arcgis/rest/services/';
 const CM_TMS_BASE = "https://api.cellmapper.net/v6/getTile?z={z}&x={x}&y={y}";
 
 let _xyz = {
@@ -15,14 +16,20 @@ let _xyz = {
 
 	tiles:{
 		"O2-UK":{
+			"2g-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_voice/{z}/{x}/{y}.png",
+			"2g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_voice/{z}/{x}/{y}.png",
+
 			"3g2100-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_data/{z}/{x}/{y}.png",
 			"3g2100":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_data/{z}/{x}/{y}.png",
 			"3g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_datacombined/{z}/{x}/{y}.png",
+
 			"4g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_lte/{z}/{x}/{y}.png",
+			"4g-1B":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_lte/{z}/{x}/{y}.png",
+			"VoLTE":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_volte/{z}/{x}/{y}.png",
 			"LTE-M":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_ltem/{z}/{x}/{y}.png",
+
 			"5g-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_5g/{z}/{x}/{y}.png",
-			"5g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_5g/{z}/{x}/{y}.png",
-			"VoLTE":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_volte/{z}/{x}/{y}.png"
+			"5g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_5g/{z}/{x}/{y}.png"
 		},
 		"Three-UK":{
 			"3g":THREE_TMS_BASE + "Fast/{z}/{x}/{y}.png",
@@ -30,7 +37,19 @@ let _xyz = {
 			"4g800":THREE_TMS_BASE + "800/{z}/{x}/{y}.png",
 			"5g":THREE_TMS_BASE + "FiveG/{z}/{x}/{y}.png",
 		},
-		"Vodafone-UK":{},
+		"Vodafone-UK":{
+			'Paknet':VODAFONE_ESRI_BASE + 'Paknet/MapServer',
+			'2G-Planned':VODAFONE_ESRI_BASE + 'Vodafone_2G_Live_Service/MapServer',
+			'2G-Live':VODAFONE_ESRI_BASE + 'Vodafone_2G_Live_Service/MapServer',
+			'3G-Planned':VODAFONE_ESRI_BASE + 'Vodafone_3G_Live_Service/MapServer',
+			'3G-Live':VODAFONE_ESRI_BASE + 'Vodafone_3G_Live_Service/MapServer',
+			'4G-Planned':VODAFONE_ESRI_BASE + 'Vodafone_4G_Live_Service/MapServer',
+			'4G-Live':VODAFONE_ESRI_BASE + 'Vodafone_4G_Live_Service/MapServer',
+			'5G-Planned':VODAFONE_ESRI_BASE + 'Vodafone_5G_Live_Service/MapServer',
+			'5G-Live':VODAFONE_ESRI_BASE + 'Vodafone_5G_Live_Service/MapServer',
+			'IncCrq_Impact':VODAFONE_ESRI_BASE + 'IncCrq_Impact/MapServer',
+			'ICImpact_Stage':VODAFONE_ESRI_BASE + 'ICImpact_Stage/MapServer',
+		},
 		"EE":{
 			"4g800":EE_TMS_BASE + "4g_800_ltea",
 			"4g1800":EE_TMS_BASE + "4g_1800_ltea",
@@ -144,7 +163,25 @@ let _xyz = {
 
 		if (_xyz.tile_layer) _map.state.map.removeLayer(_xyz.tile_layer);
 
-		_xyz.tile_layer = new L.TileLayer(server, {attribution: attr, opacity: _xyz.opacity});
+		let data = {
+			attribution: attr,
+			opacity: _xyz.opacity
+		};
+
+		switch ($(this).data('op')) {
+			case 'Three-UK':
+				data['tms'] = true;
+				_xyz.tile_layer = new L.TileLayer(server, data);
+				break;
+			case 'Vodafone-UK':
+				data['url'] = server;
+				_xyz.tile_layer = new L.esri.dynamicMapLayer(data);
+				break;
+			default:
+				_xyz.tile_layer = new L.TileLayer(server, data);
+				break;
+		}
+
 		_map.state.map.addLayer(_xyz.tile_layer);
 	}
 

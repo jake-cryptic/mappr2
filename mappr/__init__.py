@@ -47,7 +47,7 @@ def create_app():
 		if not request.path.startswith('/static/') and not request.path.startswith('/api/'):
 			# TODO: Change 'Feature-Policy' to 'Permissions-Policy' soon
 			response.headers["Feature-Policy"] = "fullscreen 'self'; geolocation 'self'; microphone 'none'; camera 'none'"
-			response.headers["Referrer-Policy"] = "no-referrer-when-downgrade"
+			response.headers["Referrer-Policy"] = "same-origin"
 			response.headers["Strict-Transport-Security"] = "max-age=5184000"
 			response.headers["X-Frame-Options"] = "Deny"
 			response.headers["X-XSS-Protection"] = "1; mode=block"
