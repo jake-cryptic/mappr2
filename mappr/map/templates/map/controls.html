@@ -145,9 +145,15 @@
 						<div class="tab-content">
 							<div class="tab-pane active" id="date_filter" role="tabpanel" aria-labelledby="date_filter_toggle">
 								<h3 class="h4">Date Filter</h3>
-								<label for="node_first_seen">Show nodes first seen after:</label>
+								<label for="node_date_filter">Filter nodes by when they were...</label>
+								<select id="node_date_filter" class="form-select mb-2" aria-label="Choose a value to filter by date">
+									<option value='created' selected>Created (First Seen)</option>
+									<option value='updated'>Updated (Last Seen)</option>
+									<option value='none'>Don't filter by date</option>
+								</select>
+								<label for="node_first_seen">Show nodes after:</label>
 								<input type="date" class="form-control" id="node_first_seen" name="node_first_seen" value="2010-01-01" />
-								<label for="node_last_updated">Show nodes updated before:</label>
+								<label for="node_last_updated">Show nodes before:</label>
 								<input type="date" class="form-control" id="node_last_updated" name="node_last_updated" value="2030-01-01" />
 							</div>
 

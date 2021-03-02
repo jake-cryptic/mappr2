@@ -139,10 +139,13 @@ let _api = {
 			});
 
 			// Get any pci constraints
-			data['pci'] = $('#pci_filter_list').val();
+			if ($("#pci_filter_list").val().length !== 0) {
+				data['pci'] = $('#pci_filter_list').val();
+			}
 
 			// Get any time constraints
 			data['date'] = {
+				'filter': $('#node_date_filter').val(),
 				'lower': Math.floor(getUnixTimeFromDate($('#node_first_seen').val()) / 1000),
 				'upper': Math.floor(getUnixTimeFromDate($('#node_last_updated').val()) / 1000)
 			};

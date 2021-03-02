@@ -1,4 +1,4 @@
-from flask import Blueprint, request, abort, jsonify
+from flask import Blueprint, request, abort, jsonify, session
 from flask_login import current_user, login_required
 from sqlalchemy import text
 from ..functions import resp
@@ -145,23 +145,41 @@ def api_get_map_area():
 	sw_lat = float(request.args.get('sw_lat'))
 	sw_lng = float(request.args.get('sw_lng'))
 
+	date_filter = request.args.get('date[filter]') or 'created'
+	lower_date = int(request.args.get('date[lower]') or 0)
+	upper_date = int(request.args.get('date[upper]') or 0)
+
+	show_mls = bool(request.args.get('show_mls') or True)
+	show_mappr = bool(request.args.get('show_mappr') or True)
+
+	# Create initial query
+	node_query = db.session.query(Node).filter(
+		Node.mcc == mcc,
+		Node.lat >= sw_lat,
+		Node.lng >= sw_lng,
+		Node.lat <= ne_lat,
+		Node.lng <= ne_lng
+	)
+
+	# Filter MNC
 	if mnc != "0":
-		node_query = db.session.query(Node).filter(
-			Node.mcc == mcc,
-			Node.mnc == mnc,
-			Node.lat >= sw_lat,
-			Node.lng >= sw_lng,
-			Node.lat <= ne_lat,
-			Node.lng <= ne_lng
-		).all()
-	else:
-		node_query = db.session.query(Node).filter(
-			Node.mcc == mcc,
-			Node.lat >= sw_lat,
-			Node.lng >= sw_lng,
-			Node.lat <= ne_lat,
-			Node.lng <= ne_lng
-		).all()
+		node_query = node_query.filter(
+			Node.mnc == mnc
+		)
+
+	# Filter date
+	if date_filter == 'created':
+		node_query = node_query.filter(
+			Node.created >= lower_date,
+			Node.created <= upper_date
+		)
+	elif date_filter == 'updated':
+		node_query = node_query.filter(
+			Node.updated >= lower_date,
+			Node.updated <= upper_date
+		)
+
+	results = node_query.all()
 
 	def get_sectors_for_node(mcc, mnc, node_id):
 		sectors_query = db.session.query(Sector).filter(
@@ -192,7 +210,7 @@ def api_get_map_area():
 		'updated': row.updated,
 		'samples': row.samples,
 		'sectors': get_sectors_for_node(row.mcc, row.mnc, row.node_id)
-	} for row in node_query]
+	} for row in results]
 
 	return resp(node_list)
 
