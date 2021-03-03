@@ -5,7 +5,7 @@ from flask_admin import Admin
 from flask_wtf import CSRFProtect
 
 db = SQLAlchemy()
-# csrf = CSRFProtect()
+csrf = CSRFProtect()
 login_manager = LoginManager()
 admin = Admin(name='Mappr2', template_mode='bootstrap4')
 
@@ -17,7 +17,7 @@ def create_app():
 	db.init_app(app)
 	login_manager.init_app(app)
 	admin.init_app(app)
-	# csrf.init_app(app)
+	csrf.init_app(app)
 
 	with app.app_context():
 		from . import routes, views

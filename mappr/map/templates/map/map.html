@@ -16,6 +16,9 @@
 
 {% block jsfiles %}
 {{ super() }}
+<script type="text/javascript">
+	let _csrf = "{{ csrf_token() }}";
+</script>
 <script src="{{ url_for('static', filename='js/map/api.js') }}" type="text/javascript"></script>
 <script src="{{ url_for('static', filename='js/map/bookmarks.js') }}" type="text/javascript"></script>
 <script src="{{ url_for('static', filename='js/map/csv.js') }}" type="text/javascript"></script>

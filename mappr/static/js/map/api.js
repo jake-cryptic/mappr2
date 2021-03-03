@@ -17,7 +17,12 @@ let _api = {
 	prepareAjax: function (){
 		$.ajaxSetup({
 			cache: false,
-			timeout: _api.timeout
+			timeout: _api.timeout,
+			beforeSend: function(xhr, settings) {
+				if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+					xhr.setRequestHeader("X-CSRFToken", _csrf);
+				}
+			}
 		});
 	},
 
@@ -247,7 +252,7 @@ let _api = {
 			$.ajax({
 				url: 'api/update-node',
 				type: 'POST',
-				data: _api.move_attempt,
+				data: _api.nodeUpdate.move_attempt,
 				dataType: 'json',
 				success: function (resp) {
 					console.log(resp);
