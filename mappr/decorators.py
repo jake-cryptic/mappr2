@@ -8,7 +8,7 @@ def internally_referred(f):
 		if request.referrer is None:
 			return abort(400, description='Request invalid')
 
-		if request.host_url not in request.referrer:
+		if request.host not in request.referrer:
 			return abort(400, description='Request source disallowed')
 
 		return f(*args, **kwargs)

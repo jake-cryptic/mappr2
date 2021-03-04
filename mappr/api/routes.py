@@ -330,6 +330,7 @@ def api_get_mnc_list():
 
 @api_bp.route('/get-sectors', methods=['GET'])
 @login_required
+@internally_referred
 def api_get_sector_list():
 	mcc = request.args.get('mcc')
 

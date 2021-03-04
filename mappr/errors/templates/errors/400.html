@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Bad Request{% endblock %}
+
+{% block description %}This request was rejected by the server.{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="display-4 pt-5 pb-2">400 - Bad Request</div>
+	<p class="lead">
+		{{ description }}
+	</p>
+</div>
+{% endblock %}
