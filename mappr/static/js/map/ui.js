@@ -22,8 +22,10 @@ let _ui = {
 			$('#node_polygons_pause').on('click enter', _map.items.togglePolygonPause);
 			$('#map_clustering_toggle').on('click enter', _map.items.toggleMarkerCluster);
 			$('#ui_show_toasts').on('click enter', _ui.toasts.toggle);
+			$('.reload-on-change').on('change', _ui.controls.filterReload);
+			$('#filter_force_reload').on('click enter', _ui.controls.reloadMap);
 
-			// TODO: set value depending on load from history URL
+
 			// Select box change events
 			$("#select_rat").on("change", _app.changeRat);
 			$("#select_mcc").on("change", _app.changeMcc);
@@ -45,6 +47,16 @@ let _ui = {
 			});
 
 			console.log('[UI]-> Initialised');
+		},
+
+		filterReload: function(){
+			$('#filter_force_reload').prop('disabled', false);
+		},
+
+		reloadMap: function(){
+			$('#filter_force_reload').prop('disabled', true);
+			_ui.popToastMessage('Reloading map with filters applied', 500, true, 'info');
+			_map.reloadMap();
 		},
 
 		setNodeLoadingState:function (){

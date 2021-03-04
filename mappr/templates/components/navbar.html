@@ -73,6 +73,28 @@
 						</li>-->
           			</ul>
         		</li>
+				<li class="nav-item dropdown">
+          			<a class="nav-link dropdown-toggle" href="#" id="tool_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            			<i class="fas fa-toolbox"></i> Tools
+          			</a>
+					<ul class="dropdown-menu" aria-labelledby="tool_dropdown">
+						<li>
+							<a class="dropdown-item" href="https://tools.pedroc.co.uk/4g-speed/" title="Calculate the maximum speed of a 4G config" hreflang="en" rel="noopener">
+								<i class="fas fa-calculator"></i> 4G Speed Calculator
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="https://tools.pedroc.co.uk/5g-speed/" title="Calculate the maximum speed of a 5G config" hreflang="en" rel="noopener">
+								<i class="fas fa-bolt"></i> 5G Speed Calculator
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="https://mobilespectrum.org" title="View spectrum allocations across the world" rel="noopener">
+								<i class="fas fa-wave-square"></i> Mobile Spectrum
+							</a>
+						</li>
+          			</ul>
+        		</li>
 				<li class="nav-item">
 					<a class="nav-link" href="{{ url_for('auth_bp.logout') }}">
 						<i class="fas fa-sign-out-alt"></i> Logout

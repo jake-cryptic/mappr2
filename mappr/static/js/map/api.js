@@ -124,10 +124,10 @@ let _api = {
 
 			// Get any node_id constraints
 			if ($("#node_filter_range_lower").val().length !== 0 && $("#node_filter_range_upper").val().length !== 0) {
-				data["enb_range"] = [
-					$("#node_filter_range_lower").val(),
-					$("#node_filter_range_upper").val()
-				];
+				data["enb_range"] = {
+					'lower': $("#node_filter_range_lower").val() || 0,
+					'upper': $("#node_filter_range_upper").val() || 9999999
+				};
 			}
 
 			// Specific node_id

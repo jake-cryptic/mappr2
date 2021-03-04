@@ -142,15 +142,34 @@ def api_get_map_area():
 	sw_lat = float(request.args.get('sw_lat'))
 	sw_lng = float(request.args.get('sw_lng'))
 
+	# Time filters
 	date_filter = request.args.get('date[filter]') or 'created'
 	lower_date = int(request.args.get('date[lower]') or 0)
 	upper_date = int(request.args.get('date[upper]') or 0)
 
-	show_mls = bool(request.args.get('show_mls') or True)
-	show_mappr = bool(request.args.get('show_mappr') or True)
+	# Node ID filters
+	enb_lower = request.args.get('enb_range[lower]')
+	enb_upper = request.args.get('enb_range[upper]')
+	enb_singular = request.args.get('enb')
+
+	# Sector filters
+	sectors_allowed = request.args.getlist('sectors[]')
+	pci = request.args.get('pci')
+
+	def convert_bool(bv):
+		if bv is None:
+			return False
+		if bv == 'false':
+			return False
+		return True
+
+	# Pin type filters
+	show_mls = convert_bool(request.args.get('show_mls'))
+	show_mappr = convert_bool(request.args.get('show_mappr'))
 
 	# Define functions for use
 	def filter_query(query):
+		# Filter by date
 		if date_filter == 'created':
 			query = query.filter(
 				Node.created >= lower_date,
@@ -160,6 +179,19 @@ def api_get_map_area():
 			query = query.filter(
 				Node.updated >= lower_date,
 				Node.updated <= upper_date
+			)
+
+		# Filter by node ID range
+		if enb_lower is not None and enb_upper is not None:
+			query = query.filter(
+				Node.node_id >= int(enb_lower),
+				Node.node_id <= int(enb_upper)
+			)
+
+		# Filter by a single node ID
+		if enb_singular is not None:
+			query = query.filter(
+				Node.node_id == enb_singular
 			)
 
 		return query.all()
@@ -245,10 +277,7 @@ def api_get_map_area():
 		)
 
 		results = filter_query(node_query)
-
 		if len(results) == 0:
-			print(idenspl)
-			print(node_query)
 			continue
 
 		row = results[0]

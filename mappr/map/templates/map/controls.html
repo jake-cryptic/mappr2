@@ -146,15 +146,15 @@
 							<div class="tab-pane active" id="date_filter" role="tabpanel" aria-labelledby="date_filter_toggle">
 								<h3 class="h4">Date Filter</h3>
 								<label for="node_date_filter">Filter nodes by when they were...</label>
-								<select id="node_date_filter" class="form-select mb-2" aria-label="Choose a value to filter by date">
+								<select id="node_date_filter" class="form-select mb-2 reload-on-change" aria-label="Choose a value to filter by date">
 									<option value='created' selected>Created (First Seen)</option>
 									<option value='updated'>Updated (Last Seen)</option>
 									<option value='none'>Don't filter by date</option>
 								</select>
 								<label for="node_first_seen">Show nodes after:</label>
-								<input type="date" class="form-control" id="node_first_seen" name="node_first_seen" value="2010-01-01" />
+								<input type="date" class="form-control reload-on-change" id="node_first_seen" name="node_first_seen" value="2010-01-01" />
 								<label for="node_last_updated">Show nodes before:</label>
-								<input type="date" class="form-control" id="node_last_updated" name="node_last_updated" value="2030-01-01" />
+								<input type="date" class="form-control reload-on-change" id="node_last_updated" name="node_last_updated" value="2030-01-01" />
 							</div>
 
 							<div class="tab-pane" id="sector_filter" role="tabpanel" aria-labelledby="sector_filter_toggle">
@@ -163,7 +163,7 @@
 
 							<div class="tab-pane" id="pci_filter" role="tabpanel" aria-labelledby="pci_filter_toggle">
 								<label for="pci_filter_list">Type a PCI:</label>
-								<input type="number" class="form-control" id="pci_filter_list" placeholder="PCI" />
+								<input type="number" class="form-control reload-on-change" id="pci_filter_list" placeholder="PCI" />
 							</div>
 
 							<div class="tab-pane" id="node_filter" role="tabpanel" aria-labelledby="node_filter_toggle">
@@ -172,29 +172,29 @@
 								<span>Show only nodes in the range:</span>
 								<div class="row">
 									<div class="col">
-										<input type="number" class="form-control" id="node_filter_range_lower" placeholder="Lower Node ID" aria-label="Lower bound node id">
+										<input type="number" class="form-control reload-on-change" id="node_filter_range_lower" placeholder="Lower Node ID" aria-label="Lower bound node id">
 									</div>
 									<div class="col">
-										<input type="number" class="form-control" id="node_filter_range_upper" placeholder="Upper Node ID" aria-label="Upper bound node id">
+										<input type="number" class="form-control reload-on-change" id="node_filter_range_upper" placeholder="Upper Node ID" aria-label="Upper bound node id">
 									</div>
 								</div>
 
 								<hr />
 
 								<span>Show only nodes in the list:</span>
-								<input type="number" class="form-control" id="node_filter_list" placeholder="Singular Node ID" aria-label="Enter a node id">
+								<input type="number" class="form-control reload-on-change" id="node_filter_list" placeholder="Singular Node ID" aria-label="Enter a node id">
 							</div>
 
 							<div class="tab-pane" id="other_filter" role="tabpanel" aria-labelledby="other_filter">
 								<h2 class="h4">Settings</h2>
 								<label for="node_toggle_mappr">Show located nodes</label>
-								<input type="checkbox" class="form-check-input m-1" name="node_toggle_mappr" id="node_toggle_mappr" checked="checked" />
+								<input type="checkbox" class="form-check-input m-1 reload-on-change" name="node_toggle_mappr" id="node_toggle_mappr" checked="checked" />
 
 								<label for="node_toggle_mls">Show MLS nodes</label>
-								<input type="checkbox" class="form-check-input m-1" name="node_toggle_mls" id="node_toggle_mls" checked="checked" />
+								<input type="checkbox" class="form-check-input m-1 reload-on-change" name="node_toggle_mls" id="node_toggle_mls" checked="checked" />
 
 								<label for="node_toggle_low_accuracy">Show <abbr title="Nodes with less than 50 samples">'low accuracy'</abbr> nodes</label>
-								<input type="checkbox" class="form-check-input m-1" name="node_toggle_low_accuracy" id="node_toggle_low_accuracy" checked="checked" />
+								<input type="checkbox" class="form-check-input m-1 reload-on-change" name="node_toggle_low_accuracy" id="node_toggle_low_accuracy" checked="checked" />
 							</div>
 						</div>
 					</div>
