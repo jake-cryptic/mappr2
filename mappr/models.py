@@ -21,7 +21,7 @@ class User(UserMixin, db.Model):
 	account_type = db.Column(db.SmallInteger, nullable=False, default=0)
 
 	bookmarks = db.relationship("Bookmark")
-	locations = db.relationship("NodeLocation")
+	locations = db.relationship("NodeLocation", back_populates='user')
 
 	@property
 	def password(self):
@@ -102,6 +102,7 @@ class NodeLocation(db.Model):
 
 	id = db.Column(Integer, Sequence('node_loc_id_seq'), primary_key=True)
 	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+	user = db.relationship('User', back_populates='locations')
 
 	mcc = db.Column(SmallInteger, nullable=False)
 	mnc = db.Column(SmallInteger, nullable=False)

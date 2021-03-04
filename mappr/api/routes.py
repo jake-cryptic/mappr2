@@ -6,7 +6,6 @@ from ..models import db, Node, Sector, Bookmark, NodeLocation
 
 api_bp = Blueprint("api_bp", __name__, template_folder="templates", url_prefix='/api')
 
-
 required_arguments = {
 	'map': ['time', 'rat', 'mcc', 'mnc', 'ne_lat', 'ne_lng', 'sw_lat', 'sw_lng', 'show_mls', 'show_mappr'],
 	'history': ['mcc', 'mnc', 'node_id']
@@ -34,14 +33,12 @@ def _handle_api_error(ex):
 @api_bp.route('/stats/networks', methods=['GET'])
 @login_required
 def api_stats_networks():
-
 	pass
 
 
 @api_bp.route('/stats/users', methods=['GET'])
 @login_required
 def api_stats_users():
-
 	pass
 
 
@@ -152,34 +149,59 @@ def api_get_map_area():
 	show_mls = bool(request.args.get('show_mls') or True)
 	show_mappr = bool(request.args.get('show_mappr') or True)
 
-	# Create initial query
-	node_query = db.session.query(Node).filter(
-		Node.mcc == mcc,
-		Node.lat >= sw_lat,
-		Node.lng >= sw_lng,
-		Node.lat <= ne_lat,
-		Node.lng <= ne_lng
-	)
+	# Define functions for use
+	def filter_query(query):
+		if date_filter == 'created':
+			query = query.filter(
+				Node.created >= lower_date,
+				Node.created <= upper_date
+			)
+		elif date_filter == 'updated':
+			query = query.filter(
+				Node.updated >= lower_date,
+				Node.updated <= upper_date
+			)
 
-	# Filter MNC
-	if mnc != "0":
-		node_query = node_query.filter(
-			Node.mnc == mnc
+		return query.all()
+
+	def get_nodes_for_area(model):
+		node_query = db.session.query(model).filter(
+			model.mcc == mcc,
+			model.lat >= sw_lat,
+			model.lng >= sw_lng,
+			model.lat <= ne_lat,
+			model.lng <= ne_lng
 		)
 
-	# Filter date
-	if date_filter == 'created':
-		node_query = node_query.filter(
-			Node.created >= lower_date,
-			Node.created <= upper_date
-		)
-	elif date_filter == 'updated':
-		node_query = node_query.filter(
-			Node.updated >= lower_date,
-			Node.updated <= upper_date
-		)
+		# Filter MNC
+		if mnc != "0":
+			node_query = node_query.filter(
+				model.mnc == mnc
+			)
 
-	results = node_query.all()
+		return node_query.all()
+
+	def get_node_location(node):
+		locations = NodeLocation.query.filter(
+			NodeLocation.mcc == node.mcc,
+			NodeLocation.mnc == node.mnc,
+			NodeLocation.node_id == node.node_id
+		).all()
+
+		# No location found
+		if len(locations) == 0:
+			return 0, node.lat, node.lng
+		elif len(locations) == 1:
+			location = locations[0]
+			return location.user_id, location.lat, location.lng
+		else:
+			final_location = locations[0]
+
+			for row in locations:
+				if row.time_created > final_location.time_created:
+					final_location = row
+
+			return final_location.user_id, final_location.lat, final_location.lng
 
 	def get_sectors_for_node(mcc, mnc, node_id):
 		sectors_query = db.session.query(Sector).filter(
@@ -200,17 +222,62 @@ def api_get_map_area():
 
 		return sect_dict
 
-	node_list = [{
-		'mcc': row.mcc,
-		'mnc': row.mnc,
-		'node_id': row.node_id,
-		'lat': float(row.lat),
-		'lng': float(row.lng),
-		'created': row.created,
-		'updated': row.updated,
-		'samples': row.samples,
-		'sectors': get_sectors_for_node(row.mcc, row.mnc, row.node_id)
-	} for row in results]
+	# Query all node IDs in an area
+	mls_results = get_nodes_for_area(Node)
+	mappr_results = get_nodes_for_area(NodeLocation)
+	results = mls_results + mappr_results
+
+	# Get list of unique node identifiers in map area
+	nodes = []
+	for row in results:
+		iden = str(row.mcc) + '-' + str(row.mnc) + '-' + str(row.node_id)
+		if iden not in nodes:
+			nodes.append(iden)
+
+	# Lookup all information for nodes
+	node_list = []
+	for iden in nodes:
+		idenspl = iden.split('-')
+		node_query = db.session.query(Node).filter(
+			Node.mcc == idenspl[0],
+			Node.mnc == idenspl[1],
+			Node.node_id == idenspl[2]
+		)
+
+		results = filter_query(node_query)
+
+		if len(results) == 0:
+			print(idenspl)
+			print(node_query)
+			continue
+
+		row = results[0]
+
+		# If user wants to see MLS locations, don't query NodeLocation model
+		if show_mappr:
+			is_located, lat, lng = get_node_location(row)
+		else:
+			is_located = 0
+			lat = row.lat
+			lng = row.lng
+
+		# If user doesn't want to see MLS locations, then, dont...
+		if not show_mls:
+			if is_located == 0:
+				continue
+
+		node_list.append({
+			'mcc': row.mcc,
+			'mnc': row.mnc,
+			'node_id': row.node_id,
+			'lat': float(lat),
+			'lng': float(lng),
+			'user_id': is_located,
+			'created': row.created,
+			'updated': row.updated,
+			'samples': row.samples,
+			'sectors': get_sectors_for_node(row.mcc, row.mnc, row.node_id)
+		})
 
 	return resp(node_list)
 
@@ -231,7 +298,8 @@ def api_get_sector_list():
 	if not mcc:
 		resp({}, error='Cannot process this request')
 
-	sector_query = db.engine.execute(text('SELECT DISTINCT(sector_id), mnc FROM sectors WHERE mnc in (SELECT DISTINCT(mnc) as mnc FROM sectors) ORDER BY mnc, sector_id'))
+	sector_query = db.engine.execute(text(
+		'SELECT DISTINCT(sector_id), mnc FROM sectors WHERE mnc in (SELECT DISTINCT(mnc) as mnc FROM sectors) ORDER BY mnc, sector_id'))
 
 	results = {}
 	for row in sector_query:
