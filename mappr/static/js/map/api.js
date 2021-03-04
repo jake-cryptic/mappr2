@@ -144,6 +144,7 @@ let _api = {
 			});
 
 			// Get any pci constraints
+			// TODO: Split PCI list at comma or space
 			if ($("#pci_filter_list").val().length !== 0) {
 				data['pci'] = $('#pci_filter_list').val();
 			}
@@ -158,6 +159,7 @@ let _api = {
 			// What nodes does the user want to see?
 			data['show_mls'] = $('#node_toggle_mls').is(':checked');
 			data['show_mappr'] = $('#node_toggle_mappr').is(':checked');
+			data['show_low_accuracy'] = $('#node_toggle_low_accuracy').is(':checked');
 
 			// Add map bounds and send request
 			return Object.assign(

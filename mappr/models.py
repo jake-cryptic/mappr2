@@ -20,7 +20,7 @@ class User(UserMixin, db.Model):
 	active = db.Column(db.SmallInteger, nullable=False, default=0)
 	account_type = db.Column(db.SmallInteger, nullable=False, default=0)
 
-	bookmarks = db.relationship("Bookmark")
+	bookmarks = db.relationship("Bookmark", back_populates='user')
 	locations = db.relationship("NodeLocation", back_populates='user')
 
 	@property
@@ -139,6 +139,7 @@ class Bookmark(db.Model):
 
 	id = db.Column(Integer, Sequence('bookmark_id_seq'), primary_key=True)
 	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+	user = db.relationship('User', back_populates='bookmarks')
 
 	mcc = db.Column(SmallInteger, nullable=False)
 	mnc = db.Column(SmallInteger, nullable=False)

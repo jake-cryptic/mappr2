@@ -44,6 +44,8 @@ def create_app():
 
 	@app.after_request
 	def apply_headers(response):
+		response.headers["Server"] = "Mappr2"
+
 		if not request.path.startswith('/static/') and not request.path.startswith('/api/'):
 			# TODO: Change 'Feature-Policy' to 'Permissions-Policy' soon
 			response.headers["Feature-Policy"] = "fullscreen 'self'; geolocation 'self'; microphone 'none'; camera 'none'"

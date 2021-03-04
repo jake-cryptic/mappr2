@@ -525,7 +525,8 @@ let _map = {
 		}
 
 		let dates = "<div class='mb-2'><strong>Created: </strong>" + getDateTimeString(point.created) + "<br />";
-			dates += "<strong>Updated: </strong>" + getDateTimeString(point.updated) + "</div>";
+			dates += "<strong>Updated: </strong>" + getDateTimeString(point.updated) + "<br />";
+			dates += "<strong>Samples: </strong>" + point.samples + "</div>";
 
 		t += dates;
 

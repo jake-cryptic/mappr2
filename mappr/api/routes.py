@@ -1,6 +1,7 @@
-from flask import Blueprint, request, abort, jsonify, session
+from flask import Blueprint, request, abort, session
 from flask_login import current_user, login_required
 from sqlalchemy import text
+from ..decorators import internally_referred
 from ..functions import resp
 from ..models import db, Node, Sector, Bookmark, NodeLocation
 
@@ -129,6 +130,7 @@ def api_lookup_node():
 
 @api_bp.route('/map', methods=['GET'])
 @login_required
+@internally_referred
 def api_get_map_area():
 	if not check_request_args(request.args, required_arguments['map']):
 		return abort(400)
@@ -166,9 +168,16 @@ def api_get_map_area():
 	# Pin type filters
 	show_mls = convert_bool(request.args.get('show_mls'))
 	show_mappr = convert_bool(request.args.get('show_mappr'))
+	show_low_accuracy = convert_bool(request.args.get('show_low_accuracy'))
 
 	# Define functions for use
 	def filter_query(query):
+		# Filter by samples
+		if not show_low_accuracy:
+			query = query.filter(
+				Node.samples > 50
+			)
+
 		# Filter by date
 		if date_filter == 'created':
 			query = query.filter(
