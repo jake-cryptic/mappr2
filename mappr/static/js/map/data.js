@@ -18,36 +18,82 @@ let _data = {
 				"short": "O2",
 				"website": "https://o2.co.uk",
 				"backgroundColor": "#0019A5",
-				"textColor": "#fff"
+				"textColor": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					let ret = '';
+					if (findItem(sectorId, [115, 125, 135, 145, 155, 165])) ret += (enb >= 500000 ? "1 " : "40C1 ");
+					if (findItem(sectorId, [114, 124, 134, 144, 154, 164])) ret += (enb >= 500000 ? "3 " : "1 ");
+					if (findItem(sectorId, [110, 120, 130, 140, 150, 160])) ret += "20 ";
+					if (findItem(sectorId, [112, 122, 132])) ret += "8 ";
+					if (findItem(sectorId, [116, 126, 136, 146, 156, 166])) ret += (enb >= 500000 ? "40C1 " : "3 ");
+					if (findItem(sectorId, [117, 127, 137, 147, 157, 167])) ret += "40C2";
+					return ret;
+				}
 			},
 			"15": {
 				"name": "Vodafone-UK",
 				"short": "Vodafone",
 				"website": "https://www.vodafone.co.uk/",
 				"background": "#e60000",
-				"text": "#fff"
+				"text": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					let ret = '';
+					if (findItem(sectorId, [15, 25, 35, 45, 55, 65])) ret += (enb >= 500000 ? "1 " : "?");
+					if (findItem(sectorId, [14, 24, 34, 44, 54, 64])) ret += "1 ";
+					if (findItem(sectorId, [16, 26, 36, 46, 56, 66])) ret += "3 ";
+					if (findItem(sectorId, [18, 28, 38, 48, 58, 68])) ret += "7 ";
+					if (findItem(sectorId, [12, 22, 32])) ret += "8 ";
+					if (findItem(sectorId, [10, 20, 30, 40, 50, 60])) ret += "20 ";
+					if (findItem(sectorId, [19, 29, 39, 49, 59, 69])) ret += "38";
+					return ret;
+				}
 			},
 			"20": {
 				"name": "Three-UK",
 				"short": "Three",
 				"website": "http://www.three.co.uk/",
 				"background": "#000",
-				"text": "#fff"
+				"text": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					let ret = '';
+					if (findItem(sectorId, [71, 72, 73, 74, 75, 76])) ret += "1 ";
+					if (findItem(sectorId, [0, 1, 2, 3, 4, 5])) ret += "3 ";
+					if (findItem(sectorId, [16])) ret += "3SC ";
+					if (findItem(sectorId, [6, 7, 8])) ret += "20";
+					return ret;
+				}
 			},
 			"30": {
 				"name": "Everything Everywhere",
 				"short": "EE",
 				"website": "https://ee.co.uk",
 				"background": "#007b85",
-				"text": "#fff"
+				"text": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					let ret = '';
+					if (findItem(sectorId, [18, 19, 20])) ret += "1 ";
+					if (findItem(sectorId, [0, 1, 2])) ret += "3P ";
+					if (findItem(sectorId, [3, 4, 5])) ret += "3S ";
+					if (findItem(sectorId, [6, 7, 8])) ret += "7P ";
+					if (findItem(sectorId, [9, 10, 11])) ret += "7S ";
+					if (findItem(sectorId, [15, 16, 17])) ret += "7T ";
+					if (findItem(sectorId, [12, 13, 14])) ret += "20";
+					return ret;
+				}
 			},
 			"55": {
 				"background": "#000",
-				"text": "#fff"
+				"text": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					return '';
+				}
 			},
 			"58": {
 				"background": "#000",
-				"text": "#fff"
+				"text": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					return '';
+				}
 			}
 		}
 	},
@@ -62,21 +108,30 @@ let _data = {
 				"short": "Telenor",
 				"website": "https://www.tt-network.dk/",
 				"background": "#663989",
-				"text": "#fff"
+				"text": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					return '';
+				}
 			},
 			"6":{
 				"name": "Hi3G Denmark",
 				"short": "3",
 				"website": "https://www.3.dk/",
 				"background": "#f37423",
-				"text": "#fff"
+				"text": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					return '';
+				}
 			},
 			"20":{
 				"name": "TT-Netværket (Telia)",
 				"short": "Telia",
 				"website": "https://www.tt-network.dk/",
 				"background": "#663989",
-				"text": "#fff"
+				"text": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					return '';
+				}
 			}
 		}
 	},
@@ -91,21 +146,30 @@ let _data = {
 				"short": "Telekom",
 				"website": "https://telekom.de/",
 				"background": "#ff0090",
-				"text": "#fff"
+				"text": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					return '';
+				}
 			},
 			"2": {
 				"name": "Vodafone-DE",
 				"short": "Vodafone",
 				"website": "https://www.vodafone.de/",
 				"background": "#e60000",
-				"text": "#fff"
+				"text": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					return '';
+				}
 			},
 			"3": {
 				"name": "O2-DE",
 				"short": "O2",
 				"website": "https://o2.de",
 				"backgroundColor": "#004080",
-				"textColor": "#fff"
+				"textColor": "#fff",
+				"sectorInfo": function(enb, sectorId) {
+					return '';
+				}
 			}
 		}
 	},
@@ -117,7 +181,14 @@ let _data = {
 		"providers": {
 			"1":{
 				"name": "Cubacel",
-				"short": "Cubacel"
+				"short": "Cubacel",
+				"website": "http://www.etecsa.cu/",
+				"sectorInfo": function(enb, sectorId) {
+					let ret = '';
+					if (findItem(sectorId, [1, 2, 3])) ret += "3C1 ";
+					if (findItem(sectorId, [4, 5, 6])) ret += "3C2 ";
+					return ret;
+				}
 			}
 		}
 	}

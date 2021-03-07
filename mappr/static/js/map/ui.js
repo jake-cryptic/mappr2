@@ -34,7 +34,7 @@ let _ui = {
 		let mncs = Object.keys(thisMcc);
 		$d = $('#select_mnc');
 		$d.empty().append(
-			$('<option/>',{'value':0}).text('All')
+			$('<option/>',{'value':0, 'selected':true}).text('All')
 		);
 
 		for (let i = 0; i < mncs.length; i++) {
@@ -42,7 +42,6 @@ let _ui = {
 			let data = {
 				'value':mncs[i]
 			};
-			if (i === 0) data['selected'] = true;
 
 			$d.append(
 				$('<option/>', data).text(provider['name'])

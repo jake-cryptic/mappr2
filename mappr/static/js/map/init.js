@@ -42,6 +42,7 @@ let _app = {
 
 	_changeMcc: function(newMcc){
 		_app.mcc = parseInt(newMcc);
+		_app.mnc = 0;
 		_ui.populateMncSelector(_app.mcc);
 		_ui.popToastMessage('Mobile Country Code changed to: ' + newMcc, 1000, true,'info');
 		_api.data.getMccSectors();
