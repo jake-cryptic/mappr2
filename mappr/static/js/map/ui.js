@@ -7,8 +7,48 @@ let _ui = {
 	current_modal: null,
 
 	init:function(){
+		_ui.populateSelectors();
 		_ui.controls.init();
 		console.log('[UI]-> Initialised');
+	},
+
+	populateSelectors: function (){
+		let mccs = Object.keys(_data);
+		$d = $('#select_mcc');
+		$d.empty();
+
+		for (let i = 0; i < mccs.length; i++) {
+			let country = _data[mccs[i]];
+			let data = {
+				'value':mccs[i]
+			};
+			if (mccs[i] === '234') data['selected'] = true;
+
+			$d.append(
+				$('<option/>', data).text('[' + mccs[i] + '] ' + country['country_name'])
+			);
+		}
+	},
+
+	populateMncSelector: function (mcc){
+		let thisMcc = _data[mcc]['providers'];
+		let mncs = Object.keys(thisMcc);
+		$d = $('#select_mnc');
+		$d.empty().append(
+			$('<select/>',{'value':0}).text('All')
+		);
+
+		for (let i = 0; i < mncs.length; i++) {
+			let provider = thisMcc[mncs[i]];
+			let data = {
+				'value':mncs[i]
+			};
+			if (i === 0) data['selected'] = true;
+
+			$d.append(
+				$('<option/>', data).text(provider['name'])
+			);
+		}
 	},
 
 	controls: {
