@@ -94,7 +94,7 @@ let _data = {
 				"text": "#fff"
 			},
 			"2": {
-				"name": "Vodafone-UK",
+				"name": "Vodafone-DE",
 				"short": "Vodafone",
 				"website": "https://www.vodafone.de/",
 				"background": "#e60000",

@@ -7,7 +7,6 @@ let _ui = {
 	current_modal: null,
 
 	init:function(){
-		_ui.populateSelectors();
 		_ui.controls.init();
 		console.log('[UI]-> Initialised');
 	},
@@ -22,7 +21,7 @@ let _ui = {
 			let data = {
 				'value':mccs[i]
 			};
-			if (mccs[i] === '234') data['selected'] = true;
+			if (mccs[i] === _app.mcc) data['selected'] = true;
 
 			$d.append(
 				$('<option/>', data).text('[' + mccs[i] + '] ' + country['country_name'])
@@ -35,7 +34,7 @@ let _ui = {
 		let mncs = Object.keys(thisMcc);
 		$d = $('#select_mnc');
 		$d.empty().append(
-			$('<select/>',{'value':0}).text('All')
+			$('<option/>',{'value':0}).text('All')
 		);
 
 		for (let i = 0; i < mncs.length; i++) {
@@ -129,6 +128,10 @@ let _ui = {
 					"<i class='fas fa-bread-slice'></i> Disable Toast Alerts" :
 					"<i class='fas fa-bread-slice'></i> Enable Toast Alerts"
 			);
+		},
+
+		setMapSelector: function() {
+			$('#map_name').val(_map.state.map_id);
 		},
 
 		setRatSelector: function() {
@@ -243,9 +246,13 @@ let _ui = {
 	},
 
 	updateUiOnLoad: function (){
+		_ui.populateSelectors();
+		_ui.populateMncSelector(_app.mcc);
+
 		_ui.controls.setNodeLoadingState();
 		_ui.controls.setPolygonPauseState();
 
+		_ui.controls.setMapSelector();
 		_ui.controls.setRatSelector();
 		_ui.controls.setMccSelector();
 		_ui.controls.setMncSelector();
