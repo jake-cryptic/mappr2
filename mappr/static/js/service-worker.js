@@ -19,7 +19,6 @@ let appLibraries = [
 	'https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/2.0.0/Control.FullScreen.min.css',
 	'https://unpkg.com/beautifymarker@1.0.9/leaflet-beautify-marker-icon.js',
 	'https://unpkg.com/beautifymarker@1.0.9/leaflet-beautify-marker-icon.css',
-
 	'https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet/3.0.1/esri-leaflet.min.js',
 
 	// Uppy
@@ -28,6 +27,9 @@ let appLibraries = [
 
 	// jQuery
 	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js',
+
+	// Chroma
+	'https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js',
 
 	// Papa
 	'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js'

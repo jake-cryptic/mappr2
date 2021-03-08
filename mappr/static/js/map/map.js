@@ -28,6 +28,8 @@ let _map = {
 		popupLinks: true,
 		popupOptions: true,
 
+		boringColours:false,
+
 		markerCluster: false
 	},
 
@@ -435,11 +437,15 @@ let _map = {
 	},
 
 	getSectorColor: function (mnc, sector) {
-		//let sectorName = v.sData[mnc][sector];
-		let sectorId = mnc.toString(); // + sectorName;
+		let sectorId = mnc.toString();
+
+		if (!_map.settings.boringColours) {
+			let sectorName = _data[_app.mcc]['providers'][mnc]['sectorInfo'](0, sector);
+			sectorId+= sectorName;
+		}
 		let sectorMD5 = MD5(sectorId);
 
-		return '#' + sectorMD5.substring(0, 6);
+		return chroma('#' + sectorMD5.substring(0, 6)).darken().hex();
 	},
 
 	addData:function (data){

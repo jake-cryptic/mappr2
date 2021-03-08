@@ -168,10 +168,17 @@ let _ui = {
 
 		updateSectorList: function(){
 			let $list = $("#sector_list");
+			let thisMcc = _data[_app.mcc]['providers'];
+			console.log(thisMcc);
 			$list.empty();
 
 			let mncs = Object.keys(_api.data.current_mcc);
 			for (let i = 0, l = mncs.length; i < l; i++) {
+				if (Object.keys(thisMcc).indexOf(mncs[i]) === -1) {
+					console.log(mncs[i]);
+					continue;
+				}
+
 				let mncSectors = _api.data.current_mcc[mncs[i]];
 
 				// If an mnc is selected, don't show other mnc sectors
@@ -208,7 +215,7 @@ let _ui = {
 				$list.append(
 					$("<h4/>",{
 						'class':'h5'
-					}).text('Sector IDs for mnc: ' + _data[_app.mcc]['providers'][mncs[i]]['name']),
+					}).text('Sector IDs for: ' + thisMcc[mncs[i]]['short']),
 					$mnc,
 					$("<hr/>")
 				);

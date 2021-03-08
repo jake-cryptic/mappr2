@@ -115,7 +115,7 @@ let _data = {
 				"background": "#663989",
 				"text": "#fff",
 				"sectorInfo": function(enb, sectorId) {
-					return '';
+					return sectorId.length + ' sectors';
 				}
 			},
 			"6":{
@@ -125,7 +125,7 @@ let _data = {
 				"background": "#f37423",
 				"text": "#fff",
 				"sectorInfo": function(enb, sectorId) {
-					return '';
+					return sectorId.length + ' sectors';
 				}
 			},
 			"20":{
@@ -135,7 +135,7 @@ let _data = {
 				"background": "#663989",
 				"text": "#fff",
 				"sectorInfo": function(enb, sectorId) {
-					return '';
+					return sectorId.length + ' sectors';
 				}
 			}
 		}

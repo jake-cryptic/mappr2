@@ -339,8 +339,9 @@ def api_get_sector_list():
 	if not mcc:
 		resp({}, error='Cannot process this request')
 
-	sector_query = db.engine.execute(text(
-		'SELECT DISTINCT(sector_id), mnc FROM sectors WHERE mnc in (SELECT DISTINCT(mnc) as mnc FROM sectors) ORDER BY mnc, sector_id'))
+	sector_query = db.engine.execute(
+		text('SELECT DISTINCT(sector_id), mnc FROM sectors WHERE mnc in (SELECT DISTINCT(mnc) as mnc FROM sectors) AND mcc=:mcc ORDER BY mnc, sector_id').params(mcc = mcc)
+	)
 
 	results = {}
 	for row in sector_query:

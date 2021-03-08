@@ -57,6 +57,7 @@ let _app = {
 	_changeMnc: function(newMnc) {
 		_app.mnc = parseInt(newMnc);
 		_ui.popToastMessage('Mobile Network Code changed to: ' + newMnc, 1000, true,'info');
+		_ui.controls.updateSectorList();
 		_history.updateUrl();
 		_map.reloadMap();
 	}
