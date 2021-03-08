@@ -220,7 +220,7 @@ def api_get_map_area():
 				model.mnc == mnc
 			)
 
-		return node_query.all()
+		return node_query.limit(1024).all()
 
 	def get_node_location(node):
 		locations = NodeLocation.query.filter(
@@ -316,6 +316,8 @@ def api_get_map_area():
 			'samples': row.samples,
 			'sectors': get_sectors_for_node(row.mcc, row.mnc, row.node_id)
 		})
+
+	# print('Query %s MLS, %s Mappr, %s total, %s filtered, %s final' % (len(mls_results), len(mappr_results), len(results), len(nodes), len(node_list)))
 
 	return resp(node_list)
 

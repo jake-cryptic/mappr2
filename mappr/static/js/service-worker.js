@@ -3,6 +3,9 @@
 let version = 'v1:';
 let appName = "mappr2"
 let appLibraries = [
+	// Font-Awesome
+	'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css',
+
 	// Bootstrap
 	'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta2/js/bootstrap.min.js',
 	'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta2/css/bootstrap.min.css',
@@ -17,6 +20,12 @@ let appLibraries = [
 	'https://unpkg.com/beautifymarker@1.0.9/leaflet-beautify-marker-icon.js',
 	'https://unpkg.com/beautifymarker@1.0.9/leaflet-beautify-marker-icon.css',
 
+	'https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet/3.0.1/esri-leaflet.min.js',
+
+	// Uppy
+	'https://cdnjs.cloudflare.com/ajax/libs/uppy/1.26.0/uppy.min.js',
+	'https://cdnjs.cloudflare.com/ajax/libs/uppy/1.26.0/uppy.min.css',
+
 	// jQuery
 	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js',
 
@@ -24,15 +33,12 @@ let appLibraries = [
 	'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js'
 ];
 
-let appData = [
-	'/static/data/234.json'
-];
-
 let appStatic = [
 	'/static/css/styles.css',
 	'/static/js/map/api.js',
 	'/static/js/map/bookmarks.js',
 	'/static/js/map/csv.js',
+	'/static/js/map/data.js',
 	'/static/js/map/history.js',
 	'/static/js/map/init.js',
 	'/static/js/map/map.js',
@@ -41,7 +47,7 @@ let appStatic = [
 	'/static/js/map/xyz.js'
 ];
 
-let appAssets = [].concat(appLibraries, appStatic, appData);
+let appAssets = [].concat(appLibraries, appStatic);
 
 self.addEventListener("install", function (event) {
 	self.skipWaiting();

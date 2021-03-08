@@ -5,7 +5,7 @@
 let _api = {
 
 	currentRequest: null,
-	timeout:15000,
+	timeout:30000,
 
 	init:function (){
 		_api.prepareAjax();

@@ -71,6 +71,7 @@ let _data = {
 				"text": "#fff",
 				"sectorInfo": function(enb, sectorId) {
 					let ret = '';
+					if (findItem(sectorId, [21, 22, 23, 24])) ret += "? ";
 					if (findItem(sectorId, [18, 19, 20])) ret += "1 ";
 					if (findItem(sectorId, [0, 1, 2])) ret += "3P ";
 					if (findItem(sectorId, [3, 4, 5])) ret += "3S ";
@@ -82,17 +83,21 @@ let _data = {
 				}
 			},
 			"55": {
+				"name":"Sure",
+				"short":"Sure",
 				"background": "#000",
 				"text": "#fff",
 				"sectorInfo": function(enb, sectorId) {
-					return '';
+					return sectorId.length + ' sectors';
 				}
 			},
 			"58": {
+				"name":"Manx Telecom",
+				"short":"Manx",
 				"background": "#000",
 				"text": "#fff",
 				"sectorInfo": function(enb, sectorId) {
-					return '';
+					return sectorId.length + ' sectors';
 				}
 			}
 		}
@@ -148,7 +153,7 @@ let _data = {
 				"background": "#ff0090",
 				"text": "#fff",
 				"sectorInfo": function(enb, sectorId) {
-					return '';
+					return sectorId.length + ' sectors';
 				}
 			},
 			"2": {
@@ -158,7 +163,16 @@ let _data = {
 				"background": "#e60000",
 				"text": "#fff",
 				"sectorInfo": function(enb, sectorId) {
-					return '';
+					let ret = '';
+					if (findItem(sectorId, [19, 20, 21])) ret += "1 ";
+					if (findItem(sectorId, [8, 9, 10])) ret += "3 ";
+					if (findItem(sectorId, [5, 6, 7])) ret += "7 ";
+					if (findItem(sectorId, [25, 26, 27])) ret += "8 ";
+					if (findItem(sectorId, [1, 2, 3])) ret += "20";
+					if (findItem(sectorId, [31, 32, 33])) ret += "28 ";
+					if (findItem(sectorId, [43, 44, 45])) ret += "38-1 ";
+					if (findItem(sectorId, [151, 152, 153])) ret += "38-2 ";
+					return ret;
 				}
 			},
 			"3": {
@@ -168,7 +182,28 @@ let _data = {
 				"backgroundColor": "#004080",
 				"textColor": "#fff",
 				"sectorInfo": function(enb, sectorId) {
-					return '';
+					let ret = '';
+					let isOpenRan = false;
+					if (findItem(11, 12, 21, 22, 23, 41, 42, 43, 52, 53)) isOpenRan = true;
+
+					ret += isOpenRan ? 'OpenRAN: ' : '';
+
+					if (isOpenRan) {
+						if (findItem(sectorId, [51, 52, 53])) ret += "1 ";
+						if (findItem(sectorId, [41, 42, 43])) ret += "3 ";
+						if (findItem(sectorId, [61, 62, 63])) ret += "7 ";
+						if (findItem(sectorId, [21, 22, 23])) ret += "20 ";
+						if (findItem(sectorId, [11, 12, 13])) ret += "28 ";
+					} else {
+						if (findItem(sectorId, [37, 38, 39, 40])) ret += "1 ";
+						if (findItem(sectorId, [25, 26, 27, 28])) ret += "3 ";
+						if (findItem(sectorId, [13, 14, 15, 16])) ret += "7 ";
+						if (findItem(sectorId, [61, 62, 63])) ret += "8 ";
+						if (findItem(sectorId, [1, 2, 3, 4])) ret += "20 ";
+						if (findItem(sectorId, [49, 50, 51])) ret += "28 ";
+					}
+
+					return ret;
 				}
 			}
 		}

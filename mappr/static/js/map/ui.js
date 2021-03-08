@@ -208,7 +208,7 @@ let _ui = {
 				$list.append(
 					$("<h4/>",{
 						'class':'h5'
-					}).text('Sector IDs for mnc: ' + mncs[i]),
+					}).text('Sector IDs for mnc: ' + _data[_app.mcc]['providers'][mncs[i]]['name']),
 					$mnc,
 					$("<hr/>")
 				);
