@@ -184,7 +184,9 @@ let _data = {
 				"sectorInfo": function(enb, sectorId) {
 					let ret = '';
 					let isOpenRan = false;
-					if (findItem(11, 12, 21, 22, 23, 41, 42, 43, 52, 53)) isOpenRan = true;
+					if (findItem(sectorId, [11, 12, 21, 22, 23, 41, 42, 43, 52, 53])) {
+						isOpenRan = true;
+					}
 
 					ret += isOpenRan ? 'OpenRAN: ' : '';
 

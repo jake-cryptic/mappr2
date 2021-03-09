@@ -29,6 +29,7 @@ let _map = {
 		popupOptions: true,
 
 		boringColours:false,
+		colorLightness:'keep',
 
 		markerCluster: false
 	},
@@ -387,7 +388,7 @@ let _map = {
 
 		if (map && maps[map] && map !== "osm" && map !== "otm") {
 			attr = _map.attr.g;
-			server = 'https://mt1.google.com/vt/lyrs=' + maps[map] + '&x={x}&y={y}&z={z}';
+			server = 'https://mt1.google.com/vt/lyrs=' + maps[map] + '&x={x}&y={y}&z={z}&hl=en';
 		}
 
 		if (map === "otm") {
@@ -436,16 +437,22 @@ let _map = {
 		});
 	},
 
-	getSectorColor: function (mnc, sector) {
+	getSectorColor: function (mnc, enb,sector) {
 		let sectorId = mnc.toString();
 
 		if (!_map.settings.boringColours) {
-			let sectorName = _data[_app.mcc]['providers'][mnc]['sectorInfo'](0, sector);
+			let sectorName = _data[_app.mcc]['providers'][mnc]['sectorInfo'](enb, [sector]);
 			sectorId+= sectorName;
 		}
 		let sectorMD5 = MD5(sectorId);
+		let sectorColor = chroma('#' + sectorMD5.substring(0, 6));
+		if (_map.settings.colorLightness === 'brighten') {
+			sectorColor = sectorColor.brighten();
+		} else if (_map.settings.colorLightness === 'darken') {
+			sectorColor = sectorColor.darken();
+		}
 
-		return chroma('#' + sectorMD5.substring(0, 6)).darken().hex();
+		return sectorColor.hex();
 	},
 
 	addData:function (data){
@@ -526,7 +533,7 @@ let _map = {
 		for (let s in point.sectors) {
 			let sector = point.sectors[s];
 
-			let color = _map.getSectorColor(point.mnc, s);
+			let color = _map.getSectorColor(point.mnc, point.enb, s);
 			let dates = "Created: " + getDateStringUtc(sector[2]) + "\n";
 				dates += "Updated: " + getDateStringUtc(sector[3]) + "\n";
 
