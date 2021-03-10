@@ -35,15 +35,22 @@
 					</a>
 				</li>
 				{% endif %}
-				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('statistics_bp.network_stats') }}">
-						<i class="fas fa-broadcast-tower"></i> Network Statistics
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('statistics_bp.user_stats') }}">
-						<i class="fas fa-chart-area"></i> User Statistics
-					</a>
+				<li class="nav-item dropdown">
+          			<a class="nav-link dropdown-toggle" href="#" id="information_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            			<i class="fas fa-chart-area"></i> Statistics
+          			</a>
+					<ul class="dropdown-menu" aria-labelledby="information_dropdown">
+						<li>
+							<a class="dropdown-item" href="{{ url_for('statistics_bp.network_stats') }}">
+								<i class="fas fa-broadcast-tower"></i> Networks
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="{{ url_for('statistics_bp.user_stats') }}">
+								<i class="fas fa-user-alt"></i> Users
+							</a>
+						</li>
+					</ul>
 				</li>
 				<li class="nav-item dropdown">
           			<a class="nav-link dropdown-toggle" href="#" id="information_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

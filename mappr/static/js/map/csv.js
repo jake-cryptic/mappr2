@@ -88,11 +88,14 @@ let _csv = {
 		}
 
 		function createPopupText(d) {
-			let str = '';
+			let str = '<table class="table table-striped table-bordered table-sm">';
 			let keys = Object.keys(d);
 			for (let i = 0; i < keys.length; i++) {
-				str += keys[i] + ': ' + d[keys[i]] + '<br />';
+				let value = d[keys[i]];
+				if (value === null) continue;
+				str += '<tr><td><strong>' + keys[i] + '</strong></td><td>' + d[keys[i]] + '</td></tr>';
 			}
+			str += '</table>';
 			return str;
 		}
 
@@ -105,7 +108,7 @@ let _csv = {
 	},
 
 	parseComplete: function(result, par) {
-		console.log("done")
+		console.log("[CSV]-> Done parsing file")
 	},
 
 	parseFile:function(f) {

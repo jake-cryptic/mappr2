@@ -267,6 +267,7 @@ let _ui = {
 		results.forEach(function(r){
 			$html.append(
 				$('<tr/>',{
+					'class':'cursor-pointer',
 					'data-lat':r.lat,
 					'data-lng':r.lng
 				}).on('click enter', _map.goToHereData).append(
@@ -336,6 +337,7 @@ let _ui = {
 			results.forEach(function(r){
 				$html.append(
 					$('<tr/>',{
+						'class':'cursor-pointer',
 						'data-lat':r.lat,
 						'data-lng':r.lng,
 						'data-zoom': 17

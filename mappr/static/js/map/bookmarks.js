@@ -9,6 +9,7 @@ let _bookmarks = {
 	init:function() {
 		_bookmarks.reloadUi();
 		_bookmarks.assignEvents();
+		console.log('[Bookmarks]-> Initialised');
 	},
 
 	assignEvents:function(){

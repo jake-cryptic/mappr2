@@ -68,7 +68,8 @@ let _xyz = {
 
 	init: function(){
 		_xyz.append_html();
-		$('#cm_tile_add').on('click enter', _xyz.cm.evt)
+		$('#cm_tile_add').on('click enter', _xyz.cm.evt);
+		console.log('[XYZ]-> Initialised');
 	},
 
 	append_html:function(){

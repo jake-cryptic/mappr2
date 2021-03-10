@@ -38,6 +38,7 @@ let _table = {
 
 		$r.append(
 			$("<tr/>",{
+				"class":"bb",
 				"data-lat":point.lat,
 				"data-lng":point.lng
 			}).on("click enter",_map.goToHereData).append(

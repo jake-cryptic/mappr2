@@ -79,11 +79,15 @@ select {
 	right: 0;
 }
 
+.cursor-pointer {
+	cursor: pointer;
+}
+
 table {
 	width: 100%;
 }
 
-table tr {
+table tr.bb {
 	cursor: pointer;
 	border-bottom: 1px solid #000;
 }
