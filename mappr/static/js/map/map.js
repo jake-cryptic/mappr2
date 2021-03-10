@@ -36,7 +36,7 @@ let _map = {
 
 	attr: {
 		g: '<a href="https://maps.google.co.uk">Google Maps</a>',
-		o: '<a href="http://openstreetmap.org">OpenStreetMap</a>'
+		o: '<a href="https://openstreetmap.org">OpenStreetMap</a>'
 	},
 
 	icons: {
@@ -81,6 +81,17 @@ let _map = {
 				textColor:'#fff'
 			});
 			_map.icons.ico.located = biLocated;
+
+			let biCsv = L.BeautifyIcon.icon({
+				icon:'far fa-circle icon-class',
+				shadowSize: [0,0],
+				iconShape:'marker',
+				borderColor:'#fff',
+				borderWidth:1,
+				backgroundColor:'#c00',
+				textColor:'#fff'
+			});
+			_map.icons.ico.csv = biCsv;
 		}
 
 	},
@@ -127,7 +138,6 @@ let _map = {
 			});
 		},
 
-		// TODO: Consider moving this to UI.js
 		toggleNodeLoading:function(){
 			_map.state.isNodeLoadingPaused = !_map.state.isNodeLoadingPaused;
 			_ui.controls.setNodeLoadingState();

@@ -55,7 +55,7 @@ let _csv = {
 
 	parseStep: function(row, parser) {
 		let r = row.data;
-		console.log(row.data);
+		//console.log(row.data);
 
 		let point = {
 			lat: r.lat || r.latitude || r.y || 0,
@@ -86,6 +86,19 @@ let _csv = {
 				className: 'marker_label'
 			});
 		}
+
+		function createPopupText(d) {
+			let str = '';
+			let keys = Object.keys(d);
+			for (let i = 0; i < keys.length; i++) {
+				str += keys[i] + ': ' + d[keys[i]] + '<br />';
+			}
+			return str;
+		}
+
+		m.bindPopup(
+			createPopupText(r), _map.items.markerPopupOptions
+		);
 
 		_csv.dataPoints.push(m);
 		_map.state.map.addLayer(_csv.dataPoints[_csv.dataPoints.length-1]);

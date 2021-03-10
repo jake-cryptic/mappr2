@@ -5,6 +5,7 @@
 let _ui = {
 
 	current_modal: null,
+	current_title: 'Map | Mappr2',
 
 	init:function(){
 		_ui.controls.init();
@@ -34,7 +35,7 @@ let _ui = {
 		let mncs = Object.keys(thisMcc);
 		$d = $('#select_mnc');
 		$d.empty().append(
-			$('<option/>',{'value':0, 'selected':true}).text('All')
+			$('<option/>',{'value':0, 'selected':true}).text('All Providers')
 		);
 
 		for (let i = 0; i < mncs.length; i++) {
@@ -44,7 +45,7 @@ let _ui = {
 			};
 
 			$d.append(
-				$('<option/>', data).text(provider['name'])
+				$('<option/>', data).text('[' + mncs[i] + '] ' + provider['short'])
 			);
 		}
 	},
@@ -83,8 +84,6 @@ let _ui = {
 					_ui.controls.osmQuery();
 				}
 			});
-
-			console.log('[UI]-> Initialised');
 		},
 
 		filterReload: function(){
@@ -169,13 +168,11 @@ let _ui = {
 		updateSectorList: function(){
 			let $list = $("#sector_list");
 			let thisMcc = _data[_app.mcc]['providers'];
-			console.log(thisMcc);
 			$list.empty();
 
 			let mncs = Object.keys(_api.data.current_mcc);
 			for (let i = 0, l = mncs.length; i < l; i++) {
 				if (Object.keys(thisMcc).indexOf(mncs[i]) === -1) {
-					console.log(mncs[i]);
 					continue;
 				}
 
@@ -470,10 +467,8 @@ let _ui = {
 
 		// Delete the toasts once they have served their purpose
 		setTimeout(function() {
-			console.log('removing',txt);
 			let tt = $('#toast_alerts').find('.toast:not(.pendingremoval)').first();
 			tt.addClass('pendingremoval').fadeOut(500);
-			console.log(tt.text());
 			setTimeout(function () {
 				tt.remove();
 			}, 500);
