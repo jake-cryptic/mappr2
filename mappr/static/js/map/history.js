@@ -63,8 +63,6 @@ let _history = {
 			if (obj.lat && obj.lng) _map.state.defaultCoords = [obj.lat, obj.lng];
 			if (obj.zoom) _map.state.zoom = parseInt(obj.zoom);
 			if (obj.map) _map.state.map_id = obj.map;
-
-			_ui.updateUiOnLoad();
 		}
 
 		if (cb) cb();

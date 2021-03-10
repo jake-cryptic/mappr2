@@ -18,7 +18,7 @@ let _app = {
 			_ui.init();
 			_table.init();
 			_api.init();
-			document.title = "Mappr2 | Map";
+			document.title = _ui.current_title;
 		});
 
 		_csv.init();
@@ -44,6 +44,7 @@ let _app = {
 		_app.mcc = parseInt(newMcc);
 		_app.mnc = 0;
 		_ui.populateMncSelector(_app.mcc);
+		_ui.updateTitle();
 		_ui.popToastMessage('Mobile Country Code changed to: ' + newMcc, 1000, true,'info');
 		_api.data.getMccSectors();
 		_history.updateUrl();
@@ -56,6 +57,7 @@ let _app = {
 
 	_changeMnc: function(newMnc) {
 		_app.mnc = parseInt(newMnc);
+		_ui.updateTitle();
 		_ui.popToastMessage('Mobile Network Code changed to: ' + newMnc, 1000, true,'info');
 		_ui.controls.updateSectorList();
 		_history.updateUrl();

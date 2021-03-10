@@ -195,7 +195,7 @@ let _api = {
 			_table.addData(resp.response);
 			_map.addData(resp.response);
 
-			document.title = 'Mappr2 | Map';
+			document.title = _ui.current_title;
 		}
 	},
 

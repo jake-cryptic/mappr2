@@ -5,10 +5,19 @@
 let _ui = {
 
 	current_modal: null,
-	current_title: 'Map | Mappr2',
+	current_title: 'Mappr2 | Map',
 
-	init:function(){
+	init:function() {
+		_ui.populateSelectors();
+		_ui.populateMncSelector(_app.mcc);
+		if (_history.loadedFromParams === true) {
+			_ui.updateUiOnLoad();
+		}
+
+		_ui.updateTitle();
+
 		_ui.controls.init();
+
 		console.log('[UI]-> Initialised');
 	},
 
@@ -22,7 +31,7 @@ let _ui = {
 			let data = {
 				'value':mccs[i]
 			};
-			if (mccs[i] === _app.mcc) data['selected'] = true;
+			if (parseInt(mccs[i]) === _app.mcc) data['selected'] = true;
 
 			$d.append(
 				$('<option/>', data).text('[' + mccs[i] + '] ' + country['country_name'])
@@ -248,10 +257,18 @@ let _ui = {
 		}
 	},
 
-	updateUiOnLoad: function (){
-		_ui.populateSelectors();
-		_ui.populateMncSelector(_app.mcc);
+	updateTitle: function() {
+		let mccData = _data[_app.mcc];
+		let mncName = 'All Providers';
+		if (_app.mnc !== 0) {
+			mncName = mccData['providers'][_app.mnc]['short'];
+		}
+		_ui.current_title = 'Mappr2 | (' + mccData['country_short'] + ') ' + mncName;
 
+		document.title = _ui.current_title;
+	},
+
+	updateUiOnLoad: function() {
 		_ui.controls.setNodeLoadingState();
 		_ui.controls.setPolygonPauseState();
 
