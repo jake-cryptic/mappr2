@@ -189,17 +189,23 @@ let _api = {
 		},
 
 		success:function(resp) {
-			_ui.popToastMessage('Data loaded, processing...', 750, true, 'secondary');
-
 			if (!resp || resp.error) {
 				_ui.popToastMessage(resp.message || 'Unknown API error', 10000, true, 'danger');
 				return;
 			}
 
+			document.title = _ui.current_title;
+
+			let len = resp.response.length || 0;
+			if (len === 0) {
+				_ui.popToastMessage('Map area loaded. No nodes found.', 2000, true, 'danger');
+				return;
+			}
+
+			_ui.popToastMessage('Map area loaded: Showing ' + len + ' nodes', 1500, true, 'success');
+
 			_table.addData(resp.response);
 			_map.addData(resp.response);
-
-			document.title = _ui.current_title;
 		}
 	},
 
