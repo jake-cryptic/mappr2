@@ -21,15 +21,20 @@ let _xyz = {
 
 			"3g2100-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_data/{z}/{x}/{y}.png",
 			"3g2100":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_data/{z}/{x}/{y}.png",
+			"3g2100-1F":O2_TMS_BASE + "v" + (O2_TMS_VER + 1) + "/styles/o2_uk_v" + (O2_TMS_VER + 1) + "_data/{z}/{x}/{y}.png",
+
 			"3g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_datacombined/{z}/{x}/{y}.png",
 
+			"4g-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_lte/{z}/{x}/{y}.png",
 			"4g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_lte/{z}/{x}/{y}.png",
-			"4g-1B":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_lte/{z}/{x}/{y}.png",
+			"4g-1F":O2_TMS_BASE + "v" + (O2_TMS_VER + 1) + "/styles/o2_uk_v" + (O2_TMS_VER + 1) + "_lte/{z}/{x}/{y}.png",
+
 			"VoLTE":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_volte/{z}/{x}/{y}.png",
 			"LTE-M":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_ltem/{z}/{x}/{y}.png",
 
 			"5g-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_5g/{z}/{x}/{y}.png",
-			"5g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_5g/{z}/{x}/{y}.png"
+			"5g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_5g/{z}/{x}/{y}.png",
+			"5g-1F":O2_TMS_BASE + "v" + (O2_TMS_VER + 1) + "/styles/o2_uk_v" + (O2_TMS_VER + 1) + "_5g/{z}/{x}/{y}.png"
 		},
 		"Three-UK":{
 			"3g":THREE_TMS_BASE + "Fast/{z}/{x}/{y}.png",
@@ -168,6 +173,8 @@ let _xyz = {
 			attribution: attr,
 			opacity: _xyz.opacity
 		};
+
+		$('#operator_current_layer').text('Current Layer: ' + attr);
 
 		switch ($(this).data('op')) {
 			case 'Three-UK':
