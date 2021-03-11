@@ -14,7 +14,13 @@ class CreateUserForm(FlaskForm):
 class LoginUserForm(FlaskForm):
 	email = StringField('Email', validators=[DataRequired(message='Please enter your email'), Email(message='Please enter a valid email')])
 	password = PasswordField('Password', validators=[DataRequired(message='Please enter your password'), Length(min=8, max=255, message='Password does not meet length requirements')])
+	# remember_me = Checkbox
 	submit = SubmitField('Login')
+
+
+class ReAuthUserForm(FlaskForm):
+	password = PasswordField('Account Password', validators=[DataRequired(message='Please enter your password'), Length(min=8, max=255, message='Password does not meet length requirements')])
+	submit = SubmitField('Re-Authenticate')
 
 
 class UpdateEmailForm(FlaskForm):

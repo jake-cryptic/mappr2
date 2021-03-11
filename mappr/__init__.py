@@ -46,6 +46,11 @@ def create_app():
 		db.create_all()
 
 	login_manager.login_view = "auth_bp.auth"
+	login_manager.refresh_view = "auth_bp.reauth"
+	login_manager.needs_refresh_message = (
+		u"To protect your account, please reauthenticate to access this page."
+	)
+	login_manager.needs_refresh_message_category = "warning"
 
 	@app.after_request
 	def apply_headers(response):

@@ -7,7 +7,28 @@
 	<div class="container">
 		<h1 class="display-3">GDPR Download</h1>
 		{% include "components/alert.html" %}
-		Unavailable at this time.
+		{% for field, errors in download_form.errors.items() %}
+			<div class="alert alert-info alert-danger alert-dismissible fade show" role="alert">
+				{{ download_form[field].label }}: {{ ', '.join(errors) }}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endfor %}
+		<!--
+		<p class="lead">
+			This form will allow you to download, in CSV format:
+			<ul>
+				<li>The masts you have moved</li>
+				<li>Bookmarks you have created</li>
+			</ul>
+		</p>
+		<form id="download_account_form" class="mt-3" action="{{ url_for('user_bp.download') }}" method="POST">
+			{{ download_form.csrf_token }}
+			<div class="mb-3">
+				{{ download_form.password.label(class="form-label") }}
+				{{ download_form.password(class="form-control") }}
+			</div>
+			<button type="submit" class="btn btn-success"><i class="fas fa-download"></i> Download Data</button>
+		</form>-->
 		<hr />
 		<div class="float-right">
 			<a href="{{ url_for('user_bp.account') }}" class="btn btn-outline-primary"><i class="fas fa-user"></i> Account Settings</a>

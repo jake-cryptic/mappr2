@@ -9,6 +9,12 @@
 		{% include "components/alert.html" %}
 		<hr />
 		<h2 class="h3">User Details</h2>
+		{% for field, errors in email_form.errors.items() %}
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				{{ email_form[field].label }}: {{ ', '.join(errors) }}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endfor %}
 		<form id="email_form" action="{{ url_for('user_bp.account') }}" method="POST">
 			{{ email_form.csrf_token }}
 			<div class="input-group mb-3 row">
@@ -39,6 +45,12 @@
 			<a href="{{ url_for('user_bp.download') }}" class="btn btn-outline-dark"><i class="fas fa-download"></i> Download My Data</a>
 			<a href="{{ url_for('user_bp.delete') }}" class="btn btn-outline-danger"><i class="fas fa-trash"></i> Delete Account</a>
 		</div>
+		{% if login_stale == true %}
+			<!--<div class="mt-5 alert alert-warning alert-dismissible fade show" role="alert">
+				Your login is stale. Please re-authenticate.
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>-->
+		{% endif %}
 	</div>
 </div>
 {% endblock content %}

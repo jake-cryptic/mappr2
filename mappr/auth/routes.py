@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
-from flask_login import login_user, current_user, logout_user, login_required
+from flask_login import login_user, confirm_login, current_user, logout_user, login_required, login_fresh
 from is_safe_url import is_safe_url
-from ..forms import LoginUserForm, CreateUserForm
+from ..forms import LoginUserForm, CreateUserForm, ReAuthUserForm
 from ..models import db, User
 from .. import login_manager
 
@@ -53,15 +53,41 @@ def auth():
 			elif user.active == 0:
 				flash('Your account is not active', 'danger')
 			else:
-				login_user(user)
+				login_user(user, remember=True)
 
-				next = request.args.get('next')
+				next_url = request.args.get('next')
 				#if not is_safe_url(next, {'localhost'}, require_https=False):
 				#	return abort(400)
 
-				return redirect(next or url_for('main_bp.index'))
+				return redirect(next_url or url_for('main_bp.index'))
 
 	return render_template('auth/auth.html', title='Login Required', login_user=login_form, create_user=create_form, active_pane=active_pane)
+
+
+@auth_bp.route('/reauth', methods=['GET', 'POST'])
+def reauth():
+	reauth_form = ReAuthUserForm(prefix="reauth")
+
+	if login_fresh():
+		flash('You do not need to re-authenticate', 'warning')
+		return redirect(url_for('user_bp.account'))
+
+	if request.method == 'POST' and reauth_form.validate_on_submit():
+		user = User.query.filter_by(id=current_user.id).first()
+
+		if user is None:
+			flash('Could not log you in, please try again.', 'danger')
+		elif not user.verify_password(reauth_form.password.data):
+			flash('Could not log you in please try again.', 'danger')
+		elif user.active == 0:
+			flash('Your account is not active', 'danger')
+		else:
+			confirm_login()
+			flash('You have been re-authenticated', 'success')
+			next_url = request.args.get('next')
+			return redirect(next_url or url_for('user_bp.account'))
+
+	return render_template('auth/reauth.html', title='Login Required', reauth_form=reauth_form)
 
 
 @auth_bp.route("/logout")
