@@ -3,12 +3,13 @@ from flask_login import login_user, confirm_login, current_user, logout_user, lo
 from is_safe_url import is_safe_url
 from ..forms import LoginUserForm, CreateUserForm, ReAuthUserForm
 from ..models import db, User
-from .. import login_manager
+from .. import login_manager, limiter
 
 auth_bp = Blueprint("auth_bp", __name__, template_folder="templates")
 
 
 @auth_bp.route('/auth', methods=['GET', 'POST'])
+@limiter.limit('20/hour;5/minute;1/second')
 def auth():
 	login_form = LoginUserForm(prefix="login")
 	create_form = CreateUserForm(prefix="create")

@@ -1,5 +1,7 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from flask_login import LoginManager
 from flask_admin import Admin
 from flask_wtf import CSRFProtect
@@ -8,6 +10,7 @@ from flask_wtf import CSRFProtect
 db = SQLAlchemy()
 csrf = CSRFProtect()
 login_manager = LoginManager()
+limiter = Limiter(key_func=get_remote_address, default_limits=["10000 per day", "1000 per hour"])
 admin = Admin(name='Mappr2', template_mode='bootstrap4')
 
 # Define folders
@@ -20,6 +23,7 @@ def create_app():
 	app.config.from_object('config.Config')
 
 	db.init_app(app)
+	limiter.init_app(app)
 	login_manager.init_app(app)
 	admin.init_app(app)
 	csrf.init_app(app)

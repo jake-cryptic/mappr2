@@ -7,6 +7,7 @@ ExifRead==2.3.2
 Click==7.1.2
 Flask==1.1.2
 Flask-Admin==1.5.7
+Flask-Limiter==1.4
 Flask-Migrate==2.7.0
 Flask-MySQL==1.5.2
 Flask-SQLAlchemy==2.4.4

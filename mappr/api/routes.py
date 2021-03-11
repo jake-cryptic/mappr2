@@ -1,6 +1,7 @@
 from flask import Blueprint, request, abort, session
 from flask_login import current_user, login_required
 from sqlalchemy import text
+from .. import limiter
 from ..decorators import internally_referred
 from ..functions import resp
 from ..models import db, Node, Sector, Bookmark, NodeLocation
@@ -22,6 +23,15 @@ def check_request_args(user_args, args):
 	return True
 
 
+@limiter.request_filter
+def user_whitelist():
+	if not current_user.is_authenticated:
+		return False
+
+	# Don't rate limit user accounts greater than type 2
+	return current_user.account_type > 2
+
+
 @api_bp.app_errorhandler(404)
 @api_bp.app_errorhandler(405)
 def _handle_api_error(ex):
@@ -33,18 +43,21 @@ def _handle_api_error(ex):
 
 @api_bp.route('/stats/networks', methods=['GET'])
 @login_required
+@internally_referred
 def api_stats_networks():
 	pass
 
 
 @api_bp.route('/stats/users', methods=['GET'])
 @login_required
+@internally_referred
 def api_stats_users():
 	pass
 
 
 @api_bp.route('/update-node', methods=['POST'])
 @login_required
+@limiter.limit('300/day;100/hour;5/minute', override_defaults=True)
 def api_update_node():
 	user_id = current_user.id
 	rat = request.form.get('rat')
@@ -68,6 +81,7 @@ def api_update_node():
 
 @api_bp.route('/lookup-history', methods=['GET'])
 @login_required
+@limiter.limit('300/day;100/hour;5/minute', override_defaults=True)
 def api_node_history():
 	if not check_request_args(request.args, required_arguments['history']):
 		return abort(400)
@@ -97,6 +111,8 @@ def api_node_history():
 
 @api_bp.route('/lookup-node', methods=['GET'])
 @login_required
+@internally_referred
+@limiter.limit('100/day;50/hour;3/minute;1/second', override_defaults=True)
 def api_lookup_node():
 	mcc = request.args.get('mcc')
 	mnc = request.args.get('mnc')
@@ -131,6 +147,7 @@ def api_lookup_node():
 @api_bp.route('/map', methods=['GET'])
 @login_required
 @internally_referred
+@limiter.limit('10000/day;1000/hour;100/minute;3/second', override_defaults=True)
 def api_get_map_area():
 	if not check_request_args(request.args, required_arguments['map']):
 		return abort(400)
@@ -354,6 +371,8 @@ def api_get_sector_list():
 
 @api_bp.route('/bookmark/create', methods=['POST'])
 @login_required
+@internally_referred
+@limiter.limit('100/day;50/hour;5/minute;1/second', override_defaults=True)
 def api_bookmark_create():
 	user_id = current_user.id
 
@@ -375,6 +394,7 @@ def api_bookmark_create():
 
 @api_bp.route('/bookmark/delete', methods=['POST'])
 @login_required
+@internally_referred
 def api_bookmark_remove():
 	user_id = current_user.id
 
@@ -400,6 +420,7 @@ def api_bookmark_remove():
 
 @api_bp.route('/bookmark/get', methods=['GET', 'POST'])
 @login_required
+@internally_referred
 def api_bookmark_get():
 	user_id = current_user.id
 

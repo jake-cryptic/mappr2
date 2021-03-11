@@ -20,6 +20,14 @@ def handle_404(err):
 		return render_template('errors/404.html'), 404
 
 
+@error_bp.app_errorhandler(429)
+def handle_429(err):
+	if request.path.startswith('/api/'):
+		return resp({}, error=str(err))
+	else:
+		return render_template('errors/429.html', description=str(err)), 429
+
+
 @error_bp.app_errorhandler(500)
 def handle_500(err):
 	return render_template('errors/500.html'), 500

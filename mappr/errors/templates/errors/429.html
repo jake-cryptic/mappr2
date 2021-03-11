@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Too Many Requests{% endblock %}
+
+{% block description %}You are sending too many requests.{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="display-4 pt-5 pb-2">Somebody is in a hurry</div>
+	<p class="lead">
+		{{ description }}
+	</p>
+</div>
+{% endblock %}

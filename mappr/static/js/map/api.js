@@ -28,10 +28,14 @@ let _api = {
 
 	error: function(e, msg){
 		console.error(e);
+		if (e.status === 429) {
+			_ui.popToastMessage('You are performing actions too quickly!', 10000, true, 'danger');
+			return;
+		}
 		if (!navigator.onLine) {
 			_ui.popToastMessage('You are not online!', 5000);
 		}
-		_ui.popToastMessage(msg + ' ' + (e.statusText || 'Unknown API error'), false);
+		_ui.popToastMessage(msg + ' ' + (e.statusText || 'Unknown API error'), 5000);
 	},
 
 	users: {
@@ -188,7 +192,7 @@ let _api = {
 			_ui.popToastMessage('Data loaded, processing...', 750, true, 'secondary');
 
 			if (!resp || resp.error) {
-				_ui.popToastMessage(resp.msg || 'Unknown API error', false);
+				_ui.popToastMessage(resp.message || 'Unknown API error', 10000, true, 'danger');
 				return;
 			}
 
@@ -219,6 +223,7 @@ let _api = {
 				dataType: 'json',
 				success: _api.nodeSearch.success,
 				error: function (e) {
+					$('#enb_search_submit').prop('disabled', false);
 					_api.error(e, 'Failed to lookup node!');
 				}
 			});
