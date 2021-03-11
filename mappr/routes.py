@@ -1,7 +1,14 @@
-from flask import render_template, send_from_directory, Blueprint, redirect, url_for, flash
-from flask_login import current_user, login_required
+from flask import render_template, send_from_directory, Blueprint, redirect, url_for, request
+from . import static_folder
+from flask_login import login_required
 
 main_bp = Blueprint("main_bp", __name__)
+
+
+@main_bp.route('/robots.txt')
+@main_bp.route('/security.txt')
+def static_from_root():
+	return send_from_directory(static_folder, request.path[1:])
 
 
 @main_bp.route("/")

@@ -4,14 +4,19 @@ from flask_login import LoginManager
 from flask_admin import Admin
 from flask_wtf import CSRFProtect
 
+# Initialise objects
 db = SQLAlchemy()
 csrf = CSRFProtect()
 login_manager = LoginManager()
 admin = Admin(name='Mappr2', template_mode='bootstrap4')
 
+# Define folders
+static_folder = 'static'
+template_folder = 'templates'
+
 
 def create_app():
-	app = Flask(__name__, template_folder="templates", instance_relative_config=False, static_folder="static")
+	app = Flask(__name__, template_folder=template_folder, instance_relative_config=False, static_folder=static_folder)
 	app.config.from_object('config.Config')
 
 	db.init_app(app)
@@ -55,7 +60,7 @@ def create_app():
 			response.headers["X-XSS-Protection"] = "1; mode=block"
 			response.headers["X-Content-Type-Options"] = "nosniff"
 
-			csp_header_value = "script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; img-src 'self' data: https://cdnjs.cloudflare.com https://api.cellmapper.net https://mapserver.vodafone.co.uk https://68aa7b45-tiles.spatialbuzz.net https://coverage.ee.co.uk https://mt1.google.com https://tile.opentopomap.org https://*.tile.openstreetmap.org; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://nominatim.openstreetmap.org https://mappr.report-uri.com; media-src 'none'; object-src 'none'; child-src 'none'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content; manifest-src 'self'; report-uri https://mappr.report-uri.com/r/d/csp/reportOnly"
+			csp_header_value = "script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; img-src 'self' data: https://cdnjs.cloudflare.com https://api.cellmapper.net https://www.three.co.uk/ https://mapserver.vodafone.co.uk https://68aa7b45-tiles.spatialbuzz.net https://coverage.ee.co.uk https://mt1.google.com https://tile.opentopomap.org https://*.tile.openstreetmap.org; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://nominatim.openstreetmap.org https://mappr.report-uri.com; media-src 'none'; object-src 'none'; child-src 'none'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content; manifest-src 'self'; report-uri https://mappr.report-uri.com/r/d/csp/reportOnly"
 
 			# Production only headers
 			if app.config['ENV'] == 'production':
@@ -67,6 +72,9 @@ def create_app():
 			# Testing headers
 			if app.config['ENV'] == 'development':
 				response.headers['Content-Security-Policy'] = csp_header_value
+
+		if app.config['ENV'] == 'production' and 'https' not in request.base_url:
+			response.headers['Upgrade-Insecure-Requests'] = 1
 
 		return response
 
