@@ -188,6 +188,9 @@ def api_get_map_area():
 	show_low_accuracy = convert_bool(request.args.get('show_low_accuracy'))
 
 	# Define functions for use
+	def run_query(query):
+		return query.limit(1024).all()
+
 	def filter_query(query):
 		# Filter by samples
 		if not show_low_accuracy:
@@ -220,9 +223,9 @@ def api_get_map_area():
 				Node.node_id == enb_singular
 			)
 
-		return query.all()
+		return query
 
-	def get_nodes_for_area(model):
+	def get_area_query(model):
 		node_query = db.session.query(model).filter(
 			model.mcc == mcc,
 			model.lat >= sw_lat,
@@ -237,7 +240,7 @@ def api_get_map_area():
 				model.mnc == mnc
 			)
 
-		return node_query.limit(1024).all()
+		return node_query
 
 	def get_node_location(node):
 		locations = NodeLocation.query.filter(
@@ -281,9 +284,9 @@ def api_get_map_area():
 		return sect_dict
 
 	# Query all node IDs in an area
-	mls_results = get_nodes_for_area(Node)
-	mappr_results = get_nodes_for_area(NodeLocation)
-	results = mls_results + mappr_results
+	base_results = run_query(filter_query(get_area_query(Node)))
+	mappr_results = run_query(get_area_query(NodeLocation))
+	results = base_results + mappr_results
 
 	# Get list of unique node identifiers in map area
 	nodes = []
@@ -302,7 +305,7 @@ def api_get_map_area():
 			Node.node_id == idenspl[2]
 		)
 
-		results = filter_query(node_query)
+		results = filter_query(node_query).all()
 		if len(results) == 0:
 			continue
 
