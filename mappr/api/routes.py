@@ -195,7 +195,7 @@ def api_get_map_area():
 		# Filter by samples
 		if not show_low_accuracy:
 			query = query.filter(
-				Node.samples > 50
+				Node.samples > 25
 			)
 
 		# Filter by date

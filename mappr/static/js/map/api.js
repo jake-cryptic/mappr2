@@ -32,6 +32,10 @@ let _api = {
 			_ui.popToastMessage('You are performing actions too quickly!', 10000, true, 'danger');
 			return;
 		}
+		if (e.statusText === 'abort') {
+			_ui.popToastMessage('Request cancelled by user action.', 1000, true, 'danger');
+			return;
+		}
 		if (!navigator.onLine) {
 			_ui.popToastMessage('You are not online!', 5000);
 		}

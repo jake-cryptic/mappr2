@@ -57,6 +57,11 @@
 		<!-- Papa -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js" integrity="sha512-rKFvwjvE4liWPlFnvH4ZhRDfNZ9FOpdkD/BU5gAIA3VS3vOQrQ5BjKgbO3kxebKhHdHcNUHLqxQYSoxee9UwgA==" crossorigin="anonymous"></script>
 
+		{% if config.ENV != 'development' %}
+			<script src="{{ url_for('static', filename='js/mappr.js') }}" type="text/javascript"></script>
+			<noscript><p><img src="https://analytics.mappr.uk/matomo/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+		{% endif %}
+
 	</head>
 	<body>
 

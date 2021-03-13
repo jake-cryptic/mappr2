@@ -261,7 +261,7 @@ let _map = {
 
 	moveTimer: {
 		timer:null,
-		duration:1000,
+		duration:1250,
 
 		clearMoveTimer:function(){
 			if (_map.moveTimer.timer) {
