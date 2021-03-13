@@ -6,12 +6,19 @@ let _api = {
 
 	currentRequest: null,
 	timeout:30000,
+	total_analytics:0,
 
 	init:function (){
 		_api.prepareAjax();
 		_api.data.getMccSectors();
 
 		console.log('[API]-> Initialised');
+	},
+
+	track: function(params){
+		if (!_paq) return;
+		_paq.push(params);
+		_api.total_analytics += 1;
 	},
 
 	prepareAjax: function (){
@@ -214,11 +221,14 @@ let _api = {
 	},
 
 	nodeSearch: {
+
+		last_node_id:'',
+
 		doNodeSearch: function() {
 			$('#enb_search_submit').prop('disabled', true);
-			let enb = $("#enb_search_input").val();
+			_api.nodeSearch.last_node_id = $("#enb_search_input").val();
 			let request_data = {
-				'node_id': enb,
+				'node_id': _api.nodeSearch.last_node_id,
 				'mcc': _app.mcc
 			};
 
@@ -234,6 +244,7 @@ let _api = {
 				success: _api.nodeSearch.success,
 				error: function (e) {
 					$('#enb_search_submit').prop('disabled', false);
+					_api.track(['trackSiteSearch', _api.nodeSearch.last_node_id, _app.mcc + '-' + _app.mnc, -1]);
 					_api.error(e, 'Failed to lookup node!');
 				}
 			});
@@ -241,11 +252,15 @@ let _api = {
 
 		success: function(resp) {
 			if (!resp || resp.error === true) {
+				_api.track(['trackSiteSearch', _api.nodeSearch.last_node_id, _app.mcc + '-' + _app.mnc, -1]);
 				alert(resp.error === true ? resp.message : 'An error occurred');
 				return;
 			}
 
 			let result = resp.response;
+
+			_api.track(['trackSiteSearch', _api.nodeSearch.last_node_id, _app.mcc + '-' + _app.mnc, result.length]);
+
 			if (result.length === 0) {
 				alert("No eNodeB with this ID found");
 			} else if (result.length === 1) {

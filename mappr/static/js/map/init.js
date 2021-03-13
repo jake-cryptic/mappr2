@@ -32,6 +32,7 @@ let _app = {
 
 	_changeRat: function(newRat){
 		_app.rat = newRat;
+		_api.track(['trackEvent', 'MapControl', 'change_rat ' + _app.rat + '-' + _app.mcc + '-' + _app.mnc]);
 		_history.updateUrl();
 		_map.reloadMap();
 	},
@@ -46,6 +47,7 @@ let _app = {
 		_ui.populateMncSelector(_app.mcc);
 		_ui.updateTitle();
 		_ui.popToastMessage('Mobile Country Code changed to: ' + newMcc, 1000, true,'info');
+		_api.track(['trackEvent', 'MapControl', 'change_mcc ' + _app.mcc + '-' + _app.mnc]);
 		_api.data.getMccSectors();
 		_history.updateUrl();
 		_map.reloadMap();
@@ -59,6 +61,7 @@ let _app = {
 		_app.mnc = parseInt(newMnc);
 		_ui.updateTitle();
 		_ui.popToastMessage('Mobile Network Code changed to: ' + newMnc, 1000, true,'info');
+		_api.track(['trackEvent', 'MapControl', 'change_mnc ' + _app.mcc + '-' + _app.mnc]);
 		_ui.controls.updateSectorList();
 		_history.updateUrl();
 		_map.reloadMap();

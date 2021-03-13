@@ -168,10 +168,10 @@ let _ui = {
 			}
 		},
 
-		osmQuery: function(){
-			_map.osm.doLocationSearch(
-				$("#world_location_search").val()
-			);
+		osmQuery: function() {
+			let locationSearch = $("#world_location_search").val();
+			_map.osm.doLocationSearch(locationSearch);
+			_api.track(['trackEvent', 'MapControl', 'osm_query ' + locationSearch]);
 		},
 
 		updateSectorList: function(){
