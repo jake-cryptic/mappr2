@@ -2,8 +2,10 @@ from datetime import datetime
 from mappr import db, login_manager
 from sqlalchemy import Integer, SmallInteger, Sequence, Index, UniqueConstraint, ForeignKeyConstraint
 from sqlalchemy.types import DECIMAL
+from sqlalchemy_utils import UUIDType
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+import uuid
 
 
 class User(UserMixin, db.Model):
@@ -22,6 +24,7 @@ class User(UserMixin, db.Model):
 
 	bookmarks = db.relationship("Bookmark", back_populates='user')
 	locations = db.relationship("NodeLocation", back_populates='user')
+	map_files = db.relationship("MapFile", back_populates='user')
 
 	@property
 	def password(self):
@@ -154,3 +157,15 @@ class Bookmark(db.Model):
 
 	def __repr__(self):
 		return "<Bookmark(id='%s', lat='%s', lng='%s')>" % (self.id, self.lat, self.lng)
+
+
+class MapFile(db.Model):
+	__tablename__ = 'map_files'
+
+	id = db.Column(Integer, Sequence('mapfile_id_seq'), primary_key=True)
+	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+	user = db.relationship('User', back_populates='map_files')
+
+	file_name = db.Column(db.Text, nullable=False)
+	file_location = db.Column(db.Text, nullable=False)
+	file_uuid = db.Column(UUIDType, nullable=False)

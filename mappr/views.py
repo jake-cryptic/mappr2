@@ -2,7 +2,7 @@ from flask import url_for, request, redirect, flash
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from mappr import admin, db
-from mappr.models import User, NodeLocation, Bookmark, Node, Sector, CellIdBlockList
+from mappr.models import User, NodeLocation, Bookmark, Node, Sector, CellIdBlockList, MapFile
 
 
 class AdminView(ModelView):
@@ -26,5 +26,6 @@ admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(NodeLocation, db.session))
 admin.add_view(AdminView(CellIdBlockList, db.session))
 admin.add_view(AdminView(Bookmark, db.session))
+admin.add_view(AdminView(MapFile, db.session, category='Files'))
 admin.add_view(AdminView(Node, db.session, category='Base Data'))
 admin.add_view(AdminView(Sector, db.session, category='Base Data'))
