@@ -16,7 +16,7 @@ let _api = {
 	},
 
 	track: function(params){
-		if (!_paq) return;
+		if (typeof(_paq) === "undefined") return;
 		_paq.push(params);
 		_api.total_analytics += 1;
 	},

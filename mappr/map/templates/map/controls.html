@@ -23,23 +23,27 @@
 				</h2>
 				<div id="collapse_one" class="accordion-collapse collapse" aria-labelledby="accord_head_map_items" data-bs-parent="#sidebar_accordion">
 					<div class="accordion-body">
+						<h3 class="h4">Map Item Settings</h3>
 						<div class="btn-group-vertical btn-group" role="group" aria-label="Map item controls">
-							<button aria-label="Pause / Unpause node loading" id="node_loading_pause" class="btn btn-primary">
+							<button aria-label="Pause / Unpause node loading" id="node_loading_pause" class="btn btn-info text-light">
 								<i class="fas fa-pause"></i> Pause Node Loading
 							</button>
 							<button aria-label="Disable / Enable node polygons" id="node_polygons_pause" class="btn btn-dark">
  								<i class="fas fa-shapes"></i> Disable Polygons
 							</button>
-							<button aria-label="Disable / Enable map clustering" id="map_clustering_toggle" class="btn btn-dark d-none">
- 								<i class="fas fa-circle"></i> Enable Clustering (Soon)
-							</button>
-							<button aria-label="Disable / Enable toasts" id="ui_show_toasts" class="btn btn-info text-light">
-								<i class="fas fa-bread-slice"></i> Disable Toast Alerts
+							<button aria-label="Disable / Enable map clustering" id="map_clustering_toggle" class="btn btn-primary">
+ 								<i class="fas fa-circle"></i> Enable Clustering*
 							</button>
 							<button aria-label="Clear map markers" id="node_markers_clear" class="btn btn-danger">
 								<i class="fas fa-trash"></i> Delete Map Markers
 							</button>
 						</div>
+						<small class="d-block">* - Clustering markers disables node polygons</small>
+
+						<h3 class="h4">UI Settings</h3>
+						<button aria-label="Disable / Enable toasts" id="ui_show_toasts" class="btn btn-info text-light">
+							<i class="fas fa-bread-slice"></i> Disable Toast Alerts
+						</button>
 					</div>
 				</div>
 			</div>

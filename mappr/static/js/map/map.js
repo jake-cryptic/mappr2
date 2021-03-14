@@ -166,7 +166,7 @@ let _map = {
 			console.log('Setting marker cluster to: ', !_map.settings.markerCluster);
 			_map.settings.markerCluster = !_map.settings.markerCluster;
 
-			_map.items.removeMapMarkers(true);
+			_map.items.removeMapMarkers(false);
 			if (_map.settings.markerCluster === true) {
 				// Disable polygons on marker cluster map
 				if (_map.state.isNodePolygonPaused !== true) {
@@ -247,6 +247,7 @@ let _map = {
 	},
 
 	state: {
+		maxZoom: 20,
 		zoom: 10,
 		defaultCoords:[52.5201508, -1.5807446],
 
@@ -283,7 +284,8 @@ let _map = {
 			fullscreenControlOptions: {
 				position: 'topleft'
 		  	},
-			preferCanvas:true
+
+			preferCanvas: true
 		}).setView(_map.state.defaultCoords, _map.state.zoom);
 
 		if (!_history.loadedFromParams) {
@@ -299,6 +301,7 @@ let _map = {
 		_map.icons.init();
 
 		_map.state.markers = L.markerClusterGroup();
+		// _map.state.canvasLayer = L.canvasIconLayer({}).addTo(_map.state.map)
 		_map.items.markerLayer = _map.state.map;
 
 		console.log('[Map]-> Initialised');
@@ -407,7 +410,13 @@ let _map = {
 			server = "https://tile.opentopomap.org/{z}/{x}/{y}.png";
 		}
 
-		_map.state.base = new L.TileLayer(server, {attribution: attr + " | " + MAPPR_VER});
+		_map.state.base = new L.TileLayer(server,
+			{
+				attribution: attr + " | " + MAPPR_VER,
+				maxNativeZoom: 18,
+				maxZoom: _map.state.maxZoom
+			}
+		);
 		_map.state.map_id = map;
 		_map.state.map.addLayer(_map.state.base);
 

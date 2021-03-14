@@ -124,8 +124,8 @@ let _ui = {
 		setMarkerClusterState:function (){
 			$("#map_clustering_toggle").html(
 				_map.settings.markerCluster ?
-					"<i class='fas fa-circle'></i> Enable Clustering" :
-					"<i class='fas fa-circle'></i> Disable Clustering"
+					"<i class='fas fa-circle'></i> Disable Clustering" :
+					"<i class='fas fa-circle'></i> Enable Clustering"
 			);
 		},
 
