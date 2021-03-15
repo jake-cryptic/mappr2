@@ -111,6 +111,7 @@ let _ui = {
 					"<i class='fas fa-play'></i> Unpause Node Loading" :
 					"<i class='fas fa-pause'></i> Pause Node Loading"
 			);
+			_api.track(['trackEvent', 'UISetting', 'nodeLoadingPaused ' + _map.state.isNodePolygonPaused]);
 		},
 
 		setPolygonPauseState:function (){
@@ -119,6 +120,7 @@ let _ui = {
 					"<i class='fas fa-shapes'></i> Enable Polygons" :
 					"<i class='fas fa-shapes'></i> Disable Polygons"
 			);
+			_api.track(['trackEvent', 'UISetting', 'nodePolygonPaused ' + _map.state.isNodePolygonPaused]);
 		},
 
 		setMarkerClusterState:function (){
@@ -127,6 +129,7 @@ let _ui = {
 					"<i class='fas fa-circle'></i> Disable Clustering" :
 					"<i class='fas fa-circle'></i> Enable Clustering"
 			);
+			_api.track(['trackEvent', 'UISetting', 'markerClusterEnabled ' + _map.settings.markerCluster]);
 		},
 
 		setToastPauseState:function (){
@@ -135,6 +138,7 @@ let _ui = {
 					"<i class='fas fa-bread-slice'></i> Disable Toast Alerts" :
 					"<i class='fas fa-bread-slice'></i> Enable Toast Alerts"
 			);
+			_api.track(['trackEvent', 'UISetting', 'toastAlertsDisabled ' + _ui.toasts.toasts_allowed]);
 		},
 
 		setMapSelector: function() {
@@ -335,6 +339,7 @@ let _ui = {
 
 	getSiteHistory: function(el, mcc, mnc, enb) {
 		el.innerText = 'Loading...';
+		_api.track(['trackEvent', 'NodeLocation', 'getSiteHistory ' + mcc + '-' + mnc + '-' + enb]);
 		_api.history.doLookupNode(mcc, mnc, enb, _ui.displaySiteHistory);
 		setTimeout(function () {
 			el.innerText = 'History';

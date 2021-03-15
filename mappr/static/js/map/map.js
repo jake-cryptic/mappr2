@@ -455,7 +455,7 @@ let _map = {
 		_ui.popToastAction("Are you sure you wish to move this node?", "Yes", "No", function(){
 			_ui.burnToastAction();
 			_api.nodeUpdate.sendMove();
-			_api.track(['trackEvent', 'NodeLocation', 'user_move ' + _api.nodeUpdate.move_attempt.mcc + '-' + _api.nodeUpdate.move_attempt.mnc + '-' + _api.nodeUpdate.move_attempt.enb]);
+			_api.track(['trackEvent', 'NodeLocation', 'user_move ' + _api.nodeUpdate.move_attempt.mcc + '-' + _api.nodeUpdate.move_attempt.mnc + '-' + _api.nodeUpdate.move_attempt.node_id]);
 		});
 	},
 

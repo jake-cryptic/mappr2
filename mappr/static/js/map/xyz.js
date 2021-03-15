@@ -3,7 +3,7 @@
 */
 
 const O2_TMS_BASE = "https://68aa7b45-tiles.spatialbuzz.net/tiles/o2_uk-";
-const O2_TMS_VER = 167;
+const O2_TMS_VER = 168;
 //const EE_TMS_BASE = "https://maps.ee.co.uk//geowebcache/service/gmaps?&zoom={z}&x={x}&y={y}&format=image/png&Layers=";
 const EE_TMS_BASE = "https://coverage.ee.co.uk/geowebcache/service/gmaps?&zoom={z}&x={x}&y={y}&format=image/png&Layers=";
 const THREE_TMS_BASE = "https://www.three.co.uk/static/images/functional_apps/coverage/";
@@ -31,6 +31,7 @@ let _xyz = {
 
 			"VoLTE":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_volte/{z}/{x}/{y}.png",
 			"LTE-M":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_ltem/{z}/{x}/{y}.png",
+			"LTE-M-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_ltem/{z}/{x}/{y}.png",
 
 			"5g-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_5g/{z}/{x}/{y}.png",
 			"5g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_5g/{z}/{x}/{y}.png",
@@ -163,7 +164,7 @@ let _xyz = {
 		}
 	},
 
-	add_server:function(){
+	add_server:function() {
 		let server = $(this).data("tileserver"),
 			attr = $(this).data("op") + " " + $(this).data("tile");
 
@@ -175,6 +176,7 @@ let _xyz = {
 		};
 
 		$('#operator_current_layer').text('Current Layer: ' + attr);
+		_api.track(['trackEvent', 'XYZTiles', 'addLayer ' + attr]);
 
 		switch ($(this).data('op')) {
 			case 'Three-UK':
