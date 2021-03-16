@@ -22,11 +22,11 @@ let appLibraries = [
 	'https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet/3.0.1/esri-leaflet.min.js',
 
 	// Uppy
-	'https://cdnjs.cloudflare.com/ajax/libs/uppy/1.26.0/uppy.min.js',
-	'https://cdnjs.cloudflare.com/ajax/libs/uppy/1.26.0/uppy.min.css',
+	'https://cdnjs.cloudflare.com/ajax/libs/uppy/1.26.1/uppy.min.js',
+	'https://cdnjs.cloudflare.com/ajax/libs/uppy/1.26.1/uppy.min.css',
 
 	// jQuery
-	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js',
+	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js',
 
 	// Chroma
 	'https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js',

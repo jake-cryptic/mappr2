@@ -56,6 +56,10 @@ function getGmapsUrl(lat, lng) {
 	return 'https://www.google.co.uk/maps/search/' + lat + ',' + lng + '/'
 }
 
+function getStreetviewUrl(lat, lng) {
+	return 'https://www.google.com/maps?layer=c&cbll=' + lat + ',' + lng + '/'
+}
+
 function getOsmUrl(lat, lng, zoom = 15) {
 	return 'https://www.openstreetmap.org/#map=' + zoom + '/' + lat + '/' + lng + '/'
 }

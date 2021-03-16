@@ -228,7 +228,9 @@ let _map = {
 			).on('moveend', _map.attemptMove)
 		},
 
-		pushMarker: function(lat, lng, point, popupText, tooltipText) {
+		pushMarker: function(lat, lng, point, popupText) {
+			let tooltipText = _map.getTooltipText(point);
+
 			_map.items.markers.push(
 				_map.items.createMarker(lat, lng, point, popupText, tooltipText)
 			);
@@ -487,7 +489,14 @@ let _map = {
 	},
 
 	getTooltipText: function(point) {
-		let html = '<strong>' + point.node_id + '</strong><br />';
+		let html = '<strong>' + point.node_id + '</strong>';
+
+		if (_app.mnc === 0) {
+			html += ' <strong>(' + point.mnc + ')</strong>';
+			//html += '<br /><small>' + point.mcc + '-' + point.mnc + '</small><br />';
+		}
+
+		html += '<br />';
 
 		let sectorIds = Object.keys(point.sectors);
 		let sectorInfo = _map.sectorInfo(point.mnc, point.node_id, sectorIds);
@@ -575,9 +584,7 @@ let _map = {
 		//if (_api.users.getUserFromId(point.verified)){
 		//	txt += '<br />Located by: ' + _api.users.getUserFromId(point.verified);
 		//}
-
-		let tooltipText = _map.getTooltipText(point);
-		_map.items.pushMarker(tLat, tLng, point, txt, tooltipText);
+		_map.items.pushMarker(tLat, tLng, point, txt);
 	},
 
 	osm: {
