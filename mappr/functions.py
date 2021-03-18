@@ -26,15 +26,21 @@ def get_user_data(model, uid):
 		data = []
 
 	csv_headers = model.__table__.columns.keys()
+	csv_headers.remove('id')
+	csv_headers.remove('user_id')
 	return results_to_csv(data, csv_headers)
 
 
 def results_to_csv(results, csv_headers):
-	out_text = ','.join(csv_headers)
+	out_text = ','.join(csv_headers) + '\n'
 
 	for row in results:
 		row_dict = dict(row.__dict__)
 		row_dict.pop('_sa_instance_state', None)
-		out_text += ','.join(map(lambda x: str(x), row_dict.values())) + '\n'
+
+		for header in csv_headers:
+			val = str(row_dict[header] or 'null')
+			out_text += '"%s",' % val
+		out_text += '\n'
 
 	return out_text
