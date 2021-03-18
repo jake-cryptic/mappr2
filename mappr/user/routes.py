@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
+from flask import Blueprint, render_template, redirect, url_for, flash, request, abort, make_response
 from flask_login import current_user, login_required, confirm_login, login_fresh, fresh_login_required
-from ..models import db, User
+from ..models import db, User, Bookmark, NodeLocation
 from ..forms import UpdateEmailForm, UpdatePasswordForm, DeleteAccountForm, DownloadDataForm
+from ..functions import get_user_data
+from time import time
 
 user_bp = Blueprint("user_bp", __name__, template_folder="templates", url_prefix='/user')
 
@@ -85,6 +87,22 @@ def download():
 		else:
 			# If user has re-entered password we can mark their session as fresh
 			confirm_login()
+
+		export_name = 'node_locations'
+		export_id = 'export_u%s_%s_%s.csv' % (current_user.id, time(), export_name)
+
+		if export_name == 'bookmarks':
+			model = Bookmark
+		elif export_name == 'node_locations':
+			model = NodeLocation
+		else:
+			return abort(400)
+
+		csv_out = get_user_data(model, current_user.id)
+		resp = make_response(csv_out, 200)
+		resp.headers['Content-Disposition'] = 'attachment; filename=' + export_id
+
+		return resp
 
 	return render_template('user/download.html', download_form=download_account)
 
