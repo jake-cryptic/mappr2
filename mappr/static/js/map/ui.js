@@ -15,6 +15,7 @@ let _ui = {
 		}
 
 		_ui.updateTitle();
+		_ui.updateLinks();
 
 		_ui.controls.init();
 
@@ -56,6 +57,16 @@ let _ui = {
 			$d.append(
 				$('<option/>', data).text('[' + mncs[i] + '] ' + provider['short'])
 			);
+		}
+	},
+
+	updateLinks: function () {
+		let thisMcc = _data[_app.mcc];
+
+		if (thisMcc['mobile_spectrum_url'] === null) {
+			$('#open_mobile_spectrum').attr('href', 'https://mobilespectrum.org/').text('Visit Mobile Spectrum');
+		} else {
+			$('#open_mobile_spectrum').attr('href', thisMcc.mobile_spectrum_url).text('View ' + thisMcc['country_short'] + ' Spectrum Allocations');
 		}
 	},
 
