@@ -13,37 +13,39 @@ const CM_TMS_BASE = "https://api.cellmapper.net/v6/getTile?z={z}&x={x}&y={y}";
 let _xyz = {
 
 	opacity:0.5,
+	layer_control:null,
+	current_layer_list: [],
 
 	tiles:{
 		"O2-UK":{
-			"2g-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_voice/{z}/{x}/{y}.png",
-			"2g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_voice/{z}/{x}/{y}.png",
+			"G09 Version-1":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_voice/{z}/{x}/{y}.png",
+			"G09":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_voice/{z}/{x}/{y}.png",
 
-			"3g2100-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_data/{z}/{x}/{y}.png",
-			"3g2100":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_data/{z}/{x}/{y}.png",
-			"3g2100-1F":O2_TMS_BASE + "v" + (O2_TMS_VER + 1) + "/styles/o2_uk_v" + (O2_TMS_VER + 1) + "_data/{z}/{x}/{y}.png",
+			"U21 Version-1":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_data/{z}/{x}/{y}.png",
+			"U21":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_data/{z}/{x}/{y}.png",
+			//"3g2100-1F":O2_TMS_BASE + "v" + (O2_TMS_VER + 1) + "/styles/o2_uk_v" + (O2_TMS_VER + 1) + "_data/{z}/{x}/{y}.png",
 
-			"3g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_datacombined/{z}/{x}/{y}.png",
+			"U09 + U21":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_datacombined/{z}/{x}/{y}.png",
 
-			"4g-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_lte/{z}/{x}/{y}.png",
-			"4g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_lte/{z}/{x}/{y}.png",
-			"4g-1F":O2_TMS_BASE + "v" + (O2_TMS_VER + 1) + "/styles/o2_uk_v" + (O2_TMS_VER + 1) + "_lte/{z}/{x}/{y}.png",
+			"4G Version-1":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_lte/{z}/{x}/{y}.png",
+			"4G":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_lte/{z}/{x}/{y}.png",
+			//"4g-1F":O2_TMS_BASE + "v" + (O2_TMS_VER + 1) + "/styles/o2_uk_v" + (O2_TMS_VER + 1) + "_lte/{z}/{x}/{y}.png",
 
 			"VoLTE":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_volte/{z}/{x}/{y}.png",
+			"LTE-M Version-1":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_ltem/{z}/{x}/{y}.png",
 			"LTE-M":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_ltem/{z}/{x}/{y}.png",
-			"LTE-M-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_ltem/{z}/{x}/{y}.png",
 
-			"5g-1B":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_5g/{z}/{x}/{y}.png",
-			"5g":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_5g/{z}/{x}/{y}.png",
-			"5g-1F":O2_TMS_BASE + "v" + (O2_TMS_VER + 1) + "/styles/o2_uk_v" + (O2_TMS_VER + 1) + "_5g/{z}/{x}/{y}.png"
+			"NR Version-1":O2_TMS_BASE + "v" + (O2_TMS_VER - 1) + "/styles/o2_uk_v" + (O2_TMS_VER - 1) + "_5g/{z}/{x}/{y}.png",
+			"5G":O2_TMS_BASE + "v" + O2_TMS_VER + "/styles/o2_uk_v" + O2_TMS_VER + "_5g/{z}/{x}/{y}.png"
+			//"5g-1F":O2_TMS_BASE + "v" + (O2_TMS_VER + 1) + "/styles/o2_uk_v" + (O2_TMS_VER + 1) + "_5g/{z}/{x}/{y}.png"
 		},
-		"Three-UK":{
-			"3g":THREE_TMS_BASE + "Fast/{z}/{x}/{y}.png",
-			"4g":THREE_TMS_BASE + "LTE/{z}/{x}/{y}.png",
-			"4g800":THREE_TMS_BASE + "800/{z}/{x}/{y}.png",
-			"5g":THREE_TMS_BASE + "FiveG/{z}/{x}/{y}.png",
+		"3-UK":{
+			"U21":THREE_TMS_BASE + "Fast/{z}/{x}/{y}.png",
+			"4G":THREE_TMS_BASE + "LTE/{z}/{x}/{y}.png",
+			"L08":THREE_TMS_BASE + "800/{z}/{x}/{y}.png",
+			"5G":THREE_TMS_BASE + "FiveG/{z}/{x}/{y}.png",
 		},
-		"Vodafone-UK":{
+		"Voda-UK":{
 			'Paknet':VODAFONE_ESRI_BASE + 'Paknet/MapServer',
 			'2G-Planned':VODAFONE_ESRI_BASE + 'Vodafone_2G_Live_Service/MapServer',
 			'2G-Live':VODAFONE_ESRI_BASE + 'Vodafone_2G_Live_Service/MapServer',
@@ -57,10 +59,10 @@ let _xyz = {
 			'ICImpact_Stage':VODAFONE_ESRI_BASE + 'ICImpact_Stage/MapServer',
 		},
 		"EE":{
-			"4g800":EE_TMS_BASE + "4g_800_ltea",
-			"4g1800":EE_TMS_BASE + "4g_1800_ltea",
-			"4g1800ds":EE_TMS_BASE + "4g_1800_ds_ltea",
-			"4g2600":EE_TMS_BASE + "4g_2600_ltea",
+			"L08":EE_TMS_BASE + "4g_800_ltea",
+			"L18":EE_TMS_BASE + "4g_1800_ltea",
+			"L18 DS":EE_TMS_BASE + "4g_1800_ds_ltea",
+			"L26":EE_TMS_BASE + "4g_2600_ltea",
 			"2G-old":EE_TMS_BASE + "2g_ltea",
 			"3G-old":EE_TMS_BASE + "3g_ltea",
 			"4G-old":EE_TMS_BASE + "4g_ltea",
@@ -73,32 +75,53 @@ let _xyz = {
 	},
 
 	init: function(){
-		_xyz.append_html();
-		$('#cm_tile_add').on('click enter', _xyz.cm.evt);
+		_xyz.update_control_layer();
+		_xyz.assignEvents();
+
 		console.log('[XYZ]-> Initialised');
 	},
 
-	append_html:function(){
-		// TODO: Move this to UI.js
-		for (let op in _xyz.tiles) {
-			let el = $("<div/>");
-			el.append($("<p/>",{'class':'mt-3 h5'}).text(op));
+	assignEvents: function () {
+		$('#cm_tile_add').on('click enter', _xyz.cm.evt);
+		$("#operator_tile_opacity").on("change", _xyz.update_opacity);
 
-			for (let tile in _xyz.tiles[op]) {
-				el.append(
-					$("<button/>",{
-						"class":"btn m-1 btn-dark btn-sm",
-						"data-op":op,
-						"data-tile":tile,
-						"data-tileserver":_xyz.tiles[op][tile]
-					}).text(tile).on("click enter", _xyz.add_server)
-				);
-			}
+		_map.state.map.on('overlayadd', _xyz.layer_add);
+		_map.state.map.on('overlayremove', _xyz.layer_remove);
+	},
 
-			$("#operator_maps").append(el);
+	layer_add: function(layer){
+		if (layer) {
+			let attr = layer.name || 'Unknown';
+			_api.track(['trackEvent', 'XYZTiles', 'overlayAdd ' + attr]);
+
+			_xyz.current_layer_list.push(attr);
+			_xyz.update_current_layer_text();
+		}
+	},
+
+	layer_remove: function(layer){
+		if (layer) {
+			let attr = layer.name || 'Unknown';
+
+			let removeId = _xyz.current_layer_list.indexOf(attr);
+			_xyz.current_layer_list.splice(removeId, 1);
+			_xyz.update_current_layer_text();
+		}
+	},
+
+	update_current_layer_text: function () {
+		let str = 'Current Layers: <br />';
+		_xyz.current_layer_list.forEach(function (layer_name) {
+			str += layer_name + ', ';
+		});
+
+		if (str.length === 22) {
+			str = 'No Layers';
+		} else {
+			str = str.substr(0, str.length-2);
 		}
 
-		$("#operator_tile_opacity").on("change", _xyz.update_opacity);
+		$('#operator_current_layer').empty().html(str);
 	},
 
 	cm: {
@@ -156,27 +179,37 @@ let _xyz = {
 
 	},
 
+	update_control_layer:function(){
+		let tileLayers = {};
+		for (let op in _xyz.tiles) {
+			for (let tile in _xyz.tiles[op]) {
+				tileLayers[op + ' ' + tile] = _xyz.get_server_layer(_xyz.tiles[op][tile], op + ' ' + tile);
+			}
+		}
+
+		// Make layer control selector
+		_xyz.layer_control = L.control.layers(null, tileLayers, {
+			sortLayers:true
+		});
+
+		// Add control box to map
+		_map.state.map.addControl(_xyz.layer_control);
+	},
+
 	update_opacity:function(){
 		_xyz.opacity = $(this).val() / 100;
 
-		if (_xyz.tile_layer) {
-			_xyz.tile_layer.setOpacity(_xyz.opacity);
+		let layerKeys = Object.keys(_xyz.layer_control._layers);
+		for (let i = 0, l = layerKeys.length; i < l; i++) {
+			_xyz.layer_control._layers[layerKeys[i]].layer.setOpacity(_xyz.opacity);
 		}
 	},
 
-	add_server:function() {
-		let server = $(this).data("tileserver"),
-			attr = $(this).data("op") + " " + $(this).data("tile");
-
-		if (_xyz.tile_layer) _map.state.map.removeLayer(_xyz.tile_layer);
-
+	get_server_layer:function(server, attr) {
 		let data = {
 			attribution: attr,
 			opacity: _xyz.opacity
 		};
-
-		$('#operator_current_layer').text('Current Layer: ' + attr);
-		_api.track(['trackEvent', 'XYZTiles', 'addLayer ' + attr]);
 
 		switch ($(this).data('op')) {
 			case 'Three-UK':
@@ -192,7 +225,7 @@ let _xyz = {
 				break;
 		}
 
-		_map.state.map.addLayer(_xyz.tile_layer);
+		return _xyz.tile_layer;
 	}
 
 };
