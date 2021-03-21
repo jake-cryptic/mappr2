@@ -31,7 +31,15 @@ let _map = {
 		boringColours:false,
 		colorLightness:'keep',
 
-		markerCluster: false
+		markerCluster: false,
+		useCircleMarkers: false
+	},
+
+	colours: {
+		confirmed:'#1ac400', // #1a1a1a
+		estimated:'#ff1328', // #0099ff
+
+		csv_file:'#ff11e9'
 	},
 
 	attr: {
@@ -66,7 +74,7 @@ let _map = {
 				iconShape:'marker',
 				borderColor:'#fff',
 				borderWidth:1,
-				backgroundColor:'#0099ff',
+				backgroundColor:_map.colours.estimated,
 				textColor:'#fff'
 			});
 			_map.icons.ico.main = biMain;
@@ -77,7 +85,7 @@ let _map = {
 				iconShape:'marker',
 				borderColor:'#fff',
 				borderWidth:1,
-				backgroundColor:'#1a1a1a',
+				backgroundColor:_map.colours.confirmed,
 				textColor:'#fff'
 			});
 			_map.icons.ico.located = biLocated;
@@ -88,7 +96,7 @@ let _map = {
 				iconShape:'marker',
 				borderColor:'#fff',
 				borderWidth:1,
-				backgroundColor:'#c00',
+				backgroundColor:_map.colours.csv_file,
 				textColor:'#fff'
 			});
 			_map.icons.ico.csv = biCsv;
@@ -116,8 +124,8 @@ let _map = {
 
 		updateMap:function(){
 			// Draw items on the map
-			_map.items.drawMarkers();
 			_map.items.drawPolygons();
+			_map.items.drawMarkers();
 		},
 
 		drawMarkers: function() {
@@ -206,7 +214,39 @@ let _map = {
 			if (clean === true) _map.items.polygons = [];
 		},
 
+		createCircleMarker: function(lat, lng, point, popupText, tooltipText) {
+			function getCircleMarkerOptions(point) {
+				return {
+					mcc:point.mcc,
+					mnc:point.mnc,
+					enb:point.node_id,
+					draggable:true,
+					autoPan:true,
+					color:(point.user_id ? _map.colours.confirmed : _map.colours.estimated),
+					fillOpacity:0.8,
+					weight:5,
+					radius:9
+				};
+			}
+
+			let tooltipOptions = copy(_map.items.markerTooltipOptions);
+			tooltipOptions.offset = [0, 9];
+
+			return new L.CircleMarker(
+				[lat, lng],
+				getCircleMarkerOptions(point)
+			).bindPopup(
+				popupText, _map.items.markerPopupOptions
+			).bindTooltip(
+				tooltipText, tooltipOptions
+			).on('moveend', _map.attemptMove)
+		},
+
 		createMarker: function(lat, lng, point, popupText, tooltipText) {
+			if (_map.settings.useCircleMarkers === true) {
+				return _map.items.createCircleMarker(lat, lng, point, popupText, tooltipText);
+			}
+
 			function getMarkerOptions(point) {
 				return {
 					mcc:point.mcc,
@@ -289,6 +329,8 @@ let _map = {
 
 			preferCanvas: true
 		}).setView(_map.state.defaultCoords, _map.state.zoom);
+
+		L.control.scale().addTo(_map.state.map);
 
 		if (!_history.loadedFromParams) {
 			_map.moveToCurrentLocation();
