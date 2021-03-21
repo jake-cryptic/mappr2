@@ -73,6 +73,7 @@ let _csv = {
 		let m = new L.marker(
 			[point.lat, point.lng],
 			{
+				virtual:true,
 				draggable:false,
 				autoPan:true,
 				icon: _map.icons.ico.csv
