@@ -377,7 +377,7 @@ let _ui = {
 					}).on('click enter', _map.goToHereData).append(
 						$('<td/>').text(r.time),
 						$('<td/>').text(r.node_id),
-						$('<td/>').text(r.user_id),
+						$('<td/>').text(_api.users.getUserFromId(r.user_id)),
 						$('<td/>').text(r.lat),
 						$('<td/>').text(r.lng)
 					)

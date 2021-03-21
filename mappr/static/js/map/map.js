@@ -36,8 +36,8 @@ let _map = {
 	},
 
 	colours: {
-		confirmed:'#1ac400', // #1a1a1a
-		estimated:'#ff1328', // #0099ff
+		confirmed:'#1a1a1a', // #1a1a1a or #1ac400
+		estimated:'#0099ff', // #0099ff or #ff1328
 
 		csv_file:'#ff11e9'
 	},
