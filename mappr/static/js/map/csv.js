@@ -4,22 +4,22 @@
 
 let _csv = {
 
-	conf:{
-		header:true,
-		skipEmptyLines:true,
+	conf: {
+		header: true,
+		skipEmptyLines: true,
 		dynamicTyping: true,
 		worker: false
 	},
 
-	markers:[],
+	markers: [],
 
-	dataPoints:[],
-	errors:[],
-	files:[],
+	dataPoints: [],
+	errors: [],
+	files: [],
 
-	osgb:null,
+	osgb: null,
 
-	init:function(){
+	init: function () {
 		// Check for browser file support for this feature
 		// TODO: Don't init if we don't support this API
 		if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
@@ -36,7 +36,7 @@ let _csv = {
 		_csv.conf['complete'] = _csv.parseComplete;
 
 		// Assign event listener
-		$("input[type=file]#csv_import").on("change", function(e) {
+		$("input[type=file]#csv_import").on("change", function (e) {
 			_csv.parseFile($(this).prop('files')[0]);
 			return;
 			let fileReader = new FileReader();
@@ -53,12 +53,12 @@ let _csv = {
 		console.log('[CSV]-> Initialised')
 	},
 
-	parseBefore: function(file, inputElem) {
+	parseBefore: function (file, inputElem) {
 		console.log(file);
 		console.log(inputElem);
 	},
 
-	parseStep: function(row, parser) {
+	parseStep: function (row, parser) {
 		let r = row.data;
 		//console.log(row.data);
 
@@ -90,9 +90,9 @@ let _csv = {
 		let m = new L.marker(
 			[point.lat, point.lng],
 			{
-				virtual:true,
-				draggable:false,
-				autoPan:true,
+				virtual: true,
+				draggable: false,
+				autoPan: true,
 				icon: _map.icons.ico.csv
 			}
 		);
@@ -122,20 +122,20 @@ let _csv = {
 		);
 
 		_csv.dataPoints.push(m);
-		_map.state.map.addLayer(_csv.dataPoints[_csv.dataPoints.length-1]);
+		_map.state.map.addLayer(_csv.dataPoints[_csv.dataPoints.length - 1]);
 	},
 
-	parseComplete: function(result, par) {
+	parseComplete: function (result, par) {
 		console.log("[CSV]-> Done parsing file")
 	},
 
-	parseFile:function(f) {
+	parseFile: function (f) {
 		_csv.files.push(
 			Papa.parse(f, _csv.conf)
 		);
 	},
 
-	parse:function(text) {
+	parse: function (text) {
 		let raw = atob(text);
 		_csv.files.push(
 			Papa.parse(raw, _csv.conf)

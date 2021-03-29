@@ -4,9 +4,9 @@
 
 let _history = {
 
-	loadedFromParams:false,
+	loadedFromParams: false,
 
-	serialiseObject: function(obj){
+	serialiseObject: function (obj) {
 		let str = "";
 		for (let key in obj) {
 			if (str != "") str += "&";
@@ -17,7 +17,7 @@ let _history = {
 		return str;
 	},
 
-	deserialiseObject: function(str){
+	deserialiseObject: function (str) {
 		let parts = str.split("&");
 
 		let obj = {};
@@ -29,7 +29,7 @@ let _history = {
 		return obj;
 	},
 
-	updateUrl:function() {
+	updateUrl: function () {
 		let obj = window.location;
 		let url = obj.origin + obj.pathname + "?";
 
@@ -50,7 +50,7 @@ let _history = {
 		window.history.pushState(params, "Viewing " + params['mnc'], newUrl);
 	},
 
-	loadParams:function (cb) {
+	loadParams: function (cb) {
 		let obj = _history.deserialiseObject(window.location.search.substring(1));
 
 		if (Object.keys(obj).length > 4) {
@@ -68,7 +68,7 @@ let _history = {
 		if (cb) cb();
 	},
 
-	urlChange:function(){
+	urlChange: function () {
 		// TODO: Change map when forward / back buttons are pressed
 		// TODO: Add UI controls to enable / disable this behaviour
 	}

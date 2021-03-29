@@ -4,21 +4,21 @@
 
 let _bookmarks = {
 
-	list:[],
+	list: [],
 
-	init:function() {
+	init: function () {
 		_bookmarks.reloadUi();
 		_bookmarks.assignEvents();
 		console.log('[Bookmarks]-> Initialised');
 	},
 
-	assignEvents:function(){
+	assignEvents: function () {
 		$("#bookmarks_reload").on("click enter", _bookmarks.getList);
 		$("#bookmarks_new").on("click enter", _bookmarks.createBookmark);
 	},
 
-	reloadUi:function (){
-		_bookmarks.getList(function(data){
+	reloadUi: function () {
+		_bookmarks.getList(function (data) {
 			$('#bookmarks_list').empty();
 
 			if (data.response.length === 0 || data.error === true) {
@@ -26,26 +26,26 @@ let _bookmarks = {
 
 				$('#bookmarks_list').append(
 					$('<tr/>').append(
-						$('<td/>',{
-							'colspan':3
+						$('<td/>', {
+							'colspan': 3
 						}).text(txt)
 					)
 				);
 				return;
 			}
 
-			data.response.forEach(function(point){
+			data.response.forEach(function (point) {
 				console.log(point);
 				$('#bookmarks_list').append(
-					$("<tr/>",{
-						"data-id":point.id,
-						"data-rat":'lte',
-						"data-mcc":point.mcc,
-						"data-mnc":point.mnc,
-						"data-lat":point.lat,
-						"data-lng":point.lng,
-						"data-zoom":point.zoom,
-					}).on("click enter",_bookmarks.goToBookmark).append(
+					$("<tr/>", {
+						"data-id": point.id,
+						"data-rat": 'lte',
+						"data-mcc": point.mcc,
+						"data-mnc": point.mnc,
+						"data-lat": point.lat,
+						"data-lng": point.lng,
+						"data-zoom": point.zoom,
+					}).on("click enter", _bookmarks.goToBookmark).append(
 						$("<td/>").text(point.mcc + ' ' + point.mnc),
 						$("<td/>").text(point.comment),
 						$("<td/>").text(point.created)
@@ -55,7 +55,7 @@ let _bookmarks = {
 		});
 	},
 
-	goToBookmark: function() {
+	goToBookmark: function () {
 		_app.mcc = $(this).data('mcc');
 		_app.mnc = $(this).data('mnc');
 
@@ -67,12 +67,12 @@ let _bookmarks = {
 		_map.setLocation(lat, lng, zoom);
 	},
 
-	createBookmark: function (){
+	createBookmark: function () {
 		let comment = prompt('This will create a bookmark of the current map location.\nAdd a comment to your bookmark?', '');
 		_bookmarks.add(comment);
 	},
 
-	deleteBookmark: function (){
+	deleteBookmark: function () {
 		let conf = confirm('Are you sure you want to delete this bookmark?');
 
 		if (!conf) {
@@ -87,7 +87,7 @@ let _bookmarks = {
 		_bookmarks.remove(id, rat, mcc, mnc);
 	},
 
-	add:function(comment = 'No comment'){
+	add: function (comment = 'No comment') {
 		let xyz = _map.getMapXyz();
 
 		let postData = {
@@ -102,13 +102,13 @@ let _bookmarks = {
 			'comment': comment
 		};
 
-		$.post('api/bookmark/create', postData).done(function(resp){
+		$.post('api/bookmark/create', postData).done(function (resp) {
 			console.log(resp);
 			_bookmarks.reloadUi();
 		});
 	},
 
-	remove:function(removeId, rat, mcc, mnc){
+	remove: function (removeId, rat, mcc, mnc) {
 		let postData = {
 			'rat': rat,
 			'mcc': mcc,
@@ -116,19 +116,19 @@ let _bookmarks = {
 			'id': removeId
 		};
 
-		$.post('api/bookmark/delete', postData).done(function(resp){
+		$.post('api/bookmark/delete', postData).done(function (resp) {
 			console.log(resp);
 		});
 	},
 
-	getList:function(cb){
+	getList: function (cb) {
 		let getData = {
 			'rat': _app.rat,
 			'mcc': _app.mcc,
 			'mnc': _app.mnc
 		};
 
-		$.get("api/bookmark/get", getData).done(function(resp){
+		$.get("api/bookmark/get", getData).done(function (resp) {
 			cb(resp);
 		});
 	}

@@ -19,7 +19,7 @@ let _data = {
 				"website": "https://o2.co.uk",
 				"backgroundColor": "#0019A5",
 				"textColor": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					if (findItem(sectorId, [115, 125, 135, 145, 155, 165])) ret += (enb >= 500000 ? "1 " : "40C1 ");
 					if (findItem(sectorId, [114, 124, 134, 144, 154, 164])) ret += (enb >= 500000 ? "3 " : "1 ");
@@ -36,7 +36,7 @@ let _data = {
 				"website": "https://www.vodafone.co.uk/",
 				"background": "#e60000",
 				"text": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					if (findItem(sectorId, [15, 25, 35, 45, 55, 65])) ret += (enb >= 500000 ? "1 " : "?");
 					if (findItem(sectorId, [14, 24, 34, 44, 54, 64])) ret += "1 ";
@@ -54,7 +54,7 @@ let _data = {
 				"website": "http://www.three.co.uk/",
 				"background": "#000",
 				"text": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					if (findItem(sectorId, [71, 72, 73, 74, 75, 76])) ret += "1 ";
 					if (findItem(sectorId, [0, 1, 2, 3, 4, 5])) ret += "3 ";
@@ -69,7 +69,7 @@ let _data = {
 				"website": "https://ee.co.uk",
 				"background": "#007b85",
 				"text": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					if (findItem(sectorId, [21, 22, 23, 24])) ret += "? ";
 					if (findItem(sectorId, [18, 19, 20])) ret += "1 ";
@@ -83,65 +83,65 @@ let _data = {
 				}
 			},
 			"55": {
-				"name":"Sure",
-				"short":"Sure",
+				"name": "Sure",
+				"short": "Sure",
 				"background": "#000",
 				"text": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					return sectorId.length + ' sectors';
 				}
 			},
 			"58": {
-				"name":"Manx Telecom",
-				"short":"Manx",
+				"name": "Manx Telecom",
+				"short": "Manx",
 				"background": "#000",
 				"text": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					return sectorId.length + ' sectors';
 				}
 			}
 		}
 	},
 
-	"238":{
-		"country_name":"Denmark",
-		"country_short":"DK",
+	"238": {
+		"country_name": "Denmark",
+		"country_short": "DK",
 		"mobile_spectrum_url": "https://mobilespectrum.org/denmark",
-		"providers":{
-			"2":{
+		"providers": {
+			"2": {
 				"name": "TT-Netværket (Telenor)",
 				"short": "Telenor",
 				"website": "https://www.tt-network.dk/",
 				"background": "#663989",
 				"text": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					return sectorId.length + ' sectors';
 				}
 			},
-			"6":{
+			"6": {
 				"name": "Hi3G Denmark",
 				"short": "3",
 				"website": "https://www.3.dk/",
 				"background": "#f37423",
 				"text": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					return sectorId.length + ' sectors';
 				}
 			},
-			"20":{
+			"20": {
 				"name": "TT-Netværket (Telia)",
 				"short": "Telia",
 				"website": "https://www.tt-network.dk/",
 				"background": "#663989",
 				"text": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					return sectorId.length + ' sectors';
 				}
 			}
 		}
 	},
 
-	"262":{
+	"262": {
 		"country_name": "Germany",
 		"country_short": "DE",
 		"mobile_spectrum_url": "https://mobilespectrum.org/germany",
@@ -152,7 +152,7 @@ let _data = {
 				"website": "https://telekom.de/",
 				"background": "#ff0090",
 				"text": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					return sectorId.length + ' sectors';
 				}
 			},
@@ -162,7 +162,7 @@ let _data = {
 				"website": "https://www.vodafone.de/",
 				"background": "#e60000",
 				"text": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					if (findItem(sectorId, [19, 20, 21])) ret += "1 ";
 					if (findItem(sectorId, [8, 9, 10])) ret += "3 ";
@@ -181,7 +181,7 @@ let _data = {
 				"website": "https://o2.de",
 				"backgroundColor": "#004080",
 				"textColor": "#fff",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					let isOpenRan = false;
 					if (findItem(sectorId, [11, 12, 21, 22, 23, 41, 42, 43, 52, 53])) {
@@ -211,16 +211,16 @@ let _data = {
 		}
 	},
 
-	"368":{
+	"368": {
 		"country_name": "Cuba",
 		"country_short": "CU",
 		"mobile_spectrum_url": null,
 		"providers": {
-			"1":{
+			"1": {
 				"name": "Cubacel",
 				"short": "Cubacel",
 				"website": "http://www.etecsa.cu/",
-				"sectorInfo": function(enb, sectorId) {
+				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					if (findItem(sectorId, [1, 2, 3])) ret += "3C1 ";
 					if (findItem(sectorId, [4, 5, 6])) ret += "3C2 ";

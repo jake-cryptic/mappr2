@@ -4,7 +4,7 @@
 
 let _gallery = {
 
-	init: function(){
+	init: function () {
 
 	}
 

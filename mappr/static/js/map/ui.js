@@ -7,7 +7,7 @@ let _ui = {
 	current_modal: null,
 	current_title: 'Mappr2 | Map',
 
-	init:function() {
+	init: function () {
 		_ui.populateSelectors();
 		_ui.populateMncSelector(_app.mcc);
 		if (_history.loadedFromParams === true) {
@@ -22,7 +22,7 @@ let _ui = {
 		console.log('[UI]-> Initialised');
 	},
 
-	populateSelectors: function (){
+	populateSelectors: function () {
 		let mccs = Object.keys(_data);
 		$d = $('#select_mcc');
 		$d.empty();
@@ -30,7 +30,7 @@ let _ui = {
 		for (let i = 0; i < mccs.length; i++) {
 			let country = _data[mccs[i]];
 			let data = {
-				'value':mccs[i]
+				'value': mccs[i]
 			};
 			if (parseInt(mccs[i]) === _app.mcc) data['selected'] = true;
 
@@ -40,18 +40,18 @@ let _ui = {
 		}
 	},
 
-	populateMncSelector: function (mcc){
+	populateMncSelector: function (mcc) {
 		let thisMcc = _data[mcc]['providers'];
 		let mncs = Object.keys(thisMcc);
 		$d = $('#select_mnc');
 		$d.empty().append(
-			$('<option/>',{'value':0, 'selected':true}).text('All Providers')
+			$('<option/>', {'value': 0, 'selected': true}).text('All Providers')
 		);
 
 		for (let i = 0; i < mncs.length; i++) {
 			let provider = thisMcc[mncs[i]];
 			let data = {
-				'value':mncs[i]
+				'value': mncs[i]
 			};
 
 			$d.append(
@@ -71,7 +71,7 @@ let _ui = {
 	},
 
 	controls: {
-		init:function() {
+		init: function () {
 			// Button press events
 			$('#sidebar_toggle').on('click enter', _ui.sidebar.toggleView);
 			$('#locate_user_manual').on('click enter', _ui.controls.moveMapToUser);
@@ -96,27 +96,27 @@ let _ui = {
 			// $('#pci_search_submit').on('click enter', _api.nodeSearch.doNodeSearch);
 
 			// OSM location search
-			$("#do_world_location_search").on("click enter", function(){
+			$("#do_world_location_search").on("click enter", function () {
 				_ui.controls.osmQuery();
 			});
-			$("#world_location_search").on("keypress", function(evt){
+			$("#world_location_search").on("keypress", function (evt) {
 				if (evt.keyCode === 13) {
 					_ui.controls.osmQuery();
 				}
 			});
 		},
 
-		filterReload: function(){
+		filterReload: function () {
 			$('#filter_force_reload').prop('disabled', false);
 		},
 
-		reloadMap: function(){
+		reloadMap: function () {
 			$('#filter_force_reload').prop('disabled', true);
 			_ui.popToastMessage('Reloading map with filters applied', 500, true, 'info');
 			_map.reloadMap();
 		},
 
-		setNodeLoadingState:function (){
+		setNodeLoadingState: function () {
 			$("#node_loading_pause").html(
 				_map.state.isNodeLoadingPaused ?
 					"<i class='fas fa-play'></i> Unpause Node Loading" :
@@ -125,7 +125,7 @@ let _ui = {
 			_api.track(['trackEvent', 'UISetting', 'nodeLoadingPaused ' + _map.state.isNodePolygonPaused]);
 		},
 
-		setPolygonPauseState:function (){
+		setPolygonPauseState: function () {
 			$("#node_polygons_pause").html(
 				_map.state.isNodePolygonPaused ?
 					"<i class='fas fa-shapes'></i> Enable Polygons" :
@@ -134,7 +134,7 @@ let _ui = {
 			_api.track(['trackEvent', 'UISetting', 'nodePolygonPaused ' + _map.state.isNodePolygonPaused]);
 		},
 
-		setMarkerClusterState:function (){
+		setMarkerClusterState: function () {
 			$("#map_clustering_toggle").html(
 				_map.settings.markerCluster ?
 					"<i class='fas fa-circle'></i> Disable Clustering" :
@@ -143,7 +143,7 @@ let _ui = {
 			_api.track(['trackEvent', 'UISetting', 'markerClusterEnabled ' + _map.settings.markerCluster]);
 		},
 
-		setToastPauseState:function (){
+		setToastPauseState: function () {
 			$("#ui_show_toasts").html(
 				_ui.toasts.toasts_allowed ?
 					"<i class='fas fa-bread-slice'></i> Disable Toast Alerts" :
@@ -152,28 +152,28 @@ let _ui = {
 			_api.track(['trackEvent', 'UISetting', 'toastAlertsDisabled ' + _ui.toasts.toasts_allowed]);
 		},
 
-		setMapSelector: function() {
+		setMapSelector: function () {
 			$('#map_name').val(_map.state.map_id);
 		},
 
-		setRatSelector: function() {
+		setRatSelector: function () {
 			$('#select_rat').val(_app.rat);
 		},
 
-		setMccSelector: function() {
+		setMccSelector: function () {
 			$('#select_mcc').val(_app.mcc);
 		},
 
-		setMncSelector: function() {
+		setMncSelector: function () {
 			$('#select_mnc').val(_app.mnc);
 		},
 
-		moveMapToUser:function(){
+		moveMapToUser: function () {
 			_ui.popToastMessage('Attempting to move to your location...', true);
 			_map.moveToCurrentLocation();
 		},
 
-		watchGeoUser:function(){
+		watchGeoUser: function () {
 			if (_map.watch.id === null) {
 				_map.watch.init();
 				$('#toggle_geo_watch').text('Stop Watching');
@@ -183,13 +183,13 @@ let _ui = {
 			}
 		},
 
-		osmQuery: function() {
+		osmQuery: function () {
 			let locationSearch = $("#world_location_search").val();
 			_map.osm.doLocationSearch(locationSearch);
 			_api.track(['trackEvent', 'MapControl', 'osm_query ' + locationSearch]);
 		},
 
-		updateSectorList: function(){
+		updateSectorList: function () {
 			let $list = $("#sector_list");
 			let thisMcc = _data[_app.mcc]['providers'];
 			$list.empty();
@@ -208,7 +208,7 @@ let _ui = {
 				}
 
 				$mnc = $('<div/>', {
-					'id':'sectors_list_mnc' + mncs[i]
+					'id': 'sectors_list_mnc' + mncs[i]
 				});
 
 				if (mncSectors.length > 50) {
@@ -219,23 +219,23 @@ let _ui = {
 
 						$mnc.append(
 							$("<label/>", {
-								'for':'sectors_select_mnc' + mncs[i] + 'sid' + mncSectors[j]
+								'for': 'sectors_select_mnc' + mncs[i] + 'sid' + mncSectors[j]
 							}).text(mncSectors[j]),
-							$("<input/>",{
-								"type":"checkbox",
-								"id":'sectors_select_mnc' + mncs[i] + 'sid' + mncSectors[j],
-								"class":"form-check-input m-1",
-								"name":"sectors[]",
-								"aria-label":'Sector ' + mncSectors[j],
-								"value":mncSectors[j]
+							$("<input/>", {
+								"type": "checkbox",
+								"id": 'sectors_select_mnc' + mncs[i] + 'sid' + mncSectors[j],
+								"class": "form-check-input m-1",
+								"name": "sectors[]",
+								"aria-label": 'Sector ' + mncSectors[j],
+								"value": mncSectors[j]
 							})
 						);
 					}
 				}
 
 				$list.append(
-					$("<h4/>",{
-						'class':'h5'
+					$("<h4/>", {
+						'class': 'h5'
 					}).text('Sector IDs for: ' + thisMcc[mncs[i]]['short']),
 					$mnc,
 					$("<hr/>")
@@ -245,7 +245,7 @@ let _ui = {
 	},
 
 	sidebar: {
-		toggleView:function() {
+		toggleView: function () {
 			if (window.innerWidth > 768) {
 				if ($("#sidebar").is(":visible")) {
 					$("#sidebar").hide();
@@ -259,10 +259,10 @@ let _ui = {
 					$("#sidebar").fadeOut(500);
 				} else {
 					$('#sidebar').css({
-						'position':'absolute',
-						'z-index':1001,
-						'background-color':'rgba(255,255,255,0.95)',
-						'height':'auto'
+						'position': 'absolute',
+						'z-index': 1001,
+						'background-color': 'rgba(255,255,255,0.95)',
+						'height': 'auto'
 					}).fadeIn(500);
 				}
 
@@ -272,7 +272,7 @@ let _ui = {
 		}
 	},
 
-	updateTitle: function() {
+	updateTitle: function () {
 		let mccData = _data[_app.mcc];
 		let mncName = 'All Providers';
 		if (_app.mnc !== 0) {
@@ -283,7 +283,7 @@ let _ui = {
 		document.title = _ui.current_title;
 	},
 
-	updateUiOnLoad: function() {
+	updateUiOnLoad: function () {
 		_ui.controls.setNodeLoadingState();
 		_ui.controls.setPolygonPauseState();
 
@@ -293,15 +293,15 @@ let _ui = {
 		_ui.controls.setMncSelector();
 	},
 
-	displayMultipleNodeResults: function(results) {
+	displayMultipleNodeResults: function (results) {
 		$html = $('<tbody/>');
 
-		results.forEach(function(r){
+		results.forEach(function (r) {
 			$html.append(
-				$('<tr/>',{
-					'class':'cursor-pointer',
-					'data-lat':r.lat,
-					'data-lng':r.lng
+				$('<tr/>', {
+					'class': 'cursor-pointer',
+					'data-lat': r.lat,
+					'data-lng': r.lng
 				}).on('click enter', _map.goToHereData).append(
 					$('<td/>').text(r.mnc),
 					$('<td/>').text(r.node_id),
@@ -314,11 +314,11 @@ let _ui = {
 		_ui.openModal(
 			'eNb Search Results',
 			$('<div/>').append(
-				$('<h4/>',{
-					'class':'h5'
+				$('<h4/>', {
+					'class': 'h5'
 				}).text('Click a result to go to it'),
 				$('<table/>', {
-					'class':'table table-striped'
+					'class': 'table table-striped'
 				}).append(
 					$('<thead/>').append(
 						$('<tr/>').append(
@@ -334,11 +334,11 @@ let _ui = {
 		);
 	},
 
-	getSiteAddr: function(el, lat, lng){
+	getSiteAddr: function (el, lat, lng) {
 		el.innerText = 'Loading...';
 
 		let parent = el.parentElement;
-		_map.osm.getApproxLocation(lat, lng, function(data) {
+		_map.osm.getApproxLocation(lat, lng, function (data) {
 			let $newContent = $('<p/>').append(
 				$('<strong/>').text('Site address:'),
 				$('<br/>'),
@@ -348,31 +348,31 @@ let _ui = {
 		});
 	},
 
-	getSiteHistory: function(el, mcc, mnc, enb) {
+	getSiteHistory: function (el, mcc, mnc, enb) {
 		el.innerText = 'Loading...';
 		_api.track(['trackEvent', 'NodeLocation', 'getSiteHistory ' + mcc + '-' + mnc + '-' + enb]);
 		_api.history.doLookupNode(mcc, mnc, enb, _ui.displaySiteHistory);
 		setTimeout(function () {
 			el.innerText = 'History';
-		},500);
+		}, 500);
 	},
 
-	displaySiteHistory: function(results, mcc, mnc, enb) {
+	displaySiteHistory: function (results, mcc, mnc, enb) {
 		$html = $('<tbody/>');
 
 		if (!results || results.length === 0) {
 			$html.append(
 				$('<tr/>').append(
-					$('<td/>', {'colspan':5}).text('This site has not been moved')
+					$('<td/>', {'colspan': 5}).text('This site has not been moved')
 				)
 			);
 		} else {
-			results.forEach(function(r){
+			results.forEach(function (r) {
 				$html.append(
-					$('<tr/>',{
-						'class':'cursor-pointer',
-						'data-lat':r.lat,
-						'data-lng':r.lng,
+					$('<tr/>', {
+						'class': 'cursor-pointer',
+						'data-lat': r.lat,
+						'data-lng': r.lng,
 						'data-zoom': 17
 					}).on('click enter', _map.goToHereData).append(
 						$('<td/>').text(r.time),
@@ -389,7 +389,7 @@ let _ui = {
 			'Site History for: ' + mcc + '-' + mnc + ':' + enb,
 			$('<div/>').append(
 				$('<table/>', {
-					'class':'table table-striped'
+					'class': 'table table-striped'
 				}).append(
 					$('<thead/>').append(
 						$('<tr/>').append(
@@ -406,7 +406,7 @@ let _ui = {
 		);
 	},
 
-	openModal: function(title, $body) {
+	openModal: function (title, $body) {
 		$('#mappr_modal_title').text(title);
 		$('#mappr_modal_body').empty().html($body);
 
@@ -421,23 +421,23 @@ let _ui = {
 		_ui.current_modal.show();
 	},
 
-	toasts:{
+	toasts: {
 
 		toasts_allowed: true,
 
-		toggle:function(){
+		toggle: function () {
 			_ui.toasts.toasts_allowed = !_ui.toasts.toasts_allowed;
 			_ui.controls.setToastPauseState();
 		}
 
 	},
 
-	freshToast: function($toastBody, autohide, type = ''){
+	freshToast: function ($toastBody, autohide, type = '') {
 		let toastOpts = {
-			'class':'toast mx-5',
-			'role':'alert',
-			'aria-live':'polite',
-			'aria-atomic':true
+			'class': 'toast mx-5',
+			'role': 'alert',
+			'aria-live': 'polite',
+			'aria-atomic': true
 		};
 
 		if (!!autohide) {
@@ -445,54 +445,54 @@ let _ui = {
 			toastOpts['data-delay'] = autohide;
 		}
 
-		return $("<div/>",toastOpts).append(
-			$("<div/>",{
-				'class':'toast-header'
+		return $("<div/>", toastOpts).append(
+			$("<div/>", {
+				'class': 'toast-header'
 			}).append(
 				$("<strong/>", {
-					'class':'me-auto text-primary'
+					'class': 'me-auto text-primary'
 				}).text('Message'),
-				$('<small/>',{
-					'class':'text-muted'
+				$('<small/>', {
+					'class': 'text-muted'
 				}),
-				$('<button/>',{
-					'type':'button',
-					'class':'btn-close',
-					'data-bs-dismiss':'toast',
-					'aria-label':'close'
+				$('<button/>', {
+					'type': 'button',
+					'class': 'btn-close',
+					'data-bs-dismiss': 'toast',
+					'aria-label': 'close'
 				})
 			),
 			$toastBody
 		).toast('show')
 	},
 
-	freshToastSmall: function($toastBody, autohide, type){
-		return $("<div/>",{
-			'class':'toast mx-5 align-items-center' + type,
-			'role':'alert',
-			'aria-live':'assertive',
-			'aria-atomic':true,
-			'data-autohide':true,
-			'data-delay':autohide
+	freshToastSmall: function ($toastBody, autohide, type) {
+		return $("<div/>", {
+			'class': 'toast mx-5 align-items-center' + type,
+			'role': 'alert',
+			'aria-live': 'assertive',
+			'aria-atomic': true,
+			'data-autohide': true,
+			'data-delay': autohide
 		}).append(
-			$("<div/>",{
-				'class':'d-flex'
+			$("<div/>", {
+				'class': 'd-flex'
 			}).append(
 				$toastBody,
-				$('<button/>',{
-					'type':'button',
-					'class':'btn-close me-2 m-auto',
-					'data-bs-dismiss':'toast',
-					'aria-label':'close'
+				$('<button/>', {
+					'type': 'button',
+					'class': 'btn-close me-2 m-auto',
+					'data-bs-dismiss': 'toast',
+					'aria-label': 'close'
 				})
 			)
 		).toast('show')
 	},
 
-	popToastMessage:function(txt, autohide, small = false, type = 'primary'){
+	popToastMessage: function (txt, autohide, small = false, type = 'primary') {
 		if (!_ui.toasts.toasts_allowed) return false;
-		let $toastBody = $('<div/>',{
-			'class':'toast-body'
+		let $toastBody = $('<div/>', {
+			'class': 'toast-body'
 		}).text(txt);
 
 		let typeText = ' text-white border-0 bg-' + type;
@@ -501,29 +501,29 @@ let _ui = {
 		$('#toast_alerts').append(func($toastBody, autohide, typeText));
 
 		// Delete the toasts once they have served their purpose
-		setTimeout(function() {
+		setTimeout(function () {
 			let tt = $('#toast_alerts').find('.toast:not(.pendingremoval)').first();
 			tt.addClass('pendingremoval').fadeOut(500);
 			setTimeout(function () {
 				tt.remove();
 			}, 500);
-		},autohide + 500);
+		}, autohide + 500);
 	},
 
 	// TODO: Figure out why these auto-close, they shouldn't!
-	popToastAction:function(txt, yesTxt, noTxt, successCallback) {
-		let $toastBody = $('<div/>',{
-			'class':'toast-body'
+	popToastAction: function (txt, yesTxt, noTxt, successCallback) {
+		let $toastBody = $('<div/>', {
+			'class': 'toast-body'
 		}).append(
-			$('<p/>',{
-				'class':'fs-6'
+			$('<p/>', {
+				'class': 'fs-6'
 			}).text(txt),
-			$("<div/>",{
-				'class':'btn-group',
-				'role':'group'
+			$("<div/>", {
+				'class': 'btn-group',
+				'role': 'group'
 			}).append(
-				$("<button/>",{"class":"btn btn-success"}).text(yesTxt).on("click enter", successCallback),
-				$("<button/>",{"class":"btn btn-danger"}).text(noTxt).on("click enter", _ui.burnToastAction)
+				$("<button/>", {"class": "btn btn-success"}).text(yesTxt).on("click enter", successCallback),
+				$("<button/>", {"class": "btn btn-danger"}).text(noTxt).on("click enter", _ui.burnToastAction)
 			)
 		);
 
@@ -534,7 +534,7 @@ let _ui = {
 		);
 	},
 
-	burnToastAction:function(){
+	burnToastAction: function () {
 		$('#toast_actions').empty();
 	}
 

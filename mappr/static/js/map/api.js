@@ -5,11 +5,11 @@
 let _api = {
 
 	currentRequest: null,
-	timeout:30000,
-	total_analytics:0,
-	apiCompat:1,
+	timeout: 30000,
+	total_analytics: 0,
+	apiCompat: 1,
 
-	init:function (){
+	init: function () {
 		_api.prepareAjax();
 		_api.data.getMccSectors();
 		_api.users.getUsers();
@@ -17,31 +17,31 @@ let _api = {
 		console.log('[API]-> Initialised');
 	},
 
-	checkApiCompat: function(resp) {
+	checkApiCompat: function (resp) {
 		if (!resp || !resp.version) {
 			console.error('Could not detect API version in response');
 			return false;
 		}
 
 		if (_api.apiCompat !== resp.version) {
-			_ui.popToastMessage('Your browser\'s copy of Mappr is out of date! You may encounter errors.',  3000, true, 'warning');
+			_ui.popToastMessage('Your browser\'s copy of Mappr is out of date! You may encounter errors.', 3000, true, 'warning');
 			return false;
 		}
 
 		return true;
 	},
 
-	track: function(params){
-		if (typeof(_paq) === "undefined") return;
+	track: function (params) {
+		if (typeof (_paq) === "undefined") return;
 		_paq.push(params);
 		_api.total_analytics += 1;
 	},
 
-	prepareAjax: function (){
+	prepareAjax: function () {
 		$.ajaxSetup({
 			cache: false,
 			timeout: _api.timeout,
-			beforeSend: function(xhr, settings) {
+			beforeSend: function (xhr, settings) {
 				if (!this.crossDomain) {
 					if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
 						xhr.setRequestHeader("X-CSRFToken", _csrf);
@@ -52,7 +52,7 @@ let _api = {
 		});
 	},
 
-	error: function(e, msg){
+	error: function (e, msg) {
 		console.error(e);
 		if (e.status === 429) {
 			_ui.popToastMessage('You are performing actions too quickly!', 10000, true, 'danger');
@@ -69,9 +69,9 @@ let _api = {
 	},
 
 	users: {
-		cache:{},
+		cache: {},
 
-		getUserFromId: function(id) {
+		getUserFromId: function (id) {
 			if (_api.users.cache[id] === undefined) {
 				return 'Unknown user';
 			}
@@ -89,7 +89,7 @@ let _api = {
 
 		getUsers: function (users = []) {
 			let queryList = {
-				'users':users
+				'users': users
 			};
 
 			$.ajax({
@@ -97,7 +97,7 @@ let _api = {
 				type: 'POST',
 				data: queryList,
 				dataType: 'json',
-				success: function(resp) {
+				success: function (resp) {
 					if (!resp || resp.error === true) {
 						console.error(resp);
 						return;
@@ -123,12 +123,12 @@ let _api = {
 	data: {
 		current_mcc: {},
 
-		getMccSectors: function() {
+		getMccSectors: function () {
 			$.ajax({
 				url: 'api/get-sectors',
 				type: 'GET',
 				data: {
-					'mcc':_app.mcc
+					'mcc': _app.mcc
 				},
 				dataType: 'json',
 				success: _api.data.setMccSectors,
@@ -138,8 +138,8 @@ let _api = {
 			});
 		},
 
-		setMccSectors: function(resp){
-			if (!resp || resp.error === true){
+		setMccSectors: function (resp) {
+			if (!resp || resp.error === true) {
 				alert('Fatal Error');
 				console.error(resp);
 				return;
@@ -166,7 +166,7 @@ let _api = {
 	},
 
 	map: {
-		getParams: function (){
+		getParams: function () {
 			let data = {};
 
 			data['time'] = new Date().getTime();
@@ -193,7 +193,7 @@ let _api = {
 
 			// Get any sector_id constraints
 			let sectors = $("input[type='checkbox'][name='sectors[]']").serializeArray();
-			data["sectors"] = sectors.map(function(x){
+			data["sectors"] = sectors.map(function (x) {
 				return parseInt(x.value);
 			});
 
@@ -222,7 +222,7 @@ let _api = {
 			);
 		},
 
-		loadArea: function() {
+		loadArea: function () {
 			document.title = 'Updating Map...';
 
 			_api.currentRequest = $.ajax({
@@ -238,7 +238,7 @@ let _api = {
 			});
 		},
 
-		success:function(resp) {
+		success: function (resp) {
 			if (!resp || resp.error) {
 				_ui.popToastMessage(resp.message || 'Unknown API error', 10000, true, 'danger');
 				return;
@@ -263,9 +263,9 @@ let _api = {
 
 	nodeSearch: {
 
-		last_node_id:'',
+		last_node_id: '',
 
-		doNodeSearch: function() {
+		doNodeSearch: function () {
 			$('#enb_search_submit').prop('disabled', true);
 			_api.nodeSearch.last_node_id = $("#enb_search_input").val();
 			let request_data = {
@@ -273,7 +273,7 @@ let _api = {
 				'mcc': _app.mcc
 			};
 
-			if (_app.mnc !== 0){
+			if (_app.mnc !== 0) {
 				request_data['mnc'] = _app.mnc;
 			}
 
@@ -291,7 +291,7 @@ let _api = {
 			});
 		},
 
-		success: function(resp) {
+		success: function (resp) {
 			if (!resp || resp.error === true) {
 				_api.track(['trackSiteSearch', _api.nodeSearch.last_node_id, _app.mcc + '-' + _app.mnc, -1]);
 				alert(resp.error === true ? resp.message : 'An error occurred');
@@ -317,9 +317,9 @@ let _api = {
 	},
 
 	nodeUpdate: {
-		move_attempt:{},
+		move_attempt: {},
 
-		sendMove:function(){
+		sendMove: function () {
 			_ui.popToastMessage("Updating Node....", false, true, 'warning');
 
 			$.ajax({
@@ -340,7 +340,7 @@ let _api = {
 	},
 
 	history: {
-		doLookupNode: function(mcc, mnc, node_id, cb) {
+		doLookupNode: function (mcc, mnc, node_id, cb) {
 			let request_data = {
 				'node_id': node_id,
 				'mcc': mcc,
@@ -354,7 +354,7 @@ let _api = {
 				type: 'GET',
 				data: request_data,
 				dataType: 'json',
-				success: function(resp) {
+				success: function (resp) {
 					if (!resp || resp.error === true) {
 						alert(resp.error === true ? resp.message : 'An error occurred');
 						return;
