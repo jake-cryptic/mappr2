@@ -326,6 +326,10 @@ def api_get_map_area():
 			if is_located == -1:
 				continue
 
+		sectors = get_sectors_for_node(row.mcc, row.mnc, row.node_id)
+		if len(sectors) == 0:
+			continue
+
 		node_list.append({
 			'mcc': row.mcc,
 			'mnc': row.mnc,
@@ -336,7 +340,7 @@ def api_get_map_area():
 			'created': row.created,
 			'updated': row.updated,
 			'samples': row.samples,
-			'sectors': get_sectors_for_node(row.mcc, row.mnc, row.node_id)
+			'sectors': sectors
 		})
 
 	# print('Query %s MLS, %s Mappr, %s total, %s filtered, %s final' % (len(mls_results), len(mappr_results), len(results), len(nodes), len(node_list)))

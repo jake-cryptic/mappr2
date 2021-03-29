@@ -686,9 +686,9 @@ let _map = {
 	// TODO: Refactor this as well...
 	addPointToMap: function (point) {
 		// Don't render masts with no sectors
-		if (point.sectors.length === 0) {
+		/*if (Object.keys(point.sectors).length === 0) {
 			return;
-		}
+		}*/
 
 		let tLat = round(point.lat, 7),
 			tLng = round(point.lng, 7);
