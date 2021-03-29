@@ -50,6 +50,17 @@ def account():
 	return render_template('user/account.html', email_form=update_email, user_details=update_user, login_stale=not login_fresh())
 
 
+@user_bp.route('/clear-cache', methods=['GET'])
+@login_required
+def clear_cache():
+	flash("Action successful. Your browser was told to clear its cache.", 'success')
+
+	resp = redirect(url_for('user_bp.account'))
+	resp.headers["Clear-Site-Data"] = '"cache"'
+
+	return resp
+
+
 @user_bp.route('/password', methods=['GET', 'POST'])
 @login_required
 def password():
