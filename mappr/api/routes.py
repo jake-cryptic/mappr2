@@ -296,18 +296,15 @@ def api_get_map_area():
 	results = base_results + mappr_results
 
 	# Get list of unique node identifiers in map area
-	nodes = set()
-	for row in results:
-		nodes.add(str(row.mcc) + '-' + str(row.mnc) + '-' + str(row.node_id))
+	nodes = set(results)
 
 	# Lookup all information for nodes
 	node_list = []
-	for iden in nodes:
-		idenspl = iden.split('-')
+	for node in nodes:
 		node_query = db.session.query(Node).filter(
-			Node.mcc == idenspl[0],
-			Node.mnc == idenspl[1],
-			Node.node_id == idenspl[2]
+			Node.mcc == node.mcc,
+			Node.mnc == node.mnc,
+			Node.node_id == node.node_id
 		)
 
 		results = filter_query(node_query).all()

@@ -7,6 +7,7 @@ let _api = {
 	currentRequest: null,
 	timeout:30000,
 	total_analytics:0,
+	apiCompat:1,
 
 	init:function (){
 		_api.prepareAjax();
@@ -14,6 +15,20 @@ let _api = {
 		_api.users.getUsers();
 
 		console.log('[API]-> Initialised');
+	},
+
+	checkApiCompat: function(resp) {
+		if (!resp || !resp.version) {
+			console.error('Could not detect API version in response');
+			return false;
+		}
+
+		if (_api.apiCompat !== resp.version) {
+			_ui.popToastMessage('Your browser\'s copy of Mappr is out of date! You may encounter errors.',  3000, true, 'warning');
+			return false;
+		}
+
+		return true;
 	},
 
 	track: function(params){
@@ -27,8 +42,11 @@ let _api = {
 			cache: false,
 			timeout: _api.timeout,
 			beforeSend: function(xhr, settings) {
-				if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-					xhr.setRequestHeader("X-CSRFToken", _csrf);
+				if (!this.crossDomain) {
+					if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
+						xhr.setRequestHeader("X-CSRFToken", _csrf);
+					}
+					xhr.setRequestHeader("X-MAPPR-API-VERSION", _api.apiCompat);
 				}
 			}
 		});
@@ -85,6 +103,8 @@ let _api = {
 						return;
 					}
 
+					_api.checkApiCompat(resp);
+
 					let keys = Object.keys(resp.response);
 					if (keys.length === 0) {
 						console.error('No Users');
@@ -124,6 +144,8 @@ let _api = {
 				console.error(resp);
 				return;
 			}
+
+			_api.checkApiCompat(resp);
 
 			_api.data.current_mcc = resp.response;
 			_ui.controls.updateSectorList();
@@ -222,6 +244,8 @@ let _api = {
 				return;
 			}
 
+			_api.checkApiCompat(resp);
+
 			document.title = _ui.current_title;
 
 			let len = resp.response.length || 0;
@@ -304,7 +328,7 @@ let _api = {
 				data: _api.nodeUpdate.move_attempt,
 				dataType: 'json',
 				success: function (resp) {
-					console.log(resp);
+					_api.checkApiCompat(resp);
 					_ui.popToastMessage("Update Success", 5000, true, 'success');
 					_map.reloadMap();
 				},
@@ -335,6 +359,8 @@ let _api = {
 						alert(resp.error === true ? resp.message : 'An error occurred');
 						return;
 					}
+
+					_api.checkApiCompat(resp);
 
 					cb(resp.response, mcc, mnc, node_id);
 				},

@@ -39,7 +39,8 @@ let _map = {
 		confirmed:'#1a1a1a', // #1a1a1a or #1ac400
 		estimated:'#0099ff', // #0099ff or #ff1328
 
-		csv_file:'#ff11e9'
+		csv_file:'#ff11e9',
+		user_location:'#00e53b'
 	},
 
 	attr: {
@@ -52,7 +53,8 @@ let _map = {
 		ico: {
 			main: null,
 			located: null,
-			csv:null
+			csv:null,
+			user:null
 		},
 
 		init: function () {
@@ -100,6 +102,17 @@ let _map = {
 				textColor:'#fff'
 			});
 			_map.icons.ico.csv = biCsv;
+
+			let biUser = L.BeautifyIcon.icon({
+				icon:'far fa-user icon-class',
+				shadowSize: [0,0],
+				iconShape:'marker',
+				borderColor:'#fff',
+				borderWidth:1,
+				backgroundColor:_map.colours.user_location,
+				textColor:'#fff'
+			});
+			_map.icons.ico.user = biUser;
 		}
 
 	},
@@ -410,6 +423,9 @@ let _map = {
 
 		id: null,
 
+		marker:null,
+		circle:null,
+
 		options: {
 		  	enableHighAccuracy: false,
 		  	timeout: 5000,
@@ -431,6 +447,24 @@ let _map = {
 		update:function(pos) {
 			let coords = pos.coords;
 
+			if (_map.watch.circle) _map.state.map.removeLayer(_map.watch.circle);
+			if (_map.watch.marker) _map.state.map.removeLayer(_map.watch.marker);
+
+			_map.watch.circle = L.circle([coords.latitude, coords.longitude], coords.accuracy/2, {
+                weight: 1,
+                color: '#00c4ff',
+                fillColor: '#cacaca',
+                fillOpacity: 0.2
+            });
+			_map.watch.marker = L.marker([coords.latitude, coords.longitude], {
+				icon:_map.icons.ico.user
+			}).bindPopup('You are here', {
+				'className':'site_popup'
+			});
+
+            _map.state.map.addLayer(_map.watch.circle);
+            _map.state.map.addLayer(_map.watch.marker);
+
 			_map.setLocation(coords.latitude, coords.longitude, 15);
 		},
 
@@ -440,6 +474,9 @@ let _map = {
 		},
 
 		stop: function() {
+			if (_map.watch.marker) _map.state.map.removeLayer(_map.watch.marker);
+			if (_map.watch.circle) _map.state.map.removeLayer(_map.watch.circle);
+
 			navigator.geolocation.clearWatch(_map.watch.id);
 			_map.watch.id = null;
 		}
