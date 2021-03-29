@@ -9,7 +9,7 @@ auth_bp = Blueprint("auth_bp", __name__, template_folder="templates")
 
 
 @auth_bp.route('/auth', methods=['GET', 'POST'])
-@limiter.limit('20/hour;5/minute;1/second')
+@limiter.limit('20/hour;6/minute;2/second')
 def auth():
 	login_form = LoginUserForm(prefix="login")
 	create_form = CreateUserForm(prefix="create")

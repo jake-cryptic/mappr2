@@ -251,16 +251,16 @@ def api_get_map_area():
 
 		# No location found
 		if len(locations) == 0:
-			return 0, node.lat, node.lng
+			return -1, node.lat, node.lng
 		elif len(locations) == 1:
 			location = locations[0]
 			return location.user_id, location.lat, location.lng
 		else:
 			final_location = locations[0]
 
-			for row in locations:
-				if row.time_created > final_location.time_created:
-					final_location = row
+			for location_row in locations:
+				if location_row.time_created > final_location.time_created:
+					final_location = location_row
 
 			return final_location.user_id, final_location.lat, final_location.lng
 
@@ -269,16 +269,23 @@ def api_get_map_area():
 			Sector.mcc == mcc,
 			Sector.mnc == mnc,
 			Sector.node_id == node_id
-		).all()
+		)
+
+		if len(sectors_allowed) != 0:
+			sectors_query = sectors_query.filter(
+				Sector.sector_id.in_(sectors_allowed)
+			)
+
+		sectors_result = sectors_query.limit(256).all()
 
 		sect_dict = {}
-		for row in sectors_query:
-			sect_dict[row.sector_id] = [
-				float(row.lat),
-				float(row.lng),
-				row.created,
-				row.updated,
-				row.pci
+		for sector_row in sectors_result:
+			sect_dict[sector_row.sector_id] = [
+				float(sector_row.lat),
+				float(sector_row.lng),
+				sector_row.created,
+				sector_row.updated,
+				sector_row.pci
 			]
 
 		return sect_dict
@@ -289,11 +296,9 @@ def api_get_map_area():
 	results = base_results + mappr_results
 
 	# Get list of unique node identifiers in map area
-	nodes = []
+	nodes = set()
 	for row in results:
-		iden = str(row.mcc) + '-' + str(row.mnc) + '-' + str(row.node_id)
-		if iden not in nodes:
-			nodes.append(iden)
+		nodes.add(str(row.mcc) + '-' + str(row.mnc) + '-' + str(row.node_id))
 
 	# Lookup all information for nodes
 	node_list = []
@@ -315,13 +320,13 @@ def api_get_map_area():
 		if show_mappr:
 			is_located, lat, lng = get_node_location(row)
 		else:
-			is_located = 0
+			is_located = -1
 			lat = row.lat
 			lng = row.lng
 
 		# If user doesn't want to see MLS locations, then, dont...
 		if not show_mls:
-			if is_located == 0:
+			if is_located == -1:
 				continue
 
 		node_list.append({

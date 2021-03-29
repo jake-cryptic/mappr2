@@ -214,7 +214,7 @@ let _map = {
 					enb:point.node_id,
 					draggable:true,
 					autoPan:true,
-					icon: (point.user_id ? _map.icons.ico.located : _map.icons.ico.main)
+					icon: (point.user_id !== -1 ? _map.icons.ico.located : _map.icons.ico.main)
 				};
 			}
 
@@ -555,6 +555,11 @@ let _map = {
 
 	// TODO: Refactor this as well...
 	addPointToMap: function (point) {
+		// Don't render masts with no sectors
+		if (point.sectors.length === 0) {
+			return;
+		}
+
 		let tLat = round(point.lat, 7),
 			tLng = round(point.lng, 7);
 
@@ -580,10 +585,11 @@ let _map = {
 		}
 		txt += "</div>";
 
-		// TODO: Add user location verification
-		//if (_api.users.getUserFromId(point.verified)){
-		//	txt += '<br />Located by: ' + _api.users.getUserFromId(point.verified);
-		//}
+		if (point.user_id !== -1) {
+			if (_api.users.getUserFromId(point.user_id)){
+				txt += '<br />Located by: ' + _api.users.getUserFromId(point.user_id);
+			}
+		}
 		_map.items.pushMarker(tLat, tLng, point, txt);
 	},
 
