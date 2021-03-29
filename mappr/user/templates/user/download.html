@@ -13,7 +13,6 @@
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		{% endfor %}
-		<!--
 		<p class="lead">
 			This form will allow you to download, in CSV format:
 			<ul>
@@ -27,8 +26,12 @@
 				{{ download_form.password.label(class="form-label") }}
 				{{ download_form.password(class="form-control") }}
 			</div>
+			<div class="mb-3">
+				{{ download_form.export.label(class="form-label") }}
+				{{ download_form.export(class="form-select mb-3") }}
+			</div>
 			<button type="submit" class="btn btn-success"><i class="fas fa-download"></i> Download Data</button>
-		</form>-->
+		</form>
 		<hr />
 		<div class="float-right">
 			<a href="{{ url_for('user_bp.account') }}" class="btn btn-outline-primary"><i class="fas fa-user"></i> Account Settings</a>

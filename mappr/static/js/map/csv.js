@@ -17,6 +17,8 @@ let _csv = {
 	errors:[],
 	files:[],
 
+	osgb:null,
+
 	init:function(){
 		// Check for browser file support for this feature
 		// TODO: Don't init if we don't support this API
@@ -24,6 +26,9 @@ let _csv = {
 			$("#files").empty().text('File API not supported');
 			return;
 		}
+
+		// Just in case we need to convert easting northing coords
+		_csv.osgb = new GT_OSGB();
 
 		// Add callback functions to config
 		_csv.conf['before'] = _csv.parseBefore;
@@ -63,6 +68,18 @@ let _csv = {
 			text: ""
 		};
 
+		if ((r.easting && r.northing) || (point.lat > 100 && point.lng > 100)) {
+			console.log(r);
+			let easting = r.easting || r.x;
+			let northing = r.northing || r.y;
+
+			_csv.osgb.setGridCoordinates(easting, northing);
+
+			let wgs84 = _csv.osgb.getWGS84();
+			point.lat = wgs84.latitude;
+			point.lng = wgs84.longitude;
+		}
+
 		if (point.lat === 0 || isNaN(point.lat) || point.lng === 0 || isNaN(point.lng)) {
 			_csv.errors.push(
 				row
@@ -73,6 +90,7 @@ let _csv = {
 		let m = new L.marker(
 			[point.lat, point.lng],
 			{
+				virtual:true,
 				draggable:false,
 				autoPan:true,
 				icon: _map.icons.ico.csv

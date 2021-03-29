@@ -11,6 +11,7 @@ let _api = {
 	init:function (){
 		_api.prepareAjax();
 		_api.data.getMccSectors();
+		_api.users.getUsers();
 
 		console.log('[API]-> Initialised');
 	},
@@ -60,14 +61,22 @@ let _api = {
 			return _api.users.cache[id]['name'];
 		},
 
-		getUsers: function (users) {
+		addUsers: function (resp) {
+			for (let user in resp) {
+				_api.users.cache[user] = {
+					'name': resp[user]
+				};
+			}
+		},
+
+		getUsers: function (users = []) {
 			let queryList = {
 				'users':users
 			};
 
 			$.ajax({
-				url: 'api/get-users',
-				type: 'GET',
+				url: 'api/users/get',
+				type: 'POST',
 				data: queryList,
 				dataType: 'json',
 				success: function(resp) {
@@ -75,6 +84,14 @@ let _api = {
 						console.error(resp);
 						return;
 					}
+
+					let keys = Object.keys(resp.response);
+					if (keys.length === 0) {
+						console.error('No Users');
+						return;
+					}
+
+					_api.users.addUsers(resp.response);
 				},
 				error: function (e) {
 					_api.error(e, 'Failed to load user information!');

@@ -24,6 +24,12 @@
 				</div>
 			</div>
 			<div class="input-group mb-3 row">
+				<label for="static_name" class="col-sm-2 col-form-label">Time Created</label>
+				<div class="col-sm-10">
+					<input type="text" readonly class="form-control" id="static_created" value="{{ user_details.time_created }}">
+				</div>
+			</div>
+			<div class="input-group mb-3 row">
 				{{ email_form.email.label(class="col-sm-2 col-form-label") }}
 				<div class="col-sm-10">
 					{{ email_form.email(class="form-control",value=user_details.email) }}

@@ -104,6 +104,7 @@
 							<select id="select_mnc" class="form-select mb-2" aria-label="Choose a mobile network">
 								<option value='0' selected>All</option>
 							</select>
+							<a href="https://mobilespectrum.org" class="d-block small" rel="noopener" target="_blank" id="open_mobile_spectrum">Visit MobileSpectrum</a>
 						</div>
 					</div>
 				</div>
@@ -202,6 +203,16 @@
 				</h2>
 				<div id="collapse_five" class="accordion-collapse collapse" aria-labelledby="accord_head_xyz" data-bs-parent="#sidebar_accordion">
 					<div class="accordion-body">
+						<h3 class="h4">XYZ Tile Settings</h3>
+						<div class="container container-fluid mb-3">
+							<span class="d-block mb-2" id="operator_current_layer">Current Layer: None</span>
+
+							<label for="operator_tile_opacity" class="label">Tile Opacity</label>
+							<input type="range" id="operator_tile_opacity" max="100" value="50" min="1"/>
+						</div>
+
+						{% if current_user.account_type > 1 %}
+						<h3 class="h4">Signal Trails</h3>
 						<form id="cm_tiles" class="row">
 							<div class="col-md-6 mb-3">
 								<input type="number" class="form-control" id="cm_input_mcc" placeholder="MCC" aria-label="mcc" value="234" />
@@ -251,13 +262,7 @@
 								</tr>
 							</tbody>
 						</table>
-
-						<div class="container container-fluid">
-							<label for="operator_tile_opacity">Tile Opacity</label>
-							<input type="range" id="operator_tile_opacity" max="100" value="50" min="1"/>
-							<span class="small" id="operator_current_layer">Current Layer: None</span>
-							<div id="operator_maps"></div>
-						</div>
+						{% endif %}
 					</div>
 				</div>
 			</div>

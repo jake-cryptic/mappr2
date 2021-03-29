@@ -4,7 +4,7 @@ from sqlalchemy import text
 from .. import limiter
 from ..decorators import internally_referred
 from ..functions import resp
-from ..models import db, Node, Sector, Bookmark, NodeLocation
+from ..models import db, Node, Sector, Bookmark, NodeLocation, User
 
 api_bp = Blueprint("api_bp", __name__, template_folder="templates", url_prefix='/api')
 
@@ -375,6 +375,19 @@ def api_get_sector_list():
 		results[row[1]].append(row[0])
 
 	return resp(results)
+
+
+@api_bp.route('/users/get', methods=['POST'])
+@login_required
+@internally_referred
+def api_get_user_names():
+	all_users = db.session.query(User).all()
+
+	user_list = {}
+	for user in all_users:
+		user_list[user.id] = user.name
+
+	return resp(user_list)
 
 
 @api_bp.route('/bookmark/create', methods=['POST'])
