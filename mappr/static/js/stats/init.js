@@ -2,7 +2,7 @@ let main = new StatsChart('main-chart');
 
 fetch('/api/statistics', {}).response();
 
-let stats = {
+let init = {
 
 	postData: async function (url = '/api/statistics', data = {}) {
 		if (!navigator.onLine) {

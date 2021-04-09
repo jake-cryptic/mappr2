@@ -17,4 +17,5 @@ def network_stats():
 @login_required
 @fresh_login_required
 def user_stats():
+
 	return render_template('statistics/users.html')
