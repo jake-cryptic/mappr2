@@ -70,7 +70,7 @@ let _map = {
 			_map.icons.ico.located = new techIcon({iconUrl: 'static/img/marker-located.png'});
 			_map.icons.ico.csv = new techIcon({iconUrl: 'static/img/marker-csv.png'});
 
-			let biMain = L.BeautifyIcon.icon({
+			_map.icons.ico.main = L.BeautifyIcon.icon({
 				icon: 'far fa-circle icon-class',
 				shadowSize: [0, 0],
 				iconShape: 'marker',
@@ -79,9 +79,8 @@ let _map = {
 				backgroundColor: _map.colours.estimated,
 				textColor: '#fff'
 			});
-			_map.icons.ico.main = biMain;
 
-			let biLocated = L.BeautifyIcon.icon({
+			_map.icons.ico.located = L.BeautifyIcon.icon({
 				icon: 'far fa-circle icon-class',
 				shadowSize: [0, 0],
 				iconShape: 'marker',
@@ -90,9 +89,8 @@ let _map = {
 				backgroundColor: _map.colours.confirmed,
 				textColor: '#fff'
 			});
-			_map.icons.ico.located = biLocated;
 
-			let biCsv = L.BeautifyIcon.icon({
+			_map.icons.ico.csv = L.BeautifyIcon.icon({
 				icon: 'far fa-circle icon-class',
 				shadowSize: [0, 0],
 				iconShape: 'marker',
@@ -101,9 +99,8 @@ let _map = {
 				backgroundColor: _map.colours.csv_file,
 				textColor: '#fff'
 			});
-			_map.icons.ico.csv = biCsv;
 
-			let biUser = L.BeautifyIcon.icon({
+			_map.icons.ico.user = L.BeautifyIcon.icon({
 				icon: 'far fa-user icon-class',
 				shadowSize: [0, 0],
 				iconShape: 'marker',
@@ -112,7 +109,6 @@ let _map = {
 				backgroundColor: _map.colours.user_location,
 				textColor: '#fff'
 			});
-			_map.icons.ico.user = biUser;
 		}
 
 	},
@@ -517,6 +513,7 @@ let _map = {
 	},
 
 	changeMap: function (map) {
+		// TODO: Refactor this mess
 		if (!map) map = "rdi";
 		if (_map.state.base) _map.state.map.removeLayer(_map.state.base);
 
@@ -533,7 +530,7 @@ let _map = {
 		let server = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			attr = _map.attr.o;
 
-		if (map && maps[map] && map !== "osm" && map !== "otm") {
+		if (map && maps[map] && map !== "osm" && map !== "otm" && map !== "ydx") {
 			attr = _map.attr.g;
 			server = 'https://mt1.google.com/vt/lyrs=' + maps[map] + '&x={x}&y={y}&z={z}&hl=en';
 		}
@@ -542,13 +539,18 @@ let _map = {
 			server = "https://tile.opentopomap.org/{z}/{x}/{y}.png";
 		}
 
-		_map.state.base = new L.TileLayer(server,
-			{
-				attribution: attr + " | " + MAPPR_VER,
-				maxNativeZoom: 18,
-				maxZoom: _map.state.maxZoom
-			}
-		);
+		if (map === "ydx") {
+			_map.state.base = L.yandex({ type: 'satellite' });
+		} else {
+			_map.state.base = new L.TileLayer(server,
+				{
+					attribution: attr + " | " + MAPPR_VER,
+					maxNativeZoom: 18,
+					maxZoom: _map.state.maxZoom
+				}
+			);
+		}
+
 		_map.state.map_id = map;
 		_map.state.map.addLayer(_map.state.base);
 
