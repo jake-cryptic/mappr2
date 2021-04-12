@@ -19,6 +19,43 @@ let round = function(n, dp){
 	return Math.floor(Math.round(n*exp))/exp;
 };
 
+let storage = {
+
+	supported: typeof(Storage) !== 'undefined',
+	prefix: 'mappr_',
+
+	getAll: function() {
+		if (!storage.supported) return {};
+
+		let all = {};
+
+		for(let i = 0; i < localStorage.length; i++) {
+			let key = localStorage.key(i);
+			if (key.indexOf(storage.prefix) === -1) continue;
+
+			all[key] = JSON.parse(localStorage.getItem(key));
+		}
+
+		return all;
+	},
+
+	get: function(key) {
+		if (!storage.supported) return null;
+
+		let result = localStorage.getItem(storage.prefix + key);
+		if (result === null) return null;
+
+		return JSON.parse(result);
+	},
+
+	set: function (key, value) {
+		if (!storage.supported) return false;
+
+		localStorage.setItem(storage.prefix + key, JSON.stringify(value));
+	}
+
+};
+
 function dsh(s){
 	return (s.toString().length === 1 ? "0"+s : s).toString();
 }
