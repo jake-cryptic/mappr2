@@ -20,12 +20,12 @@ let round = function(n, dp){
 };
 
 function dsh(s){
-	return s.toString().length === 1 ? "0"+s : s;
+	return (s.toString().length === 1 ? "0"+s : s).toString();
 }
 
 function getFriendlyDate(dobj) {
-	let d = dobj.getMonth();
-	let m = dobj.getMonth();
+	let d = dobj.getDay() + 1;
+	let m = dobj.getMonth() + 1;
 	let y = dobj.getFullYear();
 	return y + "-" + dsh(m) + "-" + dsh(d);
 }
