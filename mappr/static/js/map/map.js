@@ -513,11 +513,10 @@ let _map = {
 	},
 
 	changeMap: function (map) {
-		// TODO: Refactor this mess
 		if (!map) map = "rdi";
 		if (_map.state.base) _map.state.map.removeLayer(_map.state.base);
 
-		let maps = {
+		let gmaps = {
 			"sat": "s",
 			"ter": "p",
 			"tro": "t",
@@ -526,22 +525,33 @@ let _map = {
 			"arm": "r",
 			"hyb": "y"
 		};
+		let ymaps = {
+			'ydx': 'map',
+			'ydh': 'hybrid',
+			'yds': 'satellite'
+		};
+		let ttmaps = {
+			'ttm': 'basic',
+			'tth': 'hybrid'
+		};
+		let ttstyle = 'main';
+		let ttapikey = 'EK5diQWcyCaSPWZaDA5C3JgsBpViRQy9';
 
-		let server = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		if (map && ymaps[map]) {
+			_map.state.base = L.yandex({ type: ymaps[map] });
+		} else {
+			let server = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			attr = _map.attr.o;
 
-		if (map && maps[map] && map !== "osm" && map !== "otm" && map !== "ydx") {
-			attr = _map.attr.g;
-			server = 'https://mt1.google.com/vt/lyrs=' + maps[map] + '&x={x}&y={y}&z={z}&hl=en';
-		}
-
-		if (map === "otm") {
-			server = "https://tile.opentopomap.org/{z}/{x}/{y}.png";
-		}
-
-		if (map === "ydx") {
-			_map.state.base = L.yandex({ type: 'satellite' });
-		} else {
+			if (map && gmaps[map]) {
+				attr = _map.attr.g;
+				server = 'https://mt1.google.com/vt/lyrs=' + gmaps[map] + '&x={x}&y={y}&z={z}&hl=en';
+			} else if (ttmaps[map]) {
+				attr = 'TOMTOM';
+				server = 'https://{s}.api.tomtom.com/map/1/tile/' + ttmaps[map] + '/' + ttstyle + '/{z}/{x}/{y}.png?key=' + ttapikey;
+			} else if (map === "otm") {
+				server = "https://tile.opentopomap.org/{z}/{x}/{y}.png";
+			}
 			_map.state.base = new L.TileLayer(server,
 				{
 					attribution: attr + " | " + MAPPR_VER,

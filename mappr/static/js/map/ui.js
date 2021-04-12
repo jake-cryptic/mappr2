@@ -278,7 +278,7 @@ let _ui = {
 		if (_app.mnc !== 0) {
 			mncName = mccData['providers'][_app.mnc]['short'];
 		}
-		_ui.current_title = 'Mappr2 | (' + mccData['country_short'] + ') ' + mncName;
+		_ui.current_title = 'Mappr2 | ' + mncName + ' (' + mccData['country_short'] + ')';
 
 		document.title = _ui.current_title;
 	},
