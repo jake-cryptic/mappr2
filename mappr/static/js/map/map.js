@@ -525,11 +525,6 @@ let _map = {
 			"arm": "r",
 			"hyb": "y"
 		};
-		let ymaps = {
-			'ydx': 'map',
-			'ydh': 'hybrid',
-			'yds': 'satellite'
-		};
 		let ttmaps = {
 			'ttm': 'basic',
 			'tth': 'hybrid'
@@ -537,29 +532,26 @@ let _map = {
 		let ttstyle = 'main';
 		let ttapikey = 'EK5diQWcyCaSPWZaDA5C3JgsBpViRQy9';
 
-		if (map && ymaps[map]) {
-			_map.state.base = L.yandex({ type: ymaps[map] });
-		} else {
-			let server = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			attr = _map.attr.o;
+		let server = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		attr = _map.attr.o;
 
-			if (map && gmaps[map]) {
-				attr = _map.attr.g;
-				server = 'https://mt1.google.com/vt/lyrs=' + gmaps[map] + '&x={x}&y={y}&z={z}&hl=en';
-			} else if (ttmaps[map]) {
-				attr = 'TOMTOM';
-				server = 'https://{s}.api.tomtom.com/map/1/tile/' + ttmaps[map] + '/' + ttstyle + '/{z}/{x}/{y}.png?key=' + ttapikey;
-			} else if (map === "otm") {
-				server = "https://tile.opentopomap.org/{z}/{x}/{y}.png";
-			}
-			_map.state.base = new L.TileLayer(server,
-				{
-					attribution: attr + " | " + MAPPR_VER,
-					maxNativeZoom: 18,
-					maxZoom: _map.state.maxZoom
-				}
-			);
+		if (map && gmaps[map]) {
+			attr = _map.attr.g;
+			server = 'https://mt1.google.com/vt/lyrs=' + gmaps[map] + '&x={x}&y={y}&z={z}&hl=en';
+		} else if (ttmaps[map]) {
+			attr = 'TOMTOM';
+			server = 'https://{s}.api.tomtom.com/map/1/tile/' + ttmaps[map] + '/' + ttstyle + '/{z}/{x}/{y}.png?key=' + ttapikey;
+		} else if (map === "otm") {
+			server = "https://tile.opentopomap.org/{z}/{x}/{y}.png";
 		}
+
+		_map.state.base = new L.TileLayer(server,
+			{
+				attribution: attr + " | " + MAPPR_VER,
+				maxNativeZoom: 18,
+				maxZoom: _map.state.maxZoom
+			}
+		);
 
 		_map.state.map_id = map;
 		_map.state.map.addLayer(_map.state.base);
