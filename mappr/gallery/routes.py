@@ -1,6 +1,55 @@
-from flask import Blueprint, request, abort, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, current_app
 from flask_login import current_user, login_required
+from werkzeug.utils import secure_filename
+from os.path import join as ospathjoin
+from ..functions import resp
+from ..models import db, User
+from .. import limiter
 
 
 gallery_bp = Blueprint("gallery_bp", __name__, template_folder="templates", url_prefix='/collections')
 
+
+@gallery_bp.route('/', methods=['GET'])
+@login_required
+def home():
+	return render_template('gallery/home.html')
+
+
+@gallery_bp.route('/add', methods=['GET'])
+@login_required
+def add():
+	return render_template('gallery/upload.html')
+
+
+@gallery_bp.route('/upload', methods=['POST'])
+@limiter.limit('20/hour;6/minute;2/second')
+@login_required
+def upload():
+	print(request.files)
+
+	def allowed_file(filename):
+		return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['UPLOAD_EXTENSIONS']
+
+	if len(request.files) == 0:
+		return resp({}, error='Cannot process this request')
+
+	saved_files = []
+
+	for file_index in request.files:
+		file = request.files[file_index]
+		if file and allowed_file(file.filename):
+			new_filename = secure_filename(file.filename)
+			file.save(ospathjoin(current_app.config['UPLOAD_FOLDER'], new_filename))
+
+			saved_files.append({
+				'original': file.filename,
+				'new': new_filename
+			})
+
+	if len(saved_files) == 0:
+		return resp({}, error='No files saved')
+
+	return resp({
+		'files': saved_files
+	})

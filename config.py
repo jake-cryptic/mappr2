@@ -21,7 +21,7 @@ class Config:
 	REMEMBER_COOKIE_DURATION = 1209600
 
 	# 5MB
-	MAX_CONTENT_LENGTH = 1024 * 1024 * 5
+	MAX_CONTENT_LENGTH = 1024 * 1024 * 16
 	UPLOAD_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp']
 	UPLOAD_PATH = 'image_uploads'
 
