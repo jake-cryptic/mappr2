@@ -59,10 +59,11 @@ def create_app():
 	@app.after_request
 	def apply_headers(response):
 		response.headers["Server"] = "Mappr2"
+		response.headers['Cross-Origin-Resource-Policy'] = 'same-site'
 
 		if not request.path.startswith('/static/') and not request.path.startswith('/api/'):
-			# TODO: Change 'Feature-Policy' to 'Permissions-Policy' soon
-			response.headers["Feature-Policy"] = "fullscreen 'self'; geolocation 'self'; microphone 'none'; camera 'none'"
+			response.headers["Feature-Policy"] = "fullscreen 'self'; geolocation 'self';"
+			response.headers["Permissions-Policy"] = "accelerometer=(), geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()"
 			response.headers["Referrer-Policy"] = "same-origin"
 			response.headers["Strict-Transport-Security"] = "max-age=5184000"
 			response.headers["X-Frame-Options"] = "Deny"
@@ -74,6 +75,8 @@ def create_app():
 			# Production only headers
 			if app.config['ENV'] == 'production':
 				response.headers['Content-Security-Policy-Report-Only'] = csp_header_value
+				response.headers['Cross-Origin-Embedder-Policy-Report-Only'] = 'unsafe-none; report-to="default"' # Change to require-corp in future
+				response.headers['Cross-Origin-Opener-Policy-Report-Only'] = 'same-origin; report-to="default"'
 				response.headers['Expect-CT'] = 'report-uri="https://mappr.report-uri.com/r/d/ct/reportOnly", max-age=30'
 				response.headers['Report-To'] = '{"group":"default","max_age":3600,"endpoints":[{"url":"https://mappr.report-uri.com/a/d/g"}],"include_subdomains":true}'
 				response.headers['NEL'] = '{"report_to":"default","max_age":3600,"include_subdomains":true}'
@@ -81,6 +84,8 @@ def create_app():
 			# Testing headers
 			if app.config['ENV'] == 'development':
 				response.headers['Content-Security-Policy'] = csp_header_value
+				response.headers['Cross-Origin-Embedder-Policy'] = 'unsafe-none; report-to="default"'
+				response.headers['Cross-Origin-Opener-Policy'] = 'same-origin; report-to="default"'
 
 		if app.config['ENV'] == 'production' and 'https' not in request.base_url:
 			response.headers['Upgrade-Insecure-Requests'] = 1

@@ -40,7 +40,7 @@ def upload():
 		file = request.files[file_index]
 		if file and allowed_file(file.filename):
 			new_filename = secure_filename(file.filename)
-			file.save(ospathjoin(current_app.config['UPLOAD_FOLDER'], new_filename))
+			file.save(ospathjoin(current_app.config['UPLOAD_PATH'], new_filename))
 
 			saved_files.append({
 				'original': file.filename,

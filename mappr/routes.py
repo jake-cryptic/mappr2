@@ -31,3 +31,8 @@ def privacy():
 @main_bp.route("/terms-of-use")
 def terms():
 	return render_template('help/terms-of-use.html')
+
+
+@main_bp.route("/proto/<req>")
+def proto(req):
+	print(req)

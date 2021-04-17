@@ -1,7 +1,5 @@
 let uppy = Uppy.Core({
 	debug: true,
-	autoProceed: false,
-	bundle:false,
 	headers:{
 		"X-CSRFToken": _csrf
 	}
@@ -15,4 +13,7 @@ uppy.use(Uppy.Dashboard, {
 });
 uppy.use(Uppy.XHRUpload, {
 	endpoint: '/collections/upload',
+	headers:{
+		"X-CSRFToken": _csrf
+	}
 });
