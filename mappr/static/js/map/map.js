@@ -5,6 +5,11 @@
 let _map = {
 
 	getLocation: function (cb) {
+		if (!navigator || !navigator.permissions || !navigator.permissions.query) {
+			_ui.popToastMessage('Permission error with Geolocation API.', 3000, true, 'warning');
+			return false;
+		}
+
 		navigator.permissions.query({
 			name: "geolocation"
 		}).then(function (resp) {
