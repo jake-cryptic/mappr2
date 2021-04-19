@@ -19,6 +19,7 @@ let _data = {
 				"website": "https://o2.co.uk",
 				"backgroundColor": "#0019A5",
 				"textColor": "#fff",
+				"ratList": ['GSM', 'UMTS', 'LTE', 'NR'],
 				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					if (findItem(sectorId, [115, 125, 135, 145, 155, 165])) ret += (enb >= 500000 ? "1 " : "40C1 ");
@@ -36,6 +37,7 @@ let _data = {
 				"website": "https://www.vodafone.co.uk/",
 				"background": "#e60000",
 				"text": "#fff",
+				"ratList": ['GSM', 'UMTS', 'LTE', 'NR'],
 				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					if (findItem(sectorId, [15, 25, 35, 45, 55, 65])) ret += (enb >= 500000 ? "1 " : "?");
@@ -54,6 +56,7 @@ let _data = {
 				"website": "http://www.three.co.uk/",
 				"background": "#000",
 				"text": "#fff",
+				"ratList": ['UMTS', 'LTE', 'NR'],
 				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					if (findItem(sectorId, [71, 72, 73, 74, 75, 76])) ret += "1 ";
@@ -82,11 +85,43 @@ let _data = {
 					return ret;
 				}
 			},
+			"31": {
+				"name": "EE ESN Only",
+				"short": "EE ESN Only",
+				"website": "https://ee.co.uk",
+				"background": "#007b85",
+				"text": "#fff",
+				"sectorInfo": function (enb, sectorId) {
+					return _data['234']['providers']['30']['sectorInfo'](enb, sectorId);
+				}
+			},
+			"32": {
+				"name": "EE ESN",
+				"short": "EE ESN",
+				"website": "https://ee.co.uk",
+				"background": "#007b85",
+				"text": "#fff",
+				"sectorInfo": function (enb, sectorId) {
+					return _data['234']['providers']['30']['sectorInfo'](enb, sectorId);
+				}
+			},
+			"33": {
+				"name": "Orange",
+				"short": "Orange",
+				"website": "https://ee.co.uk",
+				"background": "#007b85",
+				"text": "#fff",
+				"ratList": ['GSM', 'UMTS'],
+				"sectorInfo": function (enb, sectorId) {
+					return _data['234']['providers']['30']['sectorInfo'](enb, sectorId);
+				}
+			},
 			"55": {
 				"name": "Sure",
 				"short": "Sure",
 				"background": "#000",
 				"text": "#fff",
+				"ratList": ['GSM', 'UMTS', 'LTE'],
 				"sectorInfo": function (enb, sectorId) {
 					return sectorId.length + ' sectors';
 				}
@@ -96,6 +131,7 @@ let _data = {
 				"short": "Manx",
 				"background": "#000",
 				"text": "#fff",
+				"ratList": ['GSM', 'UMTS', 'LTE'],
 				"sectorInfo": function (enb, sectorId) {
 					return sectorId.length + ' sectors';
 				}
@@ -152,6 +188,7 @@ let _data = {
 				"website": "https://telekom.de/",
 				"background": "#ff0090",
 				"text": "#fff",
+				"ratList": ['GSM', 'UMTS', 'LTE', 'NR'],
 				"sectorInfo": function (enb, sectorId) {
 					return sectorId.length + ' sectors';
 				}
@@ -162,13 +199,14 @@ let _data = {
 				"website": "https://www.vodafone.de/",
 				"background": "#e60000",
 				"text": "#fff",
+				"ratList": ['GSM', 'UMTS', 'LTE', 'NR'],
 				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					if (findItem(sectorId, [19, 20, 21])) ret += "1 ";
 					if (findItem(sectorId, [8, 9, 10])) ret += "3 ";
 					if (findItem(sectorId, [5, 6, 7])) ret += "7 ";
 					if (findItem(sectorId, [25, 26, 27])) ret += "8 ";
-					if (findItem(sectorId, [1, 2, 3])) ret += "20";
+					if (findItem(sectorId, [1, 2, 3])) ret += "20 ";
 					if (findItem(sectorId, [31, 32, 33])) ret += "28 ";
 					if (findItem(sectorId, [43, 44, 45])) ret += "38-1 ";
 					if (findItem(sectorId, [151, 152, 153])) ret += "38-2 ";
@@ -181,6 +219,7 @@ let _data = {
 				"website": "https://o2.de",
 				"backgroundColor": "#004080",
 				"textColor": "#fff",
+				"ratList": ['GSM', 'UMTS', 'LTE', 'NR'],
 				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					let isOpenRan = false;

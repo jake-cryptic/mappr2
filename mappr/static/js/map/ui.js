@@ -84,7 +84,6 @@ let _ui = {
 			$('.reload-on-change').on('change', _ui.controls.filterReload);
 			$('#filter_force_reload').on('click enter', _ui.controls.reloadMap);
 
-
 			// Select box change events
 			$("#select_rat").on("change", _app.changeRat);
 			$("#select_mcc").on("change", _app.changeMcc);
@@ -92,17 +91,16 @@ let _ui = {
 			$("#map_name").on("change", _map.setMap);
 
 			// API query events
+			$('#enb_search_input').on('keypress', function(evt) {
+				if (evt.keyCode === 13) _api.nodeSearch.doNodeSearch();
+			});
 			$('#enb_search_submit').on('click enter', _api.nodeSearch.doNodeSearch);
 			// $('#pci_search_submit').on('click enter', _api.nodeSearch.doNodeSearch);
 
 			// OSM location search
-			$("#do_world_location_search").on("click enter", function () {
-				_ui.controls.osmQuery();
-			});
+			$("#do_world_location_search").on("click enter", _ui.controls.osmQuery);
 			$("#world_location_search").on("keypress", function (evt) {
-				if (evt.keyCode === 13) {
-					_ui.controls.osmQuery();
-				}
+				if (evt.keyCode === 13) _ui.controls.osmQuery();
 			});
 		},
 
