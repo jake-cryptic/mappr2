@@ -5,16 +5,19 @@
 {% block description %}{% endblock %}
 
 {% block content %}
-<div class="container">
-	<div class="display-4 pt-5 pb-2">Collections</div>
-	<div id="add_files_area"></div>
-</div>
+	<div id="csrf_token" data-value="{{ csrf_token() }}"></div>
+	<div class="container">
+		<div class="display-4 pt-5 pb-2">Collections</div>
+		<div id="add_files_area"></div>
+	</div>
 {% endblock %}
 
 {% block jsfiles %}
 {{ super() }}
-<script type="text/javascript">
-	let _csrf = "{{ csrf_token() }}";
-</script>
-<script src="{{ url_for('static', filename='js/gallery/upload.js') }}" type="text/javascript"></script>
+	<!-- Uppy -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uppy/1.27.0/uppy.min.js" integrity="sha512-vlsLx+AdIgUfptm7WkzpBk8TZWJYVCjNq8bxHeUEyIqKyocRww0PK1gvyMwTsg8OvlnpjA4BlUeWyFlDW8U5Og==" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uppy/1.27.0/uppy.min.css" integrity="sha512-zgilVU1Oj8eiTgOKOiw5tQmV/+Fb8RdjiMzuUBjDntL/d4IPNpz3XLMdwNqdKB2TVO6J6B7S/Yn0D8u+DscKJg==" crossorigin="anonymous" />
+
+	<!-- Upload JS file -->
+	<script src="{{ url_for('static', filename='js/gallery/upload.js') }}" type="text/javascript"></script>
 {% endblock %}

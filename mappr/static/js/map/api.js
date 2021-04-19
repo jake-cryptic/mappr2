@@ -8,6 +8,7 @@ let _api = {
 	timeout: 30000,
 	total_analytics: 0,
 	apiCompat: 1,
+	csrf:'',
 
 	init: function () {
 		_api.prepareAjax();
@@ -38,13 +39,15 @@ let _api = {
 	},
 
 	prepareAjax: function () {
+		_api.csrf = $('#csrf_token').data('value');
+
 		$.ajaxSetup({
 			cache: false,
 			timeout: _api.timeout,
 			beforeSend: function (xhr, settings) {
 				if (!this.crossDomain) {
 					if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
-						xhr.setRequestHeader("X-CSRFToken", _csrf);
+						xhr.setRequestHeader("X-CSRFToken", _api.csrf);
 					}
 					xhr.setRequestHeader("X-MAPPR-API-VERSION", _api.apiCompat);
 				}

@@ -44,22 +44,14 @@
 		<script src="https://unpkg.com/beautifymarker@1.0.9/leaflet-beautify-marker-icon.js" integrity="sha384-loeLo2TSF+D4cr3NxoXh6DZXW2iOzG4Bfdlunz56NIXPvJFUynSPAV79B7bSVFkt" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://unpkg.com/beautifymarker@1.0.9/leaflet-beautify-marker-icon.css" integrity="sha384-WEQUujCp3OEGbM6FpKgt3LJuJLT3DcblwhKaZb5BHZziQsaCyWNdk+Eu/78WVrsf" crossorigin="anonymous">
 
-		<!-- Leaflet ESRI -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet/3.0.1/esri-leaflet.min.js" integrity="sha512-yYYNKoOkoAzpeGuQNJNahD+hoiHP+yyeX/BP79gqd93EgOZGrL9VqSm35Smw0+4S9lgsNIKrSsVtmOLksLsjiw==" crossorigin="anonymous"></script>
-
-		<!-- Leaflet Marker Cluster -->
-		<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
-		<link href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" rel="stylesheet" />
-
-		<!-- Uppy -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/uppy/1.26.1/uppy.min.js" integrity="sha512-WEliuuWJB4GoWZ0JjRiC2tLnFR+FDnjgRp3eiTVocvsy5zKdW6vRyhqsfk15JuSF2SVughaSZ7ZveC0YVCZaqQ==" crossorigin="anonymous"></script>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uppy/1.26.1/uppy.min.css" integrity="sha512-tG2NuU735oBRp2Di2qcOw8g8UpmQo/LEBjNZbQwIVH4aZyI3PJprmd5/jFptiO+9yM6Djv6fzjT1ER27xV8sWw==" crossorigin="anonymous" />
-
 		<!-- Chroma.js -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js" integrity="sha512-RWI59o+PDXjPl3bakOf3k2ZbDtfvn/OU/ZKe6QmkE0V/ve7vYKEJe0RdkDueS+VkghBazP+1o4LKGON+pHUa5g==" crossorigin="anonymous"></script>
 
 		<!-- Papa -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js" integrity="sha512-rKFvwjvE4liWPlFnvH4ZhRDfNZ9FOpdkD/BU5gAIA3VS3vOQrQ5BjKgbO3kxebKhHdHcNUHLqxQYSoxee9UwgA==" crossorigin="anonymous"></script>
+
+		<!-- Chart.js -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js" integrity="sha512-BqNYFBAzGfZDnIWSAEGZSD/QFKeVxms2dIBPfw11gZubWwKUjEgmFUtUls8vZ6xTRZN/jaXGHD/ZaxD9+fDo0A==" crossorigin="anonymous"></script>
 
 		{% if config.ENV != 'development' %}
 			<script src="{{ url_for('static', filename='js/mappr.js') }}" type="text/javascript"></script>
