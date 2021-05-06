@@ -11,6 +11,11 @@ def static_from_root():
 	return send_from_directory(static_folder, request.path[1:])
 
 
+@main_bp.route('/favicon.ico')
+def favicon():
+	return send_from_directory(static_folder, 'img/bus_256.png')
+
+
 @main_bp.route("/")
 @login_required
 def index():

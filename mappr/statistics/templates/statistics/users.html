@@ -3,28 +3,26 @@
 {% block title %}User Statistics{% endblock title %}
 
 {% block content %}
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-lg-10 col-md-8">
-			<h1>User Statistics</h1>
-			<h2>Not live yet. Still working on it.</h2>
-			<div id="graph">
-				<canvas id="main-chart"></canvas>
+	<div id="csrf_token" data-value="{{ csrf_token() }}"></div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-10 col-md-8">
+				<h1>User Statistics</h1>
+				<h2>Not live yet. Still working on it.</h2>
+				<div id="graph">
+					<canvas id="main-chart"></canvas>
+				</div>
 			</div>
-		</div>
-		<div class="col-lg-2 col-md-4">
-			<div id="controls">
-				{% include "statistics/controls.html" %}
+			<div class="col-lg-2 col-md-4">
+				<div id="controls">
+					{% include "statistics/controls.html" %}
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 {% endblock content %}
 
 {% block jsfiles %}
 {{ super() }}
-<script type="text/javascript">
-	let _csrf = "{{ csrf_token() }}";
-</script>
-<script src="{{ url_for('static', filename='js/statschart.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/stats/statschart.js') }}" type="text/javascript"></script>
 {% endblock jsfiles %}

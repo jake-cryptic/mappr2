@@ -5,7 +5,7 @@
 	"categories":["utilities", "productivity"],
 	"icons":[
 		{
-			"src": "img/bus_256.png",
+			"src": "/static/img/bus_256.png",
 			"type": "image/png",
 			"sizes": "256x256"
 		}
