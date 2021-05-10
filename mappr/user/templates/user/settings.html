@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Mappr Settings{% endblock title %}
+
+{% block content %}
+<div class="container-fluid bg-light py-4 px-3">
+	<div class="container">
+		<h1 class="display-3">Mappr Settings</h1>
+		{% include "components/alert.html" %}
+		<hr />
+		<form id="settings" method="" action="#">
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" id="use_js_workers">
+				<label class="form-check-label" for="use_js_workers">Use WebWorkers <span class="badge bg-warning text-light">Experimental</span></label>
+			</div>
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" id="use_js_workers">
+				<label class="form-check-label" for="use_js_workers">Use WebWorkers <span class="badge bg-warning text-light">Experimental</span></label>
+			</div>
+			<br />
+			<button type="submit" id="save_settings" class="btn btn-success"><i class="fas fa-save"></i> Save Settings</button>
+		</form>
+		<hr />
+		<div class="float-right">
+			<a href="{{ url_for('user_bp.account') }}" class="btn btn-outline-primary"><i class="fas fa-user"></i> Account Settings</a>
+		</div>
+	</div>
+</div>
+{% endblock content %}

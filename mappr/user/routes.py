@@ -147,3 +147,9 @@ def delete():
 			return redirect(url_for('user_bp.delete'))
 
 	return render_template('user/delete.html', delete_form=delete_account)
+
+
+@user_bp.route('/settings', methods=['GET'])
+@login_required
+def settings():
+	return render_template('user/settings.html')
