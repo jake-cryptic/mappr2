@@ -1,6 +1,6 @@
 from datetime import datetime
-from mappr import db, login_manager
-from sqlalchemy import Integer, SmallInteger, Sequence, Index, UniqueConstraint, ForeignKeyConstraint
+from mappr import db
+from sqlalchemy import Integer, SmallInteger, Sequence, Index, UniqueConstraint
 from sqlalchemy.types import DECIMAL
 from sqlalchemy_utils import UUIDType
 from werkzeug.security import generate_password_hash, check_password_hash

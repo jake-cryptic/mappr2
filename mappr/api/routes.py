@@ -1,7 +1,7 @@
 from flask import Blueprint, request, abort, session
 from flask_login import current_user, login_required
 from sqlalchemy import text
-from .. import limiter
+from .. import limiter, mongo
 from ..decorators import internally_referred
 from ..functions import resp
 from ..models import db, Node, Sector, Bookmark, NodeLocation, User

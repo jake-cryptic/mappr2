@@ -19,7 +19,7 @@ def favicon():
 @main_bp.route("/")
 @login_required
 def index():
-	return redirect(url_for('map_bp.map'))
+	return redirect(url_for('map_bp.mappr'))
 
 
 @main_bp.route("/contribute")

@@ -4,7 +4,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
-		{% if request.endpoint != None and request.endpoint == 'map_bp.map' %}
+		{% if request.endpoint != None and request.endpoint == 'map_bp.mappr' %}
 			<div class="align-content-end">
 				<button class="btn text-light" type="button" id="sidebar_toggle" aria-label="Toggle sidebar">
 					<i class="fas fa-ellipsis-v"></i>
@@ -19,7 +19,7 @@
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			{% if current_user.is_authenticated %}
 				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('map_bp.map') }}">
+					<a class="nav-link" href="{{ url_for('map_bp.mappr') }}">
 						<i class="fas fa-compass"></i> Map <span class="sr-only">(current)</span>
 					</a>
 				</li>

@@ -1,13 +1,15 @@
-from flask import Blueprint, request, jsonify, render_template, current_app
+from os import path, makedirs
+from flask import Blueprint, request, render_template, current_app
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
-from os.path import join as ospathjoin
 from ..functions import resp
 from ..models import db, User
 from .. import limiter
 
-
 gallery_bp = Blueprint("gallery_bp", __name__, template_folder="templates", url_prefix='/collections')
+
+if not path.exists(current_app.config['GALLERY_FILES_DEST']):
+	makedirs(current_app.config['GALLERY_FILES_DEST'])
 
 
 @gallery_bp.route('/', methods=['GET'])
@@ -29,7 +31,7 @@ def upload():
 	print(request.files)
 
 	def allowed_file(filename):
-		return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['UPLOAD_EXTENSIONS']
+		return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['GALLERY_UPLOAD_EXTENSIONS']
 
 	if len(request.files) == 0:
 		return resp({}, error='Cannot process this request')
@@ -40,7 +42,7 @@ def upload():
 		file = request.files[file_index]
 		if file and allowed_file(file.filename):
 			new_filename = secure_filename(file.filename)
-			file.save(ospathjoin(current_app.config['UPLOAD_PATH'], new_filename))
+			file.save(path.join(current_app.config['UPLOAD_PATH'], new_filename))
 
 			saved_files.append({
 				'original': file.filename,

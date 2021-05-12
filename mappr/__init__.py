@@ -1,13 +1,19 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_pymongo import PyMongo
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_login import LoginManager
 from flask_admin import Admin
 from flask_wtf import CSRFProtect
+import mimetypes
+
+mimetypes.add_type('text/css', '.css')
+mimetypes.add_type('text/javascript', '.js')
 
 # Initialise objects
 db = SQLAlchemy()
+mongo = PyMongo()
 csrf = CSRFProtect()
 login_manager = LoginManager()
 limiter = Limiter(key_func=get_remote_address, default_limits=["10000 per day", "1000 per hour"])
@@ -23,6 +29,7 @@ def create_app():
 	app.config.from_object('config.Config')
 
 	db.init_app(app)
+	mongo.init_app(app)
 	limiter.init_app(app)
 	login_manager.init_app(app)
 	admin.init_app(app)

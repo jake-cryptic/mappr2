@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, abort, make_response
-from flask_login import current_user, login_required, confirm_login, login_fresh, fresh_login_required
+from flask_login import current_user, login_required, confirm_login, login_fresh, logout_user
 from ..models import db, User, Bookmark, NodeLocation, MapFile
 from ..forms import UpdateEmailForm, UpdatePasswordForm, DeleteAccountForm, DownloadDataForm
 from ..functions import get_user_data
@@ -145,6 +145,20 @@ def delete():
 		if not entered_consent:
 			flash("Please give consent for the account to be deleted", 'danger')
 			return redirect(url_for('user_bp.delete'))
+
+		# TODO: Delete the account..?
+		update_user = User.query.filter_by(id=current_user.id).first()
+		db.session.delete(update_user)
+		# Delete data associated with the account
+
+		# db.session.commit()
+
+		logout_user()
+		flash("Your account has been deleted and all local browser Mappr data has been deleted.", "warning")
+
+		resp = redirect(url_for("user_bp.login"))
+		resp.headers['Clear-Site-Data'] = '*'
+		return resp
 
 	return render_template('user/delete.html', delete_form=delete_account)
 
