@@ -4,7 +4,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
-		{% if request.endpoint != None and url_for(request.endpoint) == '/map' %}
+		{% if request.endpoint != None and request.endpoint == 'map_bp.map' %}
 			<div class="align-content-end">
 				<button class="btn text-light" type="button" id="sidebar_toggle" aria-label="Toggle sidebar">
 					<i class="fas fa-ellipsis-v"></i>
