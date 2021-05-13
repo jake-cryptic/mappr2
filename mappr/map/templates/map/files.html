@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Files{% endblock title %}
+
+{% block description %}Mappr | A modern mast map{% endblock %}
+
+{% block content %}
+	<div id="csrf_token" data-value="{{ csrf_token() }}"></div>
+
+{% endblock content %}
+
+{% block jsfiles %}
+	{{ super() }}
+
+{% endblock jsfiles %}

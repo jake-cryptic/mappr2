@@ -8,6 +8,7 @@ from .. import limiter
 
 gallery_bp = Blueprint("gallery_bp", __name__, template_folder="templates", url_prefix='/collections')
 
+# Create file upload directories if they don't exist
 if not path.exists(current_app.config['GALLERY_FILES_DEST']):
 	makedirs(current_app.config['GALLERY_FILES_DEST'])
 
