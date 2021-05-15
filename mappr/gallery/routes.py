@@ -3,7 +3,6 @@ from flask import Blueprint, request, render_template, current_app
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 from ..functions import resp
-from ..models import db, User
 from .. import limiter
 
 gallery_bp = Blueprint("gallery_bp", __name__, template_folder="templates", url_prefix='/collections')
@@ -26,7 +25,7 @@ def add():
 
 
 @gallery_bp.route('/upload', methods=['POST'])
-@limiter.limit('20/hour;6/minute;2/second')
+@limiter.limit('24/hour;6/minute;2/second')
 @login_required
 def upload():
 	print(request.files)
@@ -43,7 +42,7 @@ def upload():
 		file = request.files[file_index]
 		if file and allowed_file(file.filename):
 			new_filename = secure_filename(file.filename)
-			file.save(path.join(current_app.config['UPLOAD_PATH'], new_filename))
+			file.save(path.join(current_app.config['GALLERY_FILES_DEST'], new_filename))
 
 			saved_files.append({
 				'original': file.filename,
