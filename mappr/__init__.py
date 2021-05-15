@@ -94,9 +94,6 @@ def create_app():
 				response.headers['Cross-Origin-Embedder-Policy'] = 'unsafe-none; report-to="default"'
 				response.headers['Cross-Origin-Opener-Policy'] = 'same-origin; report-to="default"'
 
-		if app.config['ENV'] == 'production' and 'https' not in request.base_url:
-			response.headers['Upgrade-Insecure-Requests'] = 1
-
 		return response
 
 	return app

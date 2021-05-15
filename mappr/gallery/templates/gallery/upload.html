@@ -6,9 +6,11 @@
 
 {% block content %}
 	<div id="csrf_token" data-value="{{ csrf_token() }}"></div>
-	<div class="container">
-		<div class="display-4 pt-5 pb-2">Collections</div>
-		<div id="add_files_area"></div>
+	<div class="container-fluid bg-light py-5">
+		<div class="container">
+			<div class="display-4 pb-4">Collections - Upload</div>
+			<div id="add_files_area"></div>
+		</div>
 	</div>
 {% endblock %}
 
