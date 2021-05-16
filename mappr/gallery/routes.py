@@ -111,7 +111,6 @@ def image_upload():
 
 @gallery_bp.route('/image/<image_uuid>/<image_format>', methods=['GET'])
 @limiter.limit('100/hour;10/minute;2/second')
-@login_required
 def view_image(image_uuid=None, image_format='jpg'):
 	directory = path.join('..' + path.sep + current_app.config['GALLERY_FILES_DEST'])
 
@@ -129,7 +128,11 @@ def view_image(image_uuid=None, image_format='jpg'):
 	try:
 		return send_from_directory(
 			directory, str(image_info.file_location),
-			as_attachment=False, last_modified=image_info.time_created, max_age=86400*365
+			as_attachment=False,
+			download_name=image_info.file_name,
+			mimetype='image/' + image_info.file_type,
+			last_modified=image_info.time_created,
+			max_age=86400*365
 		)
 	except FileNotFoundError:
 		abort(404)

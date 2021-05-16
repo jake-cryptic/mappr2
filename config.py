@@ -23,7 +23,7 @@ class Config:
 
 	GALLERY_MAX_CONTENT_LENGTH = 1024 * 1024 * 12
 	GALLERY_UPLOAD_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp']
-	GALLERY_FILES_DEST = 'images'
+	GALLERY_FILES_DEST = join('uploads', 'images')
 
 	MAP_MAX_CONTENT_LENGTH = 1024 * 1024 * 5
 	MAP_UPLOAD_EXTENSIONS = ['csv']
