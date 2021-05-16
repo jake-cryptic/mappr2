@@ -24,6 +24,7 @@ class User(UserMixin, db.Model):
 
 	bookmarks = db.relationship("Bookmark", back_populates='user')
 	locations = db.relationship("NodeLocation", back_populates='user')
+	gallery_file = db.relationship("GalleryFile", back_populates='user')
 	map_files = db.relationship("MapFile", back_populates='user')
 
 	@property
@@ -157,6 +158,28 @@ class Bookmark(db.Model):
 
 	def __repr__(self):
 		return "<Bookmark(id='%s', lat='%s', lng='%s')>" % (self.id, self.lat, self.lng)
+
+
+class GalleryFile(db.Model):
+	__tablename__ = 'gallery_files'
+
+	id = db.Column(Integer, Sequence('galleryfile_id_seq'), primary_key=True)
+	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+	user = db.relationship('User', back_populates='gallery_file')
+
+	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+	# Original file name
+	file_name = db.Column(db.Text, nullable=False)
+
+	# File type
+	file_type = db.Column(db.Text, nullable=False)
+
+	# New file name
+	file_location = db.Column(UUIDType, nullable=False)
+
+	# Reference for users to access
+	file_uuid = db.Column(UUIDType, nullable=False)
 
 
 class MapFile(db.Model):

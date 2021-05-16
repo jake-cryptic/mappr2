@@ -20,6 +20,11 @@ def handle_404(err):
 		return render_template('errors/404.html'), 404
 
 
+@error_bp.errorhandler(413)
+def handle_413(e):
+	return "File is too large", 413
+
+
 @error_bp.app_errorhandler(429)
 def handle_429(err):
 	if request.path.startswith('/api/'):
