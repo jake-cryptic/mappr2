@@ -84,7 +84,10 @@ def image_upload():
 		))
 
 		# Save file to server
-		file.save(path.join(current_app.config['GALLERY_FILES_DEST'], random_name))
+		file_path = path.join(current_app.config['GALLERY_FILES_DEST'], random_name)
+		file.save(file_path)
+
+		current_app.imageprocessor.send(file_path)
 
 		return True
 

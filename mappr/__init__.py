@@ -41,6 +41,7 @@ def create_app():
 		from .auth import routes as auth_routes
 		from .errors import routes as error_routes
 		from .gallery import routes as gallery_routes
+		from .gallery import threads as gallery_threads
 		from .map import routes as map_routes
 		from .statistics import routes as statistics_routes
 		from .user import routes as user_routes
@@ -53,6 +54,12 @@ def create_app():
 		app.register_blueprint(map_routes.map_bp)
 		app.register_blueprint(statistics_routes.statistics_bp)
 		app.register_blueprint(user_routes.user_bp)
+
+		@app.before_first_request
+		def activate_job_monitor():
+			thread = gallery_threads.ImageProcessorThread()
+			app.imageprocessor = thread
+			thread.start()
 
 		db.create_all()
 
