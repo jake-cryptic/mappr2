@@ -17,6 +17,14 @@ def handle_400(err):
 		return render_template('errors/400.html', description=str(err.description)), 400
 
 
+@error_bp.app_errorhandler(403)
+def handle_403(err):
+	if request.path.startswith('/api/'):
+		return resp({}, error='Forbidden')
+	else:
+		return render_template('errors/403.html', description=str(err.description)), 403
+
+
 @error_bp.app_errorhandler(404)
 def handle_404(err):
 	if request.path.startswith('/api/'):

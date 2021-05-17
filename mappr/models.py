@@ -168,18 +168,15 @@ class GalleryFile(db.Model):
 	user = db.relationship('User', back_populates='gallery_file')
 
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+	permission = db.Column(db.SmallInteger, nullable=False, default=0)
 
-	# Original file name
-	file_name = db.Column(db.Text, nullable=False)
+	alt_text = db.Column(db.Text, nullable=False, default='Image has no alt-text')
+	description = db.Column(db.Text, nullable=True)
 
-	# File type
-	file_type = db.Column(db.Text, nullable=False)
-
-	# New file name
-	file_location = db.Column(UUIDType, nullable=False)
-
-	# Reference for users to access
-	file_uuid = db.Column(UUIDType, nullable=False)
+	file_name = db.Column(db.Text, nullable=False) 			# Original filename
+	file_type = db.Column(db.Text, nullable=False)			# File type (png, jpg etc)
+	file_location = db.Column(UUIDType, nullable=False)		# New filename
+	file_uuid = db.Column(UUIDType, nullable=False)			# Reference to access file
 
 
 class MapFile(db.Model):
