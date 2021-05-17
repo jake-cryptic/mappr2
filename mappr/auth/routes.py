@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, confirm_login, current_user, logout_user, login_required, login_fresh
 from is_safe_url import is_safe_url
+from ..decorators import force_modern_browser
 from ..forms import LoginUserForm, CreateUserForm, ReAuthUserForm
 from ..models import db, User
 from .. import login_manager, limiter
@@ -10,6 +11,7 @@ auth_bp = Blueprint("auth_bp", __name__, template_folder="templates")
 
 @auth_bp.route('/auth', methods=['GET', 'POST'])
 @limiter.limit('20/hour;6/minute;2/second')
+@force_modern_browser
 def auth():
 	login_form = LoginUserForm(prefix="login")
 	create_form = CreateUserForm(prefix="create")
@@ -91,7 +93,7 @@ def reauth():
 	return render_template('auth/reauth.html', title='Login Required', reauth_form=reauth_form)
 
 
-@auth_bp.route("/logout")
+@auth_bp.route('/logout')
 @login_required
 def logout():
 	"""User log-out logic."""

@@ -1,7 +1,12 @@
 from flask import Blueprint, request, render_template
 from ..functions import resp
 
-error_bp = Blueprint('errors', __name__, template_folder="templates")
+error_bp = Blueprint('error_bp', __name__, template_folder="templates")
+
+
+@error_bp.route('/unsupported', methods=['GET'])
+def handle_unsupported():
+	return render_template('errors/unsupported.html')
 
 
 @error_bp.app_errorhandler(400)
@@ -18,6 +23,14 @@ def handle_404(err):
 		return resp({}, error='Not Found')
 	else:
 		return render_template('errors/404.html'), 404
+
+
+@error_bp.app_errorhandler(405)
+def handle_405(err):
+	if request.path.startswith('/api/'):
+		return resp({}, error='Method not allowed')
+	else:
+		return render_template('errors/405.html'), 4005
 
 
 @error_bp.errorhandler(413)

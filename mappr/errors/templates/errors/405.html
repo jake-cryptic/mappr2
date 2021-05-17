@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Method Not Allowed{% endblock %}
+
+{% block description %}Your browser attempted to interact with the webserver in a way that is not permitted.{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="display-4 pt-5 pb-2">405 - Method Not Allowed</div>
+	<p class="lead">
+		Your browser attempted to interact with the webserver in a way that is not permitted for the URL:
+		<code class="d-block text-left">
+			{{ request.full_path }}
+		</code>
+	</p>
+</div>
+{% endblock %}
