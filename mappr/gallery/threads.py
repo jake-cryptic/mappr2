@@ -18,16 +18,19 @@ class ImageProcessorThread(threading.Thread):
 
 	def run(self):
 		while True:
-			image_path = self.input_queue.get()
-			if image_path is None:
+			im_file = self.input_queue.get()
+			if im_file is None:
 				break
 
 			# Process the image here
-			im = Image.open(image_path)
-			print(image_path, im.format, im.size, im.mode)
+			try:
+				with Image.open(im_file) as im:
+					print(im_file, im.format, im.size, im.mode)
+					im.save(im_file + '.jpg', 'JPEG', quality=70, progressive=True)
+					im.save(im_file + '.webp', 'WEBP', lossless=False, method=6, quality=100)
+			except OSError:
+				print("Could not convert file", im_file)
 
-			# TODO: Save Webp copy
-			# TODO: Maybe re-process as JPEG with higher compression
 			# TODO: Figure out how to implement AVIF compression
 
 			self.input_queue.task_done()
