@@ -48,11 +48,13 @@ def upload():
 
 
 @gallery_bp.route('/upload', methods=['POST'])
-@limiter.limit('24/hour;6/minute;2/second')
+@limiter.limit('100/hour;60/minute;10/second')
 @login_required
 def image_upload():
 	if len(request.files) == 0:
 		return resp({}, error='Cannot process this request')
+
+	print(request.form)
 
 	def upload_file(file):
 		if not file:
@@ -113,7 +115,7 @@ def image_upload():
 
 
 @gallery_bp.route('/image/<image_uuid>/<image_format>', methods=['GET'])
-@limiter.limit('100/hour;10/minute;2/second')
+@limiter.limit('250/hour;100/minute;10/second')
 def view_image(image_uuid=None, image_format='jpg'):
 	directory = path.join('..' + path.sep + current_app.config['GALLERY_FILES_DEST'])
 
@@ -127,10 +129,11 @@ def view_image(image_uuid=None, image_format='jpg'):
 		abort(404)
 
 	image_info = image_data.one()
+	file_ext = '.webp' if image_format != 'jpg' else '.jpg'
 
 	try:
 		return send_from_directory(
-			directory, str(image_info.file_location),
+			directory, str(image_info.file_location) + file_ext,
 			as_attachment=False,
 			download_name=image_info.file_name,
 			mimetype='image/' + image_info.file_type,

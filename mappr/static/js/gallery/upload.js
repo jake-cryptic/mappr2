@@ -20,35 +20,37 @@ let _upload = {
 			autoProceed: false,
 			restrictions: {
 				maxFileSize: 1024 * 1024 * 12,
-				maxNumberOfFiles: 24,
+				maxNumberOfFiles: 32,
 				allowedFileTypes: ['image/*']
 			},
 			headers: _upload._headers
 		})
-		.use(Uppy.XHRUpload, {
-			endpoint: _upload.url,
-			headers: _upload._headers
-		})
-		.use(Uppy.DropTarget, { target: document.body })
-		.use(Uppy.Webcam)
-		.use(Uppy.Dashboard, {
-			inline: true,
-			width:1920,
-			height:$('#add_files_area').height(),
-			target: '#add_files_area',
-			theme:'auto',
-			replaceTargetContent: true,
-			showProgressDetails: true,
-			proudlyDisplayPoweredByUppy:false,
-			note:'Maximum file size: 12MB',
-			metaFields: [
-				{ id: 'name', name: 'Name', placeholder: 'Filename' },
-				{ id: 'caption', name: 'Caption', placeholder: 'Describe the contents of the image' }
-			],
-			plugins: ['Webcam'],
-		})
-		.use(Uppy.ImageEditor, { target: Uppy.Dashboard })
-		.use(Uppy.GoldenRetriever);
+			.use(Uppy.XHRUpload, {
+				endpoint: _upload.url,
+				headers: _upload._headers
+			})
+			.use(Uppy.DropTarget, {target: document.body})
+			.use(Uppy.Webcam)
+			.use(Uppy.Dashboard, {
+				inline: true,
+				width: 1920,
+				height: $('#add_files_area').height(),
+				target: '#add_files_area',
+				theme: 'auto',
+				replaceTargetContent: true,
+				showProgressDetails: true,
+				proudlyDisplayPoweredByUppy: false,
+				note: 'Maximum file size: 12MB',
+				autoOpenFileEditor: true,
+				metaFields: [
+					{id: 'name', name: 'Name', placeholder: 'Filename'},
+					{id: 'alt', name: 'Alt-Text', placeholder: 'Describe the image for those with sight-impairments'},
+					{id: 'description', name: 'Description', placeholder: 'Add a comment about the image'}
+				],
+				plugins: ['Webcam'],
+			})
+			.use(Uppy.ImageEditor, {target: Uppy.Dashboard})
+			.use(Uppy.GoldenRetriever);
 	}
 
 };

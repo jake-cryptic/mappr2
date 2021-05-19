@@ -27,7 +27,7 @@ class ImageProcessorThread(threading.Thread):
 				with Image.open(im_file) as im:
 					print(im_file, im.format, im.size, im.mode)
 					im.save(im_file + '.jpg', 'JPEG', quality=70, progressive=True)
-					im.save(im_file + '.webp', 'WEBP', lossless=False, method=6, quality=100)
+					im.save(im_file + '.webp', 'WEBP', lossless=False, method=6, quality=80)
 			except OSError:
 				print("Could not convert file", im_file)
 
