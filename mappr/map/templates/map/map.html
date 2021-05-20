@@ -4,6 +4,11 @@
 
 {% block description %}Mappr | A modern mast map{% endblock %}
 
+{% block pagehead %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/map.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/markercluster.css') }}" />
+{% endblock %}
+
 {% block content %}
 	<div id="csrf_token" data-value="{{ csrf_token() }}"></div>
 	<div id="page">
@@ -39,8 +44,8 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.0/MarkerCluster.min.css" integrity="sha512-ENrTWqddXrLJsQS2A86QmvA17PkJ0GVm1bqj5aTgpeMAfDKN2+SIOLpKG8R/6KkimnhTb+VW5qqUHB/r1zaRgg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 	<!-- Map libraries -->
-	<script src="{{ url_for('static', filename='js/leaflet.canvas-markers.js') }}" type="text/javascript"></script>
-	<script src="{{ url_for('static', filename='js/map/geotools2.js') }}" type="text/javascript"></script>
+	<script src="{{ url_for('static', filename='js/map/libs/leaflet.canvas-markers.js') }}" type="text/javascript"></script>
+	<script src="{{ url_for('static', filename='js/map/libs/geotools2.js') }}" type="text/javascript"></script>
 
 	<!-- Map JS files -->
 	<script src="{{ url_for('static', filename='js/map/api.js') }}" type="text/javascript"></script>

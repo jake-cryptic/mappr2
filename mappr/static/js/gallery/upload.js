@@ -41,7 +41,7 @@ let _upload = {
 			showProgressDetails: true,
 			proudlyDisplayPoweredByUppy: false,
 			note: 'Maximum file size: 12MB',
-			autoOpenFileEditor: true,
+			autoOpenFileEditor: false,
 			metaFields: [
 				{id: 'name', name: 'Name', placeholder: 'Filename'},
 				{id: 'alt', name: 'Alt-Text', placeholder: 'Describe the image for those with sight-impairments'},
