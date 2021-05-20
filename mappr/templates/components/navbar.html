@@ -23,11 +23,13 @@
 						<i class="fas fa-compass"></i> Map <span class="sr-only">(current)</span>
 					</a>
 				</li>
-				<li class="nav-item d-none">
+				{% if session['collections'] %}
+				<li class="nav-item">
 					<a class="nav-link" href="{{ url_for('gallery_bp.home') }}">
 						<i class="fas fa-images"></i> Collections
 					</a>
 				</li>
+				{% endif %}
 				<li class="nav-item">
 					<a class="nav-link" href="{{ url_for('user_bp.account') }}">
 						<i class="fas fa-user-alt"></i> Account
@@ -69,7 +71,7 @@
 					<ul class="dropdown-menu" aria-labelledby="information_dropdown">
 						<li>
 							<a class="dropdown-item" href="https://t.me/mappr" rel="noopener">
-								<i class="fas fa-"></i> Telegram Group
+								<i class="fab fa-telegram"></i> Telegram Group
 							</a>
 						</li>
 						<li>
