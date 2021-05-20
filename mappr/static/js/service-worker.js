@@ -9,8 +9,8 @@ let appLibraries = [
 	'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css',
 
 	// Bootstrap
-	'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta2/js/bootstrap.min.js',
-	'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta2/css/bootstrap.min.css',
+	'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.min.js',
+	'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css',
 
 	// Leaflet
 	'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js',
@@ -24,14 +24,14 @@ let appLibraries = [
 	'https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet/3.0.1/esri-leaflet.min.js',
 
 	// Uppy
-	'https://cdnjs.cloudflare.com/ajax/libs/uppy/1.26.1/uppy.min.js',
-	'https://cdnjs.cloudflare.com/ajax/libs/uppy/1.26.1/uppy.min.css',
+	'https://cdnjs.cloudflare.com/ajax/libs/uppy/1.27.0/uppy.min.js',
+	'https://cdnjs.cloudflare.com/ajax/libs/uppy/1.27.0/uppy.min.css',
 
 	// jQuery
 	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js',
 
 	// Chroma
-	'https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js',
+	'https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.2/chroma.min.js',
 
 	// Papa
 	'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js'
