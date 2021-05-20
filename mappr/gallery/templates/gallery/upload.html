@@ -9,7 +9,15 @@
 	<div class="container-fluid py-5">
 		<div class="container">
 			<div class="display-4 pb-4">Collections - Upload</div>
-			<a href="{{ url_for('gallery_bp.home') }}" class="btn btn-outline-info">Go Back</a>
+
+			<nav class="navbar-light bg-light mb-2 rounded" aria-label="breadcrumb">
+  				<ol class="breadcrumb px-4 py-3">
+    				<li class="breadcrumb-item"><a href="{{ url_for('gallery_bp.home') }}">Home</a></li>
+   	 				<li class="breadcrumb-item"><a href="{{ url_for('gallery_bp.image_table') }}">Images</a></li>
+    				<li class="breadcrumb-item active" aria-current="page">Upload</li>
+  				</ol>
+			</nav>
+
 			<div id="add_files_area"></div>
 		</div>
 	</div>

@@ -12,17 +12,23 @@
 	<div class="container-fluid py-5">
 		<div class="container">
 			<h1 class="display-4 pb-4">Collections</h1>
-			<a href="{{ url_for('gallery_bp.upload') }}" class="btn btn-block btn-outline-info">Upload</a>
+			<a href="{{ url_for('gallery_bp.upload') }}" class="btn btn-block btn-outline-info">
+				<i class="fas fa-upload"></i> Upload
+			</a>
+			<a href="{{ url_for('gallery_bp.image_table') }}" class="btn btn-block btn-outline-light">
+				<i class="fas fa-image"></i> My Images
+			</a>
 
 			<hr/>
 
+			<h2 class="h3">Your most recent pictures</h2>
 			{% if user_image_list|length == 0 %}
-				<h2>You haven't uploaded</h2>
+				<small>You must upload some mast pictures in order to see them here... I'm not magic :)</small>
 			{% else %}
-			<div id="featured_images" class="carousel carousel-dark slide" data-bs-ride="carousel">
+			<div id="my_images" class="carousel carousel-dark slide" data-bs-ride="carousel">
 				<div class="carousel-indicators">
 					{% for image in user_image_list %}
-					<button type="button" data-bs-target="#featured_images" data-bs-slide-to="{{ loop.index0 }}"
+					<button type="button" data-bs-target="#my_images" data-bs-slide-to="{{ loop.index0 }}"
 						aria-label="Slide #{{ loop.index }}"{% if loop.index0 == 0 %} class="active" aria-current="true"{% endif %}></button>
 					{% endfor %}
 				</div>
@@ -37,19 +43,20 @@
 					</div>
 					{% endfor %}
 				</div>
-				<button class="carousel-control-prev" type="button" data-bs-target="#featured_images" data-bs-slide="prev">
+				<button class="carousel-control-prev" type="button" data-bs-target="#my_images" data-bs-slide="prev">
 					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 					<span class="visually-hidden">Previous</span>
 				</button>
-				<button class="carousel-control-next" type="button" data-bs-target="#featured_images" data-bs-slide="next">
+				<button class="carousel-control-next" type="button" data-bs-target="#my_images" data-bs-slide="next">
 					<span class="carousel-control-next-icon" aria-hidden="true"></span>
 					<span class="visually-hidden">Next</span>
 				</button>
 			</div>
 			{% endif %}<hr/>
 
+			<h2 class="h3">Featured Images</h2>
 			{% if featured_image_list|length == 0 %}
-				<h2>You haven't uploaded</h2>
+				<small>Would you look at that, nobody has uploaded any pictures</small>
 			{% else %}
 			<div id="featured_images" class="carousel carousel-dark slide" data-bs-ride="carousel">
 				<div class="carousel-indicators">

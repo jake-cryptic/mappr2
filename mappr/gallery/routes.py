@@ -36,13 +36,20 @@ def is_valid_uuid(uuid_to_test, version=4):
 @login_required
 def home():
 	featured_images = GalleryFile.query.limit(10).all()
-	user_images = GalleryFile.query.filter_by(
+	user_images = GalleryFile.query.filter(
 		GalleryFile.user_id == current_user.get_id()
-	).all()
-	print(featured_images)
-	print(featured_images)
+	).limit(10).all()
 
 	return render_template('gallery/home.html', featured_image_list=featured_images, user_image_list=user_images)
+
+
+@gallery_bp.route('/images', methods=['GET'])
+@login_required
+def image_table():
+	user_images = GalleryFile.query.filter(
+		GalleryFile.user_id == current_user.get_id()
+	).all()
+	return render_template('gallery/table.html')
 
 
 @gallery_bp.route('/upload', methods=['GET'])
@@ -118,7 +125,41 @@ def image_upload():
 	})
 
 
-@gallery_bp.route('/image/<image_uuid>/<image_format>', methods=['GET'])
+@gallery_bp.route('/image/delete/<image_uuid>', methods=['GET'])
+@limiter.limit('250/hour;50/minute;2/second')
+def delete_image(image_uuid=None):
+	if not is_valid_uuid(image_uuid):
+		return abort(404)
+
+	image_data = GalleryFile.query.filter(
+		GalleryFile.file_uuid == image_uuid
+	)
+	if image_data.count() != 1:
+		return abort(404)
+
+	image_info = image_data.one()
+
+	return abort(501)
+
+
+@gallery_bp.route('/image/details/<image_uuid>', methods=['GET'])
+@limiter.limit('250/hour;50/minute;2/second')
+def edit_image(image_uuid=None):
+	if not is_valid_uuid(image_uuid):
+		return abort(404)
+
+	image_data = GalleryFile.query.filter(
+		GalleryFile.file_uuid == image_uuid
+	)
+	if image_data.count() != 1:
+		return abort(404)
+
+	image_info = image_data.one()
+
+	return render_template('gallery/image.html')
+
+
+@gallery_bp.route('/image/view/<image_uuid>/<image_format>', methods=['GET'])
 @limiter.limit('250/hour;100/minute;10/second')
 def view_image(image_uuid=None, image_format='jpg'):
 	directory = path.join('..' + path.sep + current_app.config['GALLERY_FILES_DEST'])
@@ -130,7 +171,7 @@ def view_image(image_uuid=None, image_format='jpg'):
 		GalleryFile.file_uuid == image_uuid
 	)
 	if image_data.count() != 1:
-		abort(404)
+		return abort(404)
 
 	image_info = image_data.one()
 	file_ext = '.webp' if image_format != 'jpg' else '.jpg'
@@ -145,4 +186,4 @@ def view_image(image_uuid=None, image_format='jpg'):
 			max_age=86400*365
 		)
 	except FileNotFoundError:
-		abort(404)
+		return abort(404)

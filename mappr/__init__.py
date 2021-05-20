@@ -16,7 +16,7 @@ db = SQLAlchemy()
 mongo = PyMongo()
 csrf = CSRFProtect()
 login_manager = LoginManager()
-limiter = Limiter(key_func=get_remote_address, default_limits=["10000 per day", "1000 per hour"])
+limiter = Limiter(key_func=get_remote_address, default_limits=["10000 per day", "1000 per hour", "100 per minute"])
 admin = Admin(name='Mappr2', template_mode='bootstrap4')
 
 # Define folders
