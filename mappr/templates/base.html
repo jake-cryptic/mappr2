@@ -53,7 +53,7 @@
 	</head>
 	<body>
 
-		<main>
+		<main{% if 'dark_theme' in session %} class="container-dark" {% endif %}>
 			{% include "components/navbar.html" %}
 			{% include "components/modal.html" %}
 			<div class="toast-container" id="toast_alerts"></div>

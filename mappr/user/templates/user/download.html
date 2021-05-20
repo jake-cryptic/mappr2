@@ -3,7 +3,7 @@
 {% block title %}Account Password{% endblock title %}
 
 {% block content %}
-<div class="container-fluid bg-light py-4 px-3">
+<div class="container-fluid py-4 px-3">
 	<div class="container">
 		<h1 class="display-3">GDPR Download</h1>
 		{% include "components/alert.html" %}
@@ -34,7 +34,7 @@
 		</form>
 		<hr />
 		<div class="float-right">
-			<a href="{{ url_for('user_bp.account') }}" class="btn btn-outline-primary"><i class="fas fa-user"></i> Account Settings</a>
+			<a href="{{ url_for('user_bp.account') }}" class="btn btn-outline-info"><i class="fas fa-user"></i> Account Settings</a>
 		</div>
 	</div>
 </div>

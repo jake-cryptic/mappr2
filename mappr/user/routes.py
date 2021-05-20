@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, abort, make_response
+from flask import Blueprint, render_template, redirect, url_for, flash, request, abort, make_response, session
 from flask_login import current_user, login_required, confirm_login, login_fresh, logout_user
 from ..models import db, User, Bookmark, NodeLocation, MapFile
 from ..forms import UpdateEmailForm, UpdatePasswordForm, DeleteAccountForm, DownloadDataForm
@@ -167,3 +167,11 @@ def delete():
 @login_required
 def settings():
 	return render_template('user/settings.html')
+
+
+@user_bp.route('/settings/experimental/enable/dark_theme', methods=['GET'])
+@login_required
+def enable_dark_theme():
+	session['dark_theme'] = True
+	flash('Dark theme enabled', 'warning')
+	return redirect(url_for('user_bp.account'))
