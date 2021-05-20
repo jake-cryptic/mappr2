@@ -35,10 +35,14 @@ def is_valid_uuid(uuid_to_test, version=4):
 @gallery_bp.route('/', methods=['GET'])
 @login_required
 def home():
-	images = GalleryFile.query.all()
-	print(images)
+	featured_images = GalleryFile.query.limit(10).all()
+	user_images = GalleryFile.query.filter_by(
+		GalleryFile.user_id == current_user.get_id()
+	).all()
+	print(featured_images)
+	print(featured_images)
 
-	return render_template('gallery/home.html', image_list=images)
+	return render_template('gallery/home.html', featured_image_list=featured_images, user_image_list=user_images)
 
 
 @gallery_bp.route('/upload', methods=['GET'])

@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, abort, make_response, session
 from flask_login import current_user, login_required, confirm_login, login_fresh, logout_user
-from ..models import db, User, Bookmark, NodeLocation, MapFile
-from ..forms import UpdateEmailForm, UpdatePasswordForm, DeleteAccountForm, DownloadDataForm
+from ..models import db, User, Bookmark, NodeLocation, MapFile, GalleryFile
 from ..functions import get_user_data
+from .forms import UpdateEmailForm, UpdatePasswordForm, DeleteAccountForm, DownloadDataForm
 from time import time
 
 user_bp = Blueprint("user_bp", __name__, template_folder="templates", url_prefix='/user')
@@ -116,6 +116,8 @@ def download():
 			model = User
 		elif export_name == 'map_files':
 			model = MapFile
+		elif export_name == 'gallery_files':
+			model = GalleryFile
 		else:
 			return abort(400)
 
@@ -169,9 +171,14 @@ def settings():
 	return render_template('user/settings.html')
 
 
-@user_bp.route('/settings/experimental/enable/dark_theme', methods=['GET'])
+@user_bp.route('/settings/experimental/toggle/<setting>', methods=['GET'])
 @login_required
-def enable_dark_theme():
-	session['dark_theme'] = True
-	flash('Dark theme enabled', 'warning')
+def setting_toggle(setting):
+	if setting not in ('dark_theme', 'collections'): return abort(404)
+	enable = True
+	if setting in session:
+		enable = False if session[setting] == True else True
+
+	session[setting] = enable
+	flash(setting + ' set to ' + str(enable), 'warning')
 	return redirect(url_for('user_bp.account'))
