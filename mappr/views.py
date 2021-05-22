@@ -4,7 +4,7 @@ from flask_admin.contrib.pymongo import ModelView as MongoModelView
 from flask_login import current_user
 from mappr import admin, db, mongo
 from wtforms import form, fields
-from mappr.models import User, NodeLocation, Bookmark, Node, Sector, CellIdBlockList, MapFile
+from mappr.models import User, NodeLocation, Bookmark, Node, Sector, CellIdBlockList, MapFile, GalleryFile
 
 
 class AdminView(SQLAModelView):
@@ -52,8 +52,10 @@ admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(NodeLocation, db.session))
 admin.add_view(AdminView(CellIdBlockList, db.session))
 admin.add_view(AdminView(Bookmark, db.session))
+
 admin.add_view(AdminView(Node, db.session, category='Base Data'))
 admin.add_view(AdminView(Sector, db.session, category='Base Data'))
 
+admin.add_view(AdminView(GalleryFile, db.session, category='Files'))
 admin.add_view(AdminView(MapFile, db.session, category='Files'))
 #admin.add_view(FileView(mongo.db['files'], category='Files'))

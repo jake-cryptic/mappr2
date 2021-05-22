@@ -680,6 +680,7 @@ let _map = {
 		t += dates;
 
 		if (_map.settings.popupLinks === true) {
+			// TODO: These are causing CSP issues, fix it
 			t += '\
 			<div class="container container-fluid">\
 				<div class="site_approx_addr btn-group btn-group-sm" role="group" aria-label="eNB Options">\

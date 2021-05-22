@@ -1,4 +1,6 @@
-from flask import Blueprint, request, abort, session
+import requests as requests
+from urllib.parse import urlparse
+from flask import Blueprint, request, abort, session, Response, stream_with_context
 from flask_login import current_user, login_required
 from sqlalchemy import text
 from .. import limiter, mongo
@@ -366,7 +368,9 @@ def api_get_sector_list():
 		resp({}, error='Cannot process this request')
 
 	sector_query = db.engine.execute(
-		text('SELECT DISTINCT(sector_id), mnc FROM sectors WHERE mnc in (SELECT DISTINCT(mnc) as mnc FROM sectors) AND mcc=:mcc ORDER BY mnc, sector_id').params(mcc = mcc)
+		text(
+			'SELECT DISTINCT(sector_id), mnc FROM sectors WHERE mnc in (SELECT DISTINCT(mnc) as mnc FROM sectors) AND mcc=:mcc ORDER BY mnc, sector_id').params(
+			mcc=mcc)
 	)
 
 	results = {}
@@ -462,3 +466,32 @@ def api_bookmark_get():
 	} for row in bookmark_query]
 
 	return resp(bookmark_list)
+
+
+@api_bp.route('/cors-proxy/<path:url>', methods=['GET'])
+@login_required
+@internally_referred
+def proxy(url):
+	if current_user.get_id() != 1: return abort(403)
+	parsed_url = urlparse(url)
+	if parsed_url.netloc not in (
+		'coverage.ee.co.uk',
+		'68aa7b45-tiles.spatialbuzz.net',
+		'www.three.co.uk',
+		'mapserver.vodafone.co.uk'
+	):
+		return abort(400)
+
+	http_headers = {
+		'user-agent': request.user_agent.string
+	}
+
+	http_response = requests.get(url, stream=True, headers=http_headers, params=request.args)
+
+	response = Response(
+		stream_with_context(http_response.iter_content()),
+		content_type=http_response.headers['content-type'],
+		status=http_response.status_code
+	)
+	response.headers['Access-Control-Allow-Origin'] = '*'
+	return response

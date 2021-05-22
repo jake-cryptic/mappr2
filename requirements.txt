@@ -4,7 +4,7 @@ itsdangerous==2.0.1
 email-validator==1.1.2
 ExifRead==2.3.2
 Click==8.0.1
-Flask==2.0.0
+Flask==2.0.1
 Flask-Admin==1.5.8
 Flask-Limiter==1.4
 Flask-Login==0.5.0
@@ -23,6 +23,7 @@ Pillow==8.2.0
 PyMongo==3.11.4
 pymysql==1.0.2
 python-dotenv==0.17.1
+requests==2.25.1
 Werkzeug==2.0.1
 WTForms==2.3.3
 gunicorn==20.1.0
