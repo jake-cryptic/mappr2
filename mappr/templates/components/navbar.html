@@ -12,6 +12,13 @@
 			</div>
 		{% endif %}
 		<div class="collapse navbar-collapse" id="mappr_navbar">
+			{% if request.endpoint != None and request.endpoint == 'map_bp.mappr2' %}
+				<button class="btn text-dark btn-light navbar-brand" type="button" data-bs-toggle="offcanvas"
+						data-bs-target="#offcanvasMapController" aria-controls="offcanvasScrolling">
+					<i class="fas fa-bars"></i>
+				</button>
+			{% endif %}
+
 			<a class="navbar-brand" href="/">
 				<i class="text-light fas fa-map"></i> mappr2
 			</a>
