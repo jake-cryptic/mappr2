@@ -203,6 +203,7 @@ let _xyz = {
 	},
 
 	get_server_layer:function(server, attr) {
+		let cors_proxy = '/api/cors-proxy/';
 		let data = {
 			attribution: attr,
 			opacity: _xyz.opacity

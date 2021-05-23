@@ -6,10 +6,29 @@
 
 {% block content %}
 	<div id="csrf_token" data-value="{{ csrf_token() }}"></div>
+	<div class="container-fluid py-5">
+		<div class="container">
+			<div class="display-4 pb-4">Map - Files</div>
 
+			<nav class="navbar-light bg-light mb-2 rounded" aria-label="breadcrumb">
+  				<ol class="breadcrumb px-4 py-3">
+    				<li class="breadcrumb-item"><a href="{{ url_for('map_bp.home') }}">Map</a></li>
+   	 				<li class="breadcrumb-item"><a href="{{ url_for('map_bp.file_table') }}">Files</a></li>
+    				<li class="breadcrumb-item active" aria-current="page">Upload CSV</li>
+  				</ol>
+			</nav>
+
+			<div id="add_files_area"></div>
+		</div>
+	</div>
 {% endblock content %}
 
 {% block jsfiles %}
 	{{ super() }}
+	<!-- Uppy -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uppy/1.27.0/uppy.min.js" integrity="sha512-vlsLx+AdIgUfptm7WkzpBk8TZWJYVCjNq8bxHeUEyIqKyocRww0PK1gvyMwTsg8OvlnpjA4BlUeWyFlDW8U5Og==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uppy/1.27.0/uppy.min.css" integrity="sha512-zgilVU1Oj8eiTgOKOiw5tQmV/+Fb8RdjiMzuUBjDntL/d4IPNpz3XLMdwNqdKB2TVO6J6B7S/Yn0D8u+DscKJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+	<!-- Upload JS file -->
+	<script src="{{ url_for('static', filename='js/gallery/upload.js') }}" type="text/javascript"></script>
 {% endblock jsfiles %}
