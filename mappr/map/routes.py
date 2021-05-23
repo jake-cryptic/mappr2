@@ -1,28 +1,131 @@
+import csv, uuid
 from os import path, makedirs
-from flask import Blueprint, render_template, current_app
-from flask_login import login_required
+from flask import Blueprint, render_template, current_app, request, abort
+from flask_login import login_required, current_user
+from werkzeug.utils import secure_filename
+from .. import limiter, db
+from ..functions import resp
+from ..models import MapFile
+from ..api.routes import api_get_map_area, api_get_mnc_list, api_get_sector_list
 
-map_bp = Blueprint("map_bp", __name__, template_folder="templates")
+map_bp = Blueprint("map_bp", __name__, template_folder="templates", url_prefix='/map')
 
 # Create file upload directories if they don't exist
 if not path.exists(current_app.config['MAP_FILES_DEST']):
 	makedirs(current_app.config['MAP_FILES_DEST'])
 
 
-@map_bp.route('/map', methods=['GET'])
+def is_csv(stream):
+	try:
+		start = stream.read(4096)
+		stream.seek(0)
+		dialect = csv.Sniffer().sniff(start)
+		return True
+	except csv.Error:
+		# Could not get a csv dialect -> probably not a csv.
+		return False
+
+
+# TODO: Remove this temp fix after 2021/07/01
+@map_bp.route('/api/map', methods=['GET'])
+def map_api_get_map_area():
+	return api_get_map_area()
+
+
+@map_bp.route('/api/get-mccs', methods=['GET'])
+def map_api_get_mnc_list():
+	return api_get_mnc_list
+
+
+@map_bp.route('/get-sectors', methods=['GET'])
+def map_api_get_sector_list():
+	return api_get_sector_list
+
+
+@map_bp.route('/', methods=['GET'])
 @login_required
 def mappr():
 	return render_template('map/map.html')
 
 
-@map_bp.route('/map2', methods=['GET'])
+@map_bp.route('/beta', methods=['GET'])
 @login_required
 def mappr2():
 	return render_template('map/mappr.html')
 
 
-@map_bp.route('/map/files', methods=['GET'])
+@map_bp.route('/files', methods=['GET'])
+@login_required
+def file_table():
+	return render_template('map/file_table.html')
+
+
+@map_bp.route('/files/upload', methods=['GET'])
 @login_required
 def files():
 	return render_template('map/files.html')
 
+
+@map_bp.route('/files/upload', methods=['POST'])
+@limiter.limit('50/hour;10/minute;5/second')
+@login_required
+def file_upload():
+	if len(request.files) == 0:
+		return resp({}, error='Cannot process this request')
+
+	if current_user.get_id() != 1: return abort(403)
+
+	def upload_file(file):
+		if not file:
+			return False
+
+		if file.filename == '' or '.' not in file.filename:
+			return False
+
+		# file_ext = path.splitext(file.filename)[1].lower()
+		file_ext = file.filename.rsplit('.', 1)[1].lower()
+		if file_ext not in current_app.config['MAP_UPLOAD_EXTENSIONS']:
+			return False
+
+		if not is_csv(file.stream):
+			return False
+
+		new_name = secure_filename(file.filename)
+		random_name = str(uuid.uuid4())
+		random_reference = str(uuid.uuid4())
+
+		# Add file to database
+		db.session.add(MapFile(
+			user_id=current_user.get_id(),
+			file_name=new_name,
+			file_location=random_name,
+			file_uuid=random_reference
+		))
+
+		# Save file to server
+		file_path = path.join(current_app.config['GALLERY_FILES_DEST'], random_name)
+		file.save(file_path)
+
+		current_app.mapfileprocessor.send(file_path)
+
+		return True
+
+	saved_files = {}
+	for file_index in request.files:
+		file = request.files[file_index]
+
+		save_result = upload_file(file)
+		if not save_result:
+			return abort(400)
+
+		saved_files[file.filename] = True
+
+	# Check if we actually saved any files
+	if len(saved_files) == 0:
+		return resp({}, error='No files saved')
+
+	db.session.commit()
+
+	return resp({
+		'files': saved_files
+	})

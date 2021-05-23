@@ -12,7 +12,7 @@ def resp(data=None, **kwargs):
 	return jsonify({
 		'license': 'This API data is private and only available for use with permission',
 		'error': err,
-		'version': 1,
+		'version': 2,
 		'message': msg,
 		'response': data
 	})

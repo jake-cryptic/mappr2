@@ -8,11 +8,11 @@
 	<div id="csrf_token" data-value="{{ csrf_token() }}"></div>
 	<div class="container-fluid py-5">
 		<div class="container">
-			<div class="display-4 pb-4">Map - Files</div>
+			<div class="display-4 pb-4">Map - File Upload</div>
 
 			<nav class="navbar-light bg-light mb-2 rounded" aria-label="breadcrumb">
   				<ol class="breadcrumb px-4 py-3">
-    				<li class="breadcrumb-item"><a href="{{ url_for('map_bp.home') }}">Map</a></li>
+    				<li class="breadcrumb-item"><a href="{{ url_for('map_bp.mappr') }}">Map</a></li>
    	 				<li class="breadcrumb-item"><a href="{{ url_for('map_bp.file_table') }}">Files</a></li>
     				<li class="breadcrumb-item active" aria-current="page">Upload CSV</li>
   				</ol>

@@ -1,3 +1,4 @@
+import csv
 import threading
 from queue import Queue
 from time import sleep
@@ -20,6 +21,16 @@ class FileProcessorThread(threading.Thread):
 			csv_file = self.input_queue.get()
 			if csv_file is None:
 				break
+
+			fh = open(csv_file, 'r')
+			try:
+				dialect = csv.Sniffer().sniff(fh.read(1024))
+				# Perform various checks on the dialect (e.g., lineseparator, delimiter) to make sure it's sane
+
+				# Don't forget to reset the read position back to the start of the file before reading any entries.
+				fh.seek(0)
+			except csv.Error:
+				return
 
 			# Read file and import data into db
 

@@ -7,8 +7,9 @@ let _api = {
 	currentRequest: null,
 	timeout: 30000,
 	total_analytics: 0,
-	apiCompat: 1,
+	apiCompat: 2,
 	csrf:'',
+	base:'/api/',
 
 	init: function () {
 		_api.prepareAjax();
@@ -96,7 +97,7 @@ let _api = {
 			};
 
 			$.ajax({
-				url: 'api/users/get',
+				url: _api.base + 'users/get',
 				type: 'POST',
 				data: queryList,
 				dataType: 'json',
@@ -128,7 +129,7 @@ let _api = {
 
 		getMccSectors: function () {
 			$.ajax({
-				url: 'api/get-sectors',
+				url: _api.base + 'get-sectors',
 				type: 'GET',
 				data: {
 					'mcc': _app.mcc
@@ -229,7 +230,7 @@ let _api = {
 			document.title = 'Updating Map...';
 
 			_api.currentRequest = $.ajax({
-				url: 'api/map',
+				url: _api.base + 'map',
 				type: 'GET',
 				data: _api.map.getParams(),
 				dataType: 'json',
@@ -281,7 +282,7 @@ let _api = {
 			}
 
 			$.ajax({
-				url: 'api/lookup-node',
+				url: _api.base + 'lookup-node',
 				type: 'GET',
 				data: request_data,
 				dataType: 'json',
@@ -326,7 +327,7 @@ let _api = {
 			_ui.popToastMessage("Updating Node....", false, true, 'warning');
 
 			$.ajax({
-				url: 'api/update-node',
+				url: _api.base + 'update-node',
 				type: 'POST',
 				data: _api.nodeUpdate.move_attempt,
 				dataType: 'json',
@@ -353,7 +354,7 @@ let _api = {
 			_ui.popToastMessage('Loading location history..', 250, true, 'warning');
 
 			$.ajax({
-				url: 'api/lookup-history',
+				url: _api.base + 'lookup-history',
 				type: 'GET',
 				data: request_data,
 				dataType: 'json',

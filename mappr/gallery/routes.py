@@ -65,8 +65,6 @@ def image_upload():
 	if len(request.files) == 0:
 		return resp({}, error='Cannot process this request')
 
-	print(request.form)
-
 	def upload_file(file):
 		if not file:
 			return False
