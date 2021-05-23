@@ -11,14 +11,8 @@
 				</button>
 			</div>
 		{% endif %}
-		<div class="collapse navbar-collapse" id="mappr_navbar">
-			{% if request.endpoint != None and request.endpoint == 'map_bp.mappr2' %}
-				<button class="btn text-dark btn-light navbar-brand" type="button" data-bs-toggle="offcanvas"
-						data-bs-target="#offcanvasMapController" aria-controls="offcanvasScrolling">
-					<i class="fas fa-bars"></i>
-				</button>
-			{% endif %}
 
+		<div class="collapse navbar-collapse" id="mappr_navbar">
 			<a class="navbar-brand" href="/">
 				<i class="text-light fas fa-map"></i> mappr2
 			</a>
@@ -133,12 +127,19 @@
 				</li>
 			</ul>
 			{% endif %}
-			{% if request.endpoint != None and request.endpoint == 'map_bp.mappr' %}
+			{% if request.endpoint != None and request.endpoint in ('map_bp.mappr', 'map_bp.mappr2') %}
 				<div class="d-flex">
-					<div class="input-group">
+					<div class="input-group px-1">
 						<input class="form-control" type="search" id="enb_search_input" placeholder="Search for eNb" aria-label="Search" />
 						<button class="btn btn-success" type="submit" id="enb_search_submit"><i class="fas fa-search"></i> Search</button>
 					</div>
+
+					{% if request.endpoint == 'map_bp.mappr2' %}
+						<button class="btn text-dark btn-light" type="button" data-bs-toggle="offcanvas"
+								data-bs-target="#offcanvasMapController" aria-controls="offcanvasScrolling">
+							<i class="fas fa-bars"></i>
+						</button>
+					{% endif %}
 				</div>
 			{% endif %}
 		</div>
