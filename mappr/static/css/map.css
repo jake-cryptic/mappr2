@@ -108,6 +108,28 @@
 	text-align: center;
 }
 
+.accordion-item-dark {
+	background-color:#212529 !important;
+	color:#fff !important;
+}
+
+.accordion-button-dark {
+	background-color:#262626;
+	color:#fff;
+}
+.accordion-button-dark::after {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+}
+
+.accordion-button-dark:not(.collapsed) {
+	background-color: #212529 !important;
+	color:#fff !important;
+}
+
+.offcanvas-dark {
+	background-color: #212529;
+}
+
 /* Dark theme modifications */
 @media (prefers-color-scheme: dark) {
 	.marker_label {

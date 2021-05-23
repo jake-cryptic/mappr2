@@ -1,4 +1,4 @@
-<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+<div class="offcanvas {% if session['dark_theme'] %}offcanvas-dark{% endif %} offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
 	 id="offcanvasMapController" aria-labelledby="offcanvasMapControllerLabel">
 	<div class="offcanvas-header">
 		<h5 class="offcanvas-title" id="offcanvasMapControllerLabel">Map Controls</h5>
@@ -7,28 +7,26 @@
 	<div class="offcanvas-body px-sm-2 px-md-1 px-lg-0 py-0">
 
 		<nav class="nav nav-pills nav-fill nav-justified">
-			<a class="nav-item nav-link text-dark active" id="map_settings_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#map_settings" aria-selected="true">
+			<a class="nav-item nav-link {% if session['dark_theme'] %}text-light{% else %}text-dark{% endif %} active" id="map_settings_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#map_settings" aria-selected="true">
 				<i class="fas fa-map-marked-alt"></i><span class="sr-only">Map Settings</span>
 			</a>
-			<a class="nav-item nav-link text-dark" id="results_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#results" aria-selected="false">
+			<a class="nav-item nav-link {% if session['dark_theme'] %}text-light{% else %}text-dark{% endif %}" id="results_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#results" aria-selected="false">
 				<i class="fas fa-table"></i><span class="sr-only">Table of Results</span>
 			</a>
-			<a class="nav-item nav-link text-dark" id="bookmarks_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#bookmarks" aria-selected="false">
+			<a class="nav-item nav-link {% if session['dark_theme'] %}text-light{% else %}text-dark{% endif %}" id="bookmarks_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#bookmarks" aria-selected="false">
 				<i class="fas fa-bookmark"></i><span class="sr-only">Bookmarks</span>
 			</a>
-			<a class="nav-item nav-link text-dark" id="files_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#files" aria-selected="false">
+			<a class="nav-item nav-link {% if session['dark_theme'] %}text-light{% else %}text-dark{% endif %}" id="files_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#files" aria-selected="false">
 				<i class="fas fa-file"></i><span class="sr-only">CSV Files</span>
 			</a>
 		</nav>
 
 		<div class="tab-content">
 			<div class="tab-pane active" id="map_settings" role="tabpanel" aria-labelledby="map_settings_toggle">
-				<h2 class="h4">Map Settings</h2>
-
 				<div class="accordion accordion-flush" id="sidebar_accordion">
-					<div class="accordion-item">
+					<div class="accordion-item{% if session['dark_theme'] %} accordion-item-dark{% endif %}">
 						<h2 class="accordion-header" id="accord_head_map_items">
-							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_one" aria-expanded="true" aria-controls="collapse_one">Map Objects</button>
+							<button class="accordion-button{% if session['dark_theme'] %} accordion-button-dark{% endif %} collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_one" aria-expanded="true" aria-controls="collapse_one">Map Objects</button>
 						</h2>
 						<div id="collapse_one" class="accordion-collapse collapse" aria-labelledby="accord_head_map_items" data-bs-parent="#sidebar_accordion">
 							<div class="accordion-body">
@@ -37,7 +35,7 @@
 									<button aria-label="Pause / Unpause node loading" id="node_loading_pause" class="btn btn-info text-light">
 										<i class="fas fa-pause"></i> Pause Node Loading
 									</button>
-									<button aria-label="Disable / Enable node polygons" id="node_polygons_pause" class="btn btn-dark">
+									<button aria-label="Disable / Enable node polygons" id="node_polygons_pause" class="btn {% if session['dark_theme'] %}btn-secondary{% else %}btn-dark{% endif %}">
 										<i class="fas fa-shapes"></i> Disable Polygons
 									</button>
 									<button aria-label="Disable / Enable map clustering" id="map_clustering_toggle" class="btn btn-primary">
@@ -57,9 +55,9 @@
 						</div>
 					</div>
 
-					<div class="accordion-item">
+					<div class="accordion-item{% if session['dark_theme'] %} accordion-item-dark{% endif %}">
 						<h2 class="accordion-header" id="accord_head_map_location">
-							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_two" aria-expanded="true" aria-controls="collapse_two">Map &amp; Location</button>
+							<button class="accordion-button{% if session['dark_theme'] %} accordion-button-dark{% endif %} collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_two" aria-expanded="true" aria-controls="collapse_two">Map &amp; Location</button>
 						</h2>
 						<div id="collapse_two" class="accordion-collapse collapse" aria-labelledby="accord_head_map_location" data-bs-parent="#sidebar_accordion">
 							<div class="accordion-body">
@@ -83,16 +81,16 @@
 								<div class="input-group mb-3">
 									<input class="form-control" type="text" maxlength="250" minlength="2" id="world_location_search" name="world_location_search" aria-label="Search for an address" placeholder="Enter an address, postcode, city.."/>
 									<div class="input-group-append">
-										<button id="do_world_location_search" class="btn btn-dark" type="button"><i class="fas fa-search"></i></button>
+										<button id="do_world_location_search" class="btn {% if session['dark_theme'] %}btn-light{% else %}btn-dark{% endif %}" type="button"><i class="fas fa-search"></i></button>
 									</div>
 								</div>
 
 								<div class="d-grid gap-2 col-10 mx-auto mb-2">
-									<button type="button" aria-label="Move map to current location" class="btn btn-block btn-dark" id="locate_user_manual">
+									<button type="button" aria-label="Move map to current location" class="btn btn-block {% if session['dark_theme'] %}btn-light{% else %}btn-dark{% endif %}" id="locate_user_manual">
 										<i class="fas fa-location-arrow"></i> Find me
 									</button>
 
-									<button type="button" aria-label="Watch user position" class="btn btn-block btn-dark" id="toggle_geo_watch">
+									<button type="button" aria-label="Watch user position" class="btn btn-block {% if session['dark_theme'] %}btn-light{% else %}btn-dark{% endif %}" id="toggle_geo_watch">
 										<i class="fas fa-binoculars"></i> Watch Geolocation
 									</button>
 								</div>
@@ -100,9 +98,9 @@
 						</div>
 					</div>
 
-					<div class="accordion-item">
+					<div class="accordion-item{% if session['dark_theme'] %} accordion-item-dark{% endif %}">
 						<h2 class="accordion-header" id="accord_head_operator">
-							<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_three" aria-expanded="true" aria-controls="collapse_three">MCC, MNC & RAT</button>
+							<button class="accordion-button{% if session['dark_theme'] %} accordion-button-dark{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_three" aria-expanded="true" aria-controls="collapse_three">MCC, MNC & RAT</button>
 						</h2>
 						<div id="collapse_three" class="accordion-collapse collapse show" aria-labelledby="accord_head_operator" data-bs-parent="#sidebar_accordion">
 							<div class="accordion-body">
@@ -116,15 +114,15 @@
 									<select id="select_mnc" class="form-select mb-2" aria-label="Choose a mobile network">
 										<option value='0' selected>All</option>
 									</select>
-									<a href="https://mobilespectrum.org" class="btn btn-sm btn-outline-dark" rel="noopener" target="_blank" id="open_mobile_spectrum">Visit MobileSpectrum</a>
+									<a href="https://mobilespectrum.org" class="btn btn-sm {% if session['dark_theme'] %}btn-outline-light{% else %}btn-outline-dark{% endif %}" rel="noopener" target="_blank" id="open_mobile_spectrum">Visit MobileSpectrum</a>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div class="accordion-item">
+					<div class="accordion-item{% if session['dark_theme'] %} accordion-item-dark{% endif %}">
 						<h2 class="accordion-header" id="accord_head_filter">
-							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_four" aria-expanded="true" aria-controls="collapse_four">Filter Results</button>
+							<button class="accordion-button{% if session['dark_theme'] %} accordion-button-dark{% endif %} collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_four" aria-expanded="true" aria-controls="collapse_four">Filter Results</button>
 						</h2>
 						<div id="collapse_four" class="accordion-collapse collapse" aria-labelledby="accord_head_filter" data-bs-parent="#sidebar_accordion">
 							<div class="accordion-body">
@@ -133,19 +131,19 @@
 								</button>
 
 								<nav class="nav nav-pills nav-fill nav-justified">
-									<a class="nav-item nav-link text-dark active" id="date_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#date_filter" aria-selected="true">
+									<a class="nav-item nav-link {% if session['dark_theme'] %}text-light{% else %}text-dark{% endif %} active" id="date_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#date_filter" aria-selected="true">
 										<i class="fas fa-calendar-alt"></i><span class="sr-only">Dates</span>
 									</a>
-									<a class="nav-item nav-link text-dark" id="sector_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#sector_filter" aria-selected="false">
+									<a class="nav-item nav-link {% if session['dark_theme'] %}text-light{% else %}text-dark{% endif %}" id="sector_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#sector_filter" aria-selected="false">
 										<i class="fas fa-vector-square"></i><span class="sr-only">Sectors</span>
 									</a>
-									<a class="nav-item nav-link text-dark" id="node_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#node_filter" aria-selected="false">
+									<a class="nav-item nav-link {% if session['dark_theme'] %}text-light{% else %}text-dark{% endif %}" id="node_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#node_filter" aria-selected="false">
 										<i class="fas fa-broadcast-tower"></i><span class="sr-only">Nodes</span>
 									</a>
-									<a class="nav-item nav-link text-dark" id="pci_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#pci_filter" aria-selected="false">
+									<a class="nav-item nav-link {% if session['dark_theme'] %}text-light{% else %}text-dark{% endif %}" id="pci_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#pci_filter" aria-selected="false">
 										<i class="fas fa-id-card"></i><span class="sr-only">PCIs</span>
 									</a>
-									<a class="nav-item nav-link text-dark" id="other_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#other_filter" aria-selected="false">
+									<a class="nav-item nav-link {% if session['dark_theme'] %}text-light{% else %}text-dark{% endif %}" id="other_filter_toggle" href="#" role="tab" data-bs-toggle="tab" data-bs-target="#other_filter" aria-selected="false">
 										<i class="fas fa-map-pin"></i><span class="sr-only">Other</span>
 									</a>
 								</nav>
@@ -209,9 +207,9 @@
 						</div>
 					</div>
 
-					<div class="accordion-item">
+					<div class="accordion-item{% if session['dark_theme'] %} accordion-item-dark{% endif %}">
 						<h2 class="accordion-header" id="accord_head_xyz">
-							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_five" aria-expanded="true" aria-controls="collapse_five">Operator XYZ Tiles</button>
+							<button class="accordion-button{% if session['dark_theme'] %} accordion-button-dark{% endif %} collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_five" aria-expanded="true" aria-controls="collapse_five">Operator XYZ Tiles</button>
 						</h2>
 						<div id="collapse_five" class="accordion-collapse collapse" aria-labelledby="accord_head_xyz" data-bs-parent="#sidebar_accordion">
 							<div class="accordion-body">
@@ -259,7 +257,7 @@
 									</div>
 								</form>
 
-								<table class="table">
+								<table class="table{% if session['dark_theme'] %} table-dark{% endif %}">
 									<thead>
 										<tr>
 											<th>MCC</th>
@@ -284,9 +282,7 @@
 			</div>
 
 			<div class="tab-pane" id="results" role="tabpanel" aria-labelledby="#results_toggle">
-				<h2 class="h4 text-center">Node List</h2>
-
-				<table class="table">
+				<table class="table{% if session['dark_theme'] %} table-dark{% endif %}">
 					<thead>
 						<tr>
 							<th>Network</th>
@@ -303,8 +299,6 @@
 			</div>
 
 			<div class="tab-pane" id="bookmarks" role="tabpanel" aria-labelledby="#bookmarks_toggle">
-				<h2 class="h4 text-center">Bookmarked Locations</h2>
-
 				<div class="m-2 container container-fluid text-center">
 					<div class="btn-group" role="group" aria-label="Bookmark controls">
 						<button type="button" class="btn btn-success" id="bookmarks_new">
@@ -315,7 +309,7 @@
 						</button>
 					</div>
 				</div>
-				<table class="table">
+				<table class="table{% if session['dark_theme'] %} table-dark{% endif %}">
 					<thead>
 						<tr>
 							<th>Network</th>
@@ -332,23 +326,56 @@
 			</div>
 
 			<div class="tab-pane" id="files" role="tabpanel" aria-labelledby="#files_toggle">
-				<h2 class="h4 text-center">CSV Import</h2>
+				<div class="accordion accordion-flush" id="file_accordion">
+					<div class="accordion-item{% if session['dark_theme'] %} accordion-item-dark{% endif %}">
+						<h2 class="accordion-header" id="accord_head_map_items">
+							<button class="accordion-button{% if session['dark_theme'] %} accordion-button-dark{% endif %} collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_file_local" aria-expanded="true" aria-controls="collapse_file_local">Map Objects</button>
+						</h2>
+						<div id="collapse_file_local" class="accordion-collapse collapse" aria-labelledby="accord_head_map_items" data-bs-parent="#file_accordion">
+							<div class="accordion-body">
+								Load a local CSV file to view on Mappr below. The file will not be uploaded to Mappr, only parsed in your browser.<br /><br />
+								<p>The file must contain <code>lat, lng</code> or <code>x, y</code> headers.</p>
+								<label for="csv_import" class="label">CSV file to view:</label>
+								<input type="file" name="csv_import" id="csv_import" accept="text/csv" />
+								<div id="csv_import_file_info">No file loaded</div>
+							</div>
+						</div>
+					</div>
 
-				<input type="file" id="csv_import" accept="text/csv" />
-				<table class="table">
-					<thead>
-						<tr>
-							<th>File Name</th>
-							<th>Rows</th>
-							<th>Options</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td colspan="3">No files loaded</td>
-						</tr>
-					</tbody>
-				</table>
+					<div class="accordion-item{% if session['dark_theme'] %} accordion-item-dark{% endif %}">
+						<h2 class="accordion-header" id="accord_head_map_items">
+							<button class="accordion-button{% if session['dark_theme'] %} accordion-button-dark{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_file_mapfiles" aria-expanded="true" aria-controls="collapse_file_mapfiles">Map Files</button>
+						</h2>
+						<div id="collapse_file_mapfiles" class="accordion-collapse collapse show" aria-labelledby="accord_head_map_items" data-bs-parent="#file_accordion">
+							<div class="accordion-body">
+								<div class="m-2 container container-fluid text-center">
+									<div class="btn-group" role="group" aria-label="Bookmark controls">
+										<a type="button" class="btn btn-success" href="{{ url_for('map_bp.files') }}" target="_blank">
+											<i class="fas fa-plus"></i> Add Files
+										</a>
+										<button type="button" class="btn btn-info text-light" id="mapfiles_reload">
+											<i class="fas fa-sync-alt"></i> Reload List
+										</button>
+									</div>
+								</div>
+								<table class="table{% if session['dark_theme'] %} table-dark{% endif %}">
+									<thead>
+										<tr>
+											<th>Map File</th>
+											<th>Rows</th>
+											<th>Options</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td colspan="3">No map files loaded</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -37,7 +37,9 @@ let _csv = {
 
 		// Assign event listener
 		$("input[type=file]#csv_import").on("change", function (e) {
-			_csv.parseFile($(this).prop('files')[0]);
+			let file = $(this).prop('files')[0];
+			_csv.parseFile(file);
+			$('#csv_import_file_info').text('Loaded file: ' + file.name);
 			return;
 			let fileReader = new FileReader();
 

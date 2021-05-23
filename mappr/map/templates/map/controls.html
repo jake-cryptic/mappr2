@@ -324,8 +324,13 @@
 
 	<div class="tab-pane" id="files" role="tabpanel" aria-labelledby="#files_toggle">
 		<h2 class="h4 text-center">CSV Import</h2>
-
-		<input type="file" id="csv_import" accept="text/csv" />
+		<div class="p-1">
+			Load a local CSV file to view on Mappr below. The file will not be uploaded to Mappr, only parsed in your browser.<br /><br />
+			<p>The file must contain <code>lat, lng</code> or <code>x, y</code> headers.</p>
+			<label for="csv_import" class="label">CSV file to view:</label>
+			<input type="file" name="csv_import" id="csv_import" accept="text/csv" />
+			<div id="csv_import_file_info">No file loaded</div>
+		</div>
 		<table class="table">
 			<thead>
 				<tr>

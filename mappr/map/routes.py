@@ -23,6 +23,6 @@ def mappr2():
 
 @map_bp.route('/map/files', methods=['GET'])
 @login_required
-def map_files():
+def files():
 	return render_template('map/files.html')
 
