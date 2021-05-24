@@ -34,6 +34,11 @@ select {
 	background-color: #1a1a1a !important;
 }
 
+.nav-pills-light .nav-link.active, .nav-pills-light .show > .nav-link {
+	color: #1a1a1a !important;
+	background-color: #fff !important;
+}
+
 #toast_section {
 	min-height: 200px;
 	position: absolute;

@@ -16,7 +16,8 @@
   				</ol>
 			</nav>
 
-			<a href="{{ url_for('gallery_bp.home') }}" class="btn btn-outline-info">Go Back</a>
+			<img src="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}"
+				 class="img-fluid" alt="{{ image['alt_text'] }}" />
 		</div>
 	</div>
 {% endblock %}

@@ -12,10 +12,11 @@ let _sharing = {
 				console.warn('Invalid share URL for element', $(this));
 			} else {
 				$(this).on('click enter', function(){
-					let title = $(this).data('share-title') || '';
-					let text = $(this).data('share-text') || 'No description';
-					let url = $(this).data('share-url') || '';
-					_sharing.share(title, text, url)
+					$el = $(this);
+					let title = $el.data('share-title') || '';
+					let text = $el.data('share-text') || 'No description';
+					let url = $el.data('share-url') || '';
+					_sharing.share($el, title, text, url)
 				});
 			}
 		});
@@ -29,12 +30,15 @@ let _sharing = {
 		};
 	},
 
-	share: function(title, text, url) {
+	share: function($el, title, text, url) {
+		$el.html('<i class="fas fa-spinner"></i> Sharing...');
 		try {
 			navigator.share(
 				_sharing.getSchema(title, text, url)
 			);
+			$el.html('<i class="fas fa-check-circle"></i> Shared');
 		} catch (err) {
+			$el.html('<i class="fas fa-times-circle"></i> Failed');
 			console.warn('Sharing cancelled');
 			console.warn(err);
 		}

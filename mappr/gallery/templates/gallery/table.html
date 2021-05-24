@@ -46,6 +46,10 @@
 								   class="btn btn-sm btn-primary">
 									<i class="fas fa-share"></i> Share
 								</a>
+								<a href="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}"
+								   title="{{ image['file_name'] }}" class="btn btn-sm btn-success" target="_blank">
+									<i class="fas fa-image"></i> View
+								</a>
 								<a href="{{ url_for('gallery_bp.edit_image', image_uuid=image['file_uuid']) }}" class="btn btn-sm btn-secondary">
 									<i class="fas fa-pencil-alt"></i> Details
 								</a>

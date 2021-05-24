@@ -154,7 +154,7 @@ def edit_image(image_uuid=None):
 
 	image_info = image_data.one()
 
-	return render_template('gallery/image.html')
+	return render_template('gallery/image.html', image=image_info)
 
 
 @gallery_bp.route('/image/view/<image_uuid>/<image_format>', methods=['GET'])
@@ -185,7 +185,7 @@ def view_image(image_uuid=None, image_format='best'):
 			directory, str(image_info.file_location) + file_ext,
 			as_attachment=False,
 			download_name=image_info.file_name,
-			mimetype='image/' + image_info.file_type,
+			mimetype='image/' + image_format,
 			last_modified=image_info.time_created,
 			max_age=86400*365
 		)
