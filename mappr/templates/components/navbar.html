@@ -24,13 +24,28 @@
 						<i class="fas fa-compass"></i> Map <span class="sr-only">(current)</span>
 					</a>
 				</li>
-				{% if session['collections'] %}
-				<li class="nav-item">
-					<a class="nav-link" href="{{ url_for('gallery_bp.home') }}">
-						<i class="fas fa-images"></i> Collections
-					</a>
-				</li>
-				{% endif %}
+				<li class="nav-item dropdown">
+          			<a class="nav-link dropdown-toggle" href="#" id="collections_dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            			<i class="fas fa-images"></i> Collections
+          			</a>
+					<ul class="dropdown-menu" aria-labelledby="collections_dropdown">
+						<li>
+							<a class="dropdown-item" href="{{ url_for('gallery_bp.home') }}">
+								<i class="fas fa-image"></i> Dashboard
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="{{ url_for('gallery_bp.upload') }}">
+								<i class="fas fa-upload"></i> Upload
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="{{ url_for('gallery_bp.image_table') }}">
+								<i class="fas fa-camera"></i> My Images
+							</a>
+						</li>
+          			</ul>
+        		</li>
 				<li class="nav-item">
 					<a class="nav-link" href="{{ url_for('user_bp.account') }}">
 						<i class="fas fa-user-alt"></i> Account

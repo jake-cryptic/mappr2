@@ -109,16 +109,6 @@ function getLteItUrl(mcc, mnc, lat, lng, zoom = 15) {
 	return 'https://lteitaly.it/public/map.php#' + zoom + '/' + lat + '/' + lng
 }
 
-function startServiceWorker() {
-	if (!('serviceWorker' in navigator)) return false;
-
-	navigator.serviceWorker.register('/static/js/service-worker.js').then(function(registration){
-		console.log('ServiceWorker registration successful with scope: ',registration.scope);
-	},function(err){
-		console.log('ServiceWorker registration failed: ',err);
-	});
-}
-
 let isMobileDevice = function(){
 	return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
 };

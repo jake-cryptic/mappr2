@@ -15,17 +15,6 @@ if not path.exists(current_app.config['MAP_FILES_DEST']):
 	makedirs(current_app.config['MAP_FILES_DEST'])
 
 
-def is_csv(stream):
-	try:
-		start = stream.read(4096)
-		stream.seek(0)
-		dialect = csv.Sniffer().sniff(start)
-		return True
-	except csv.Error:
-		# Could not get a csv dialect -> probably not a csv.
-		return False
-
-
 # TODO: Remove this temp fix after 2021/07/01
 @map_bp.route('/api/map', methods=['GET'])
 def map_api_get_map_area():
@@ -70,10 +59,11 @@ def files():
 @limiter.limit('50/hour;10/minute;5/second')
 @login_required
 def file_upload():
-	if len(request.files) == 0:
+	if len(request.files) != 1:
 		return resp({}, error='Cannot process this request')
 
-	if current_user.get_id() != 1: return abort(403)
+	if current_user.id != 1:
+		return abort(403)
 
 	def upload_file(file):
 		if not file:
@@ -82,12 +72,8 @@ def file_upload():
 		if file.filename == '' or '.' not in file.filename:
 			return False
 
-		# file_ext = path.splitext(file.filename)[1].lower()
 		file_ext = file.filename.rsplit('.', 1)[1].lower()
 		if file_ext not in current_app.config['MAP_UPLOAD_EXTENSIONS']:
-			return False
-
-		if not is_csv(file.stream):
 			return False
 
 		new_name = secure_filename(file.filename)
@@ -97,6 +83,7 @@ def file_upload():
 		# Add file to database
 		db.session.add(MapFile(
 			user_id=current_user.get_id(),
+			description=request.form['description'],
 			file_name=new_name,
 			file_location=random_name,
 			file_uuid=random_reference
@@ -109,6 +96,7 @@ def file_upload():
 		current_app.mapfileprocessor.send(file_path)
 
 		return True
+
 
 	saved_files = {}
 	for file_index in request.files:

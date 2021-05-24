@@ -27,6 +27,7 @@ def correct_image_orientation(im, tags):
 
 	return im
 
+
 class ImageProcessorThread(threading.Thread):
 	def __init__(self, *args, **kwargs):
 		threading.Thread.__init__(self, *args, **kwargs)

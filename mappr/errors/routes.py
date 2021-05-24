@@ -42,7 +42,7 @@ def handle_405(err):
 
 
 @error_bp.errorhandler(413)
-def handle_413(e):
+def handle_413(err):
 	return "File is too large", 413
 
 
@@ -57,3 +57,9 @@ def handle_429(err):
 @error_bp.app_errorhandler(500)
 def handle_500(err):
 	return render_template('errors/500.html'), 500
+
+
+@error_bp.app_errorhandler(503)
+@error_bp.route('/unavailable', methods=['GET'])
+def handle_503(err=None):
+	return render_template('errors/503.html'), 503

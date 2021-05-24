@@ -43,6 +43,7 @@ def create_app():
 		from .gallery import routes as gallery_routes
 		from .gallery import threads as gallery_threads
 		from .map import routes as map_routes
+		from .map import threads as map_threads
 		from .statistics import routes as statistics_routes
 		from .user import routes as user_routes
 
@@ -57,9 +58,17 @@ def create_app():
 
 		@app.before_first_request
 		def activate_job_monitor():
-			thread = gallery_threads.ImageProcessorThread()
-			app.imageprocessor = thread
-			thread.start()
+			# Create the threads
+			img_thread = gallery_threads.ImageProcessorThread()
+			csv_thread = map_threads.FileProcessorThread()
+
+			# Tie them to the application
+			app.imageprocessor = img_thread
+			app.mapfileprocessor = csv_thread
+
+			# Start the threads
+			img_thread.start()
+			csv_thread.start()
 
 		db.create_all()
 

@@ -85,9 +85,19 @@ def image_upload():
 		random_name = str(uuid.uuid4())
 		random_reference = str(uuid.uuid4())
 
+		description = None
+		if 'description' in request.form:
+			description = request.form['description']
+
+		alt = None
+		if 'alt' in request.form:
+			alt = request.form['alt']
+
 		# Add file to database
 		db.session.add(GalleryFile(
 			user_id=current_user.get_id(),
+			description=description,
+			alt_text=alt,
 			file_name=new_name,
 			file_location=random_name,
 			file_uuid=random_reference,

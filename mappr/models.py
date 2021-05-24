@@ -169,14 +169,15 @@ class GalleryFile(db.Model):
 
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	permission = db.Column(db.SmallInteger, nullable=False, default=0)
+	processing = db.Column(db.SmallInteger, nullable=False, default=1)		# Indicates if the file is being processed
 
 	alt_text = db.Column(db.Text, nullable=False, default='Image has no alt-text')
 	description = db.Column(db.Text, nullable=True)
 
-	file_name = db.Column(db.Text, nullable=False) 			# Original filename
-	file_type = db.Column(db.Text, nullable=False)			# File type (png, jpg etc)
-	file_location = db.Column(UUIDType, nullable=False)		# New filename
-	file_uuid = db.Column(UUIDType, nullable=False)			# Reference to access file
+	file_name = db.Column(db.Text, nullable=False) 							# Original filename
+	file_type = db.Column(db.Text, nullable=False)							# File type (png, jpg etc)
+	file_location = db.Column(UUIDType, nullable=False)						# New filename
+	file_uuid = db.Column(UUIDType, nullable=False)							# Reference to access file
 
 
 class MapFile(db.Model):
@@ -185,6 +186,12 @@ class MapFile(db.Model):
 	id = db.Column(Integer, Sequence('mapfile_id_seq'), primary_key=True)
 	user_id = db.Column(Integer, db.ForeignKey('users.id'))
 	user = db.relationship('User', back_populates='map_files')
+
+	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+	permission = db.Column(db.SmallInteger, nullable=False, default=1)
+	processing = db.Column(db.SmallInteger, nullable=False, default=1)		# Indicates if the file is being processed
+
+	description = db.Column(db.Text, nullable=True)
 
 	file_name = db.Column(db.Text, nullable=False)
 	file_location = db.Column(db.Text, nullable=False)

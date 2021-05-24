@@ -3,7 +3,7 @@ let _upload = {
 	_csrf: '',
 	_headers: {},
 
-	url: '/map/upload/csv',
+	url: '/map/files/upload',
 	uppy: null,
 
 	init: function () {
@@ -21,7 +21,7 @@ let _upload = {
 			restrictions: {
 				maxFileSize: 1024 * 1024 * 10,
 				maxNumberOfFiles: 1,
-				allowedFileTypes: ['text/csv']
+				allowedFileTypes: ['.csv', '.tsv']
 			},
 			headers: _upload._headers
 		})
@@ -43,7 +43,7 @@ let _upload = {
 			autoOpenFileEditor: false,
 			metaFields: [
 				{id: 'name', name: 'Name', placeholder: 'Filename'},
-				{id: 'alt', name: 'Alt-Text', placeholder: 'Describe the image for those with sight-impairments'}
+				{id: 'description', name: 'Description', placeholder: 'Describe the file contents'}
 			],
 		})
 		.use(Uppy.GoldenRetriever);

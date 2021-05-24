@@ -21,8 +21,13 @@ let _bookmarks = {
 		_bookmarks.getList(function (data) {
 			$('#bookmarks_list').empty();
 
-			if (data.response.length === 0 || data.error === true) {
-				let txt = data.error === true ? data.msg : 'No bookmarks found';
+			if (data.status || data.error === true || !data.response || data.response.length === 0) {
+				let txt = 'Unknown error';
+				if (data.statusText) {
+					txt = data.statusText;
+				} else {
+					txt = data.error === true ? data.msg : 'No bookmarks found'
+				}
 
 				$('#bookmarks_list').append(
 					$('<tr/>').append(
@@ -35,9 +40,9 @@ let _bookmarks = {
 			}
 
 			data.response.forEach(function (point) {
-				console.log(point);
 				$('#bookmarks_list').append(
 					$("<tr/>", {
+						"tabindex": 0,
 						"data-id": point.id,
 						"data-rat": 'lte',
 						"data-mcc": point.mcc,
@@ -128,8 +133,6 @@ let _bookmarks = {
 			'mnc': _app.mnc
 		};
 
-		$.get("api/bookmark/get", getData).done(function (resp) {
-			cb(resp);
-		});
+		$.get(_api.base + 'bookmark/get', getData).done(cb).fail(cb);
 	}
 };

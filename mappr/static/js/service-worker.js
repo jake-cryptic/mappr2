@@ -30,6 +30,9 @@ let appLibraries = [
 	// jQuery
 	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js',
 
+	// Chart.js
+	'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.0/chart.min.js',
+
 	// Chroma
 	'https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.2/chroma.min.js',
 
@@ -38,6 +41,8 @@ let appLibraries = [
 ];
 
 let appStatic = [
+	'/unavailable',
+
 	'/static/css/styles.css',
 	'/static/js/map/api.js',
 	'/static/js/map/bookmarks.js',
