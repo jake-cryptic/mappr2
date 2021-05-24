@@ -10,6 +10,21 @@
 			"sizes": "256x256"
 		}
 	],
+	"shortcuts": [
+		{
+			"name": "Account Settings",
+			"short_name": "Account",
+			"description": "View and manage your account settings",
+			"url": "/user/account",
+			"icons": [
+				{
+					"src": "/static/img/bus_256.png",
+					"type": "image/png",
+					"sizes": "256x256"
+				}
+			]
+		}
+	],
 	"start_url":"/",
 	"scope":"/",
 	"theme_color":"#1a1a1a",

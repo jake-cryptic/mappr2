@@ -12,10 +12,10 @@
 	<div class="container-fluid py-5">
 		<div class="container">
 			<h1 class="display-4 pb-4">Collections</h1>
-			<a href="{{ url_for('gallery_bp.upload') }}" class="btn btn-block btn-outline-info">
+			<a href="{{ url_for('gallery_bp.upload') }}" class="btn btn-block {% if session['dark_theme'] %}btn-outline-info{% else %}btn-outline-primary{% endif %}">
 				<i class="fas fa-upload"></i> Upload
 			</a>
-			<a href="{{ url_for('gallery_bp.image_table') }}" class="btn btn-block btn-outline-light">
+			<a href="{{ url_for('gallery_bp.image_table') }}" class="btn btn-block {% if session['dark_theme'] %}btn-outline-light{% else %}btn-outline-dark{% endif %}">
 				<i class="fas fa-image"></i> My Images
 			</a>
 

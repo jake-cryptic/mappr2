@@ -49,7 +49,7 @@ def image_table():
 	user_images = GalleryFile.query.filter(
 		GalleryFile.user_id == current_user.get_id()
 	).all()
-	return render_template('gallery/table.html')
+	return render_template('gallery/table.html', image_list=user_images)
 
 
 @gallery_bp.route('/upload', methods=['GET'])
@@ -159,11 +159,17 @@ def edit_image(image_uuid=None):
 
 @gallery_bp.route('/image/view/<image_uuid>/<image_format>', methods=['GET'])
 @limiter.limit('250/hour;100/minute;10/second')
-def view_image(image_uuid=None, image_format='jpg'):
+def view_image(image_uuid=None, image_format='best'):
 	directory = path.join('..' + path.sep + current_app.config['GALLERY_FILES_DEST'])
 
 	if not is_valid_uuid(image_uuid):
 		return abort(404)
+
+	if image_format != 'jpg':
+		if request.accept_mimetypes['image/webp']:
+			image_format = 'webp'
+		else:
+			image_format = 'jpg'
 
 	image_data = GalleryFile.query.filter(
 		GalleryFile.file_uuid == image_uuid
