@@ -14,54 +14,57 @@
     				<li class="breadcrumb-item active" aria-current="page">Your Images</li>
   				</ol>
 			</nav>
-
-			<table class="table table-striped table-hover{% if session['dark_theme'] %} table-dark{% endif %}">
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">Image Name</th>
-						<th scope="col">Upload Time</th>
-						<th scope="col">Alt-Text</th>
-						<th scope="col">Description</th>
-						<th scope="col">Options</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% if image_list|length == 0 %}
-					<tr>
-						<th scope="row" colspan="6">You haven't uploaded any images</th>
-					</tr>
-					{% else %}
-						{% for image in image_list %}
+			<div class="table-responsive-lg">
+				<table class="table table-striped table-hover{% if session['dark_theme'] %} table-dark{% endif %}">
+					<thead>
 						<tr>
-							<td>{{ image['id'] }}</td>
-							<td>{{ image['file_name'] }}</td>
-							<td>{{ image['time_created'] }}</td>
-							<td>{{ image['alt_text'] }}</td>
-							<td>{{ image['description'] }}</td>
-							<td>
-								<a data-share-url="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}"
-								   data-share-title="{{ image['file_name'] }}"
-								   data-share-text="{{ image['description'] }}"
-								   class="btn btn-sm btn-primary">
-									<i class="fas fa-share"></i> Share
-								</a>
-								<a href="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}"
-								   title="{{ image['file_name'] }}" class="btn btn-sm btn-success" target="_blank">
-									<i class="fas fa-image"></i> View
-								</a>
-								<a href="{{ url_for('gallery_bp.edit_image', image_uuid=image['file_uuid']) }}" class="btn btn-sm btn-secondary">
-									<i class="fas fa-pencil-alt"></i> Details
-								</a>
-								<a href="{{ url_for('gallery_bp.delete_image', image_uuid=image['file_uuid']) }}" class="btn btn-sm btn-danger">
-									<i class="fas fa-trash"></i> Delete
-								</a>
-							</td>
+							<th scope="col">#</th>
+							<th scope="col">Name</th>
+							<th scope="col">Uploaded</th>
+							<th scope="col">Alt-Text</th>
+							<th scope="col">Description</th>
+							<th scope="col">Options</th>
 						</tr>
-						{% endfor %}
-					{% endif %}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{% if image_list|length == 0 %}
+						<tr>
+							<th scope="row" colspan="6">You haven't uploaded any images</th>
+						</tr>
+						{% else %}
+							{% for image in image_list %}
+							<tr>
+								<td>{{ image['id'] }}</td>
+								<td>{{ image['file_name'] }}</td>
+								<td>{{ image['time_created'] }}</td>
+								<td>{{ image['alt_text'] }}</td>
+								<td>{{ image['description'] }}</td>
+								<td>
+									<div class="btn-group btn-group-sm" role="group" aria-label="Image options for {{ image['file_name'] }}">
+										<a data-share-url="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}"
+										   data-share-title="{{ image['file_name'] }}"
+										   data-share-text="{{ image['description'] }}"
+										   class="btn btn-sm btn-primary">
+											<i class="fas fa-share"></i> Share
+										</a>
+										<a href="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}"
+										   title="{{ image['file_name'] }}" class="btn btn-sm btn-success" target="_blank">
+											<i class="fas fa-image"></i> View
+										</a>
+										<a href="{{ url_for('gallery_bp.edit_image', image_uuid=image['file_uuid']) }}" class="btn btn-sm btn-info text-light">
+											<i class="fas fa-pencil-alt"></i> Edit
+										</a>
+										<a href="{{ url_for('gallery_bp.delete_image', image_uuid=image['file_uuid']) }}" class="btn btn-sm btn-danger">
+											<i class="fas fa-trash"></i> Delete
+										</a>
+									</div>
+								</td>
+							</tr>
+							{% endfor %}
+						{% endif %}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 {% endblock %}
