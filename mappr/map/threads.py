@@ -2,6 +2,7 @@ import csv
 import threading
 from queue import Queue
 from time import sleep
+from .. import mongo, db
 
 
 class FileProcessorThread(threading.Thread):
@@ -18,17 +19,22 @@ class FileProcessorThread(threading.Thread):
 
 	def run(self):
 		while True:
-			csv_file = self.input_queue.get()
+			reference, csv_file = self.input_queue.get()
 			if csv_file is None:
 				break
 
-			fh = open(csv_file, 'r')
 			try:
-				dialect = csv.Sniffer().sniff(fh.read(1024))
-				# Perform various checks on the dialect (e.g., lineseparator, delimiter) to make sure it's sane
+				with open(csv_file, newline='') as fh:
+					dialect = csv.Sniffer().sniff(fh.read(1024))
+					print(dialect)
+					# Don't forget to reset the read position back to the start of the file before reading any entries.
+					fh.seek(0)
 
-				# Don't forget to reset the read position back to the start of the file before reading any entries.
-				fh.seek(0)
+					reader = csv.DictReader(fh)
+					print(reader.fieldnames)
+					for row in reader:
+						print(row)
+
 			except csv.Error:
 				return
 

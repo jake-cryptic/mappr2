@@ -4,7 +4,7 @@ from os import path, makedirs
 from flask import Blueprint, request, render_template, current_app, abort, send_from_directory, send_file
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
-from ..functions import resp
+from ..functions import resp, is_valid_uuid
 from .. import limiter, db
 from ..models import GalleryFile
 
@@ -22,14 +22,6 @@ def validate_image(stream):
 	if not format:
 		return None
 	return format if format != 'jpeg' else 'jpg'
-
-
-def is_valid_uuid(uuid_to_test, version=4):
-	try:
-		uuid_obj = uuid.UUID(uuid_to_test, version=version)
-	except ValueError:
-		return False
-	return str(uuid_obj) == uuid_to_test
 
 
 @gallery_bp.route('/', methods=['GET'])

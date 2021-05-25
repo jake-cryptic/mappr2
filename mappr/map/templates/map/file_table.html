@@ -28,12 +28,39 @@
 							<th>ID</th>
 							<th>File Name</th>
 							<th>Description</th>
-							<th>Rows</th>
+							<th>Uploaded</th>
 							<th>Options</th>
 						</tr>
 					</thead>
 					<tbody>
-
+					{% if file_list|length == 0 %}
+						<tr>
+							<th scope="row" colspan="6">You haven't uploaded any images</th>
+						</tr>
+						{% else %}
+							{% for file in file_list %}
+							<tr>
+								<td>{{ file['id'] }}</td>
+								<td>{{ file['file_name'] }}</td>
+								<td>{{ file['description'] }}</td>
+								<td>{{ file['time_created'] }}</td>
+								<td>
+									<div class="btn-group btn-group-sm" role="group" aria-label="Image options for {{ file['file_name'] }}">
+										<a href="{{ url_for('map_bp.file_details', file_uuid=file['file_uuid']) }}"
+										   title="{{ file['file_name'] }}" class="btn btn-sm btn-success" target="_blank">
+											<i class="fas fa-map-signs"></i> View
+										</a>
+										<a href="{{ url_for('map_bp.file_details', file_uuid=file['file_uuid']) }}" class="btn btn-sm btn-info text-light">
+											<i class="fas fa-pencil-alt"></i> Edit
+										</a>
+										<a href="{{ url_for('map_bp.file_details', file_uuid=file['file_uuid']) }}" class="btn btn-sm btn-danger">
+											<i class="fas fa-trash"></i> Delete
+										</a>
+									</div>
+								</td>
+							</tr>
+							{% endfor %}
+						{% endif %}
 					</tbody>
 				</table>
 			</div>
