@@ -23,6 +23,6 @@ class DeleteAccountForm(FlaskForm):
 
 
 class DownloadDataForm(FlaskForm):
-	export = SelectField('Export', choices=[('node_locations', 'Personal mast move history'), ('bookmarks', 'Personal location bookmarks'), ('gallery_files', 'Mast pictures uploaded'), ('map_files', 'Map Files uploaded')], validators=[DataRequired(message='Please enter an export type')])
+	export = SelectField('Export', choices=[('node_locations', 'Personal mast move history'), ('bookmarks', 'Personal location bookmarks'), ('gallery_files', 'Mast Pictures uploaded'), ('map_files', 'Map Files uploaded')], validators=[DataRequired(message='Please enter an export type')])
 	password = PasswordField('Account Password', validators=[DataRequired(message='Please enter your password'), Length(min=8, max=255)])
 	submit = SubmitField('Download Data')

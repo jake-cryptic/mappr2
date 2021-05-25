@@ -1,4 +1,4 @@
-import csv, uuid
+import uuid
 from os import path, makedirs
 from flask import Blueprint, render_template, current_app, request, abort
 from flask_login import login_required, current_user

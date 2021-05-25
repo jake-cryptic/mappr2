@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 from ..functions import resp, is_valid_uuid
 from .. import limiter, db
 from ..models import GalleryFile
+from .forms import UpdateImageDetailsForm
 
 gallery_bp = Blueprint("gallery_bp", __name__, template_folder="templates", url_prefix='/collections')
 
@@ -156,7 +157,9 @@ def edit_image(image_uuid=None):
 
 	image_info = image_data.one()
 
-	return render_template('gallery/image.html', image=image_info)
+	update_form = UpdateImageDetailsForm()
+
+	return render_template('gallery/image.html', image=image_info, form=update_form)
 
 
 @gallery_bp.route('/image/view/<image_uuid>/<image_format>', methods=['GET'])

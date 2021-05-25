@@ -8,6 +8,7 @@
 	<div class="container-fluid py-5">
 		<div class="container">
 			<div class="display-4 pb-4">Collections - Image</div>
+			{% include "components/alert.html" %}
 			<nav class="navbar-light bg-light mb-2 rounded" aria-label="breadcrumb">
   				<ol class="breadcrumb px-4 py-3">
     				<li class="breadcrumb-item"><a href="{{ url_for('gallery_bp.home') }}">Home</a></li>
@@ -16,8 +17,41 @@
   				</ol>
 			</nav>
 
-			<img src="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}"
-				 class="img-fluid" alt="{{ image['alt_text'] }}" />
+			<div class="row">
+				<div class="col-lg-6 col-sm-12">
+					<img src="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}" class="img-fluid" alt="{{ image['alt_text'] }}" />
+				</div>
+				<div class="col-lg-6 col-sm-12">
+					<form id="update_image_form" class="mt-3" action="{{ url_for('gallery_bp.edit_image', image_uuid=image['file_uuid']) }}" method="POST">
+						{{ form.csrf_token }}
+						<div class="mb-3">
+							{{ form.name.label(class="form-label") }}
+							{{ form.name(class="form-control", value=image['file_name']) }}
+						</div>
+						<div class="mb-3">
+							{{ form.description.label(class="form-label") }}
+							{{ form.description(class="form-control", value=image['description']) }}
+						</div>
+						<div class="mb-3">
+							{{ form.alt.label(class="form-label") }}
+							{{ form.alt(class="form-control mb-3", value=image['alt_text']) }}
+						</div>
+						<div class="mb-3">
+							{{ form.permission.label(class="form-label") }}
+							{{ form.permission(class="form-select mb-3", value=image['permission']) }}
+						</div>
+						<button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Update Details</button>
+					</form>
+				</div>
+  			</div>
+
+			<hr />
+
+			<div class="float-right">
+				<a href="{{ url_for('gallery_bp.image_table') }}" class="btn btn-outline-info"><i class="fas fa-image"></i> Your Images</a>
+				<a href="{{ url_for('gallery_bp.delete_image', image_uuid=image['file_uuid']) }}" class="btn btn-outline-danger"><i class="fas fa-trash"></i> Delete</a>
+			</div>
+
 		</div>
 	</div>
 {% endblock %}
