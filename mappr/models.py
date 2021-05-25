@@ -194,5 +194,5 @@ class MapFile(db.Model):
 	description = db.Column(db.Text, nullable=True)
 
 	file_name = db.Column(db.Text, nullable=False)
-	file_location = db.Column(db.Text, nullable=False)
+	file_location = db.Column(UUIDType, nullable=False)
 	file_uuid = db.Column(UUIDType, nullable=False)

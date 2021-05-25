@@ -53,7 +53,7 @@ def file_table():
 	return render_template('map/file_table.html', file_list=user_files)
 
 
-@map_bp.route('/files/delete/<image_uuid>', methods=['GET'])
+@map_bp.route('/files/delete/<file_uuid>', methods=['GET'])
 @limiter.limit('250/hour;50/minute;2/second')
 def file_delete(file_uuid=None):
 	if not is_valid_uuid(file_uuid):
@@ -70,7 +70,7 @@ def file_delete(file_uuid=None):
 	return abort(501)
 
 
-@map_bp.route('/files/details/<image_uuid>', methods=['GET'])
+@map_bp.route('/files/details/<file_uuid>', methods=['GET'])
 @limiter.limit('250/hour;50/minute;2/second')
 def file_details(file_uuid=None):
 	if not is_valid_uuid(file_uuid):

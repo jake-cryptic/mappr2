@@ -59,6 +59,11 @@ def handle_500(err):
 	return render_template('errors/500.html'), 500
 
 
+@error_bp.app_errorhandler(501)
+def handle_501(err):
+	return render_template('errors/501.html'), 501
+
+
 @error_bp.app_errorhandler(503)
 @error_bp.route('/unavailable', methods=['GET'])
 def handle_503(err=None):
