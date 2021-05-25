@@ -43,8 +43,6 @@ let _map = {
 	colours: {
 		confirmed: '#1a1a1a', // #1a1a1a or #1ac400
 		estimated: '#0099ff', // #0099ff or #ff1328
-
-		csv_file: '#ff11e9',
 		user_location: '#00e53b'
 	},
 
@@ -55,15 +53,16 @@ let _map = {
 
 	icons: {
 
+		_base:null,
+
 		ico: {
 			main: null,
 			located: null,
-			csv: null,
 			user: null
 		},
 
 		init: function () {
-			let techIcon = L.Icon.extend({
+			_map.icons._base = L.Icon.extend({
 				options: {
 					iconSize: [25, 41],
 					iconAnchor: [12.5, 41],
@@ -71,9 +70,8 @@ let _map = {
 				}
 			});
 
-			_map.icons.ico.main = new techIcon({iconUrl: 'static/img/marker-default.png'});
-			_map.icons.ico.located = new techIcon({iconUrl: 'static/img/marker-located.png'});
-			_map.icons.ico.csv = new techIcon({iconUrl: 'static/img/marker-csv.png'});
+			_map.icons.ico.main = new _map.icons._base({iconUrl: 'static/img/marker-default.png'});
+			_map.icons.ico.located = new _map.icons._base({iconUrl: 'static/img/marker-located.png'});
 
 			_map.icons.ico.main = L.BeautifyIcon.icon({
 				icon: 'far fa-circle icon-class',
@@ -92,16 +90,6 @@ let _map = {
 				borderColor: '#fff',
 				borderWidth: 1,
 				backgroundColor: _map.colours.confirmed,
-				textColor: '#fff'
-			});
-
-			_map.icons.ico.csv = L.BeautifyIcon.icon({
-				icon: 'far fa-circle icon-class',
-				shadowSize: [0, 0],
-				iconShape: 'marker',
-				borderColor: '#fff',
-				borderWidth: 1,
-				backgroundColor: _map.colours.csv_file,
 				textColor: '#fff'
 			});
 

@@ -11,11 +11,15 @@ let _csv = {
 		worker: false
 	},
 
+	icons: {},
+
 	markers: [],
 
 	dataPoints: [],
 	errors: [],
-	files: [],
+	files: {},
+
+	cFileName: '',
 
 	osgb: null,
 
@@ -31,7 +35,6 @@ let _csv = {
 		_csv.osgb = new GT_OSGB();
 
 		// Add callback functions to config
-		_csv.conf['before'] = _csv.parseBefore;
 		_csv.conf['step'] = _csv.parseStep;
 		_csv.conf['complete'] = _csv.parseComplete;
 
@@ -39,41 +42,27 @@ let _csv = {
 		$("input[type=file]#csv_import").on("change", function (e) {
 			let file = $(this).prop('files')[0];
 			_csv.parseFile(file);
-			$('#csv_import_file_info').text('Loaded file: ' + file.name);
-			return;
-			let fileReader = new FileReader();
-
-			fileReader.onload = function () {
-				_csv.parse(fileReader.result);
-			};
-
-			fileReader.readAsDataURL(
-				$(this).prop('files')[0]
-			);
 		});
 
 		console.log('[CSV]-> Initialised')
-	},
-
-	parseBefore: function (file, inputElem) {
-		console.log(file);
-		console.log(inputElem);
 	},
 
 	parseStep: function (row, parser) {
 		let r = row.data;
 		//console.log(row.data);
 
+		// TODO: Convert header names to lower case to find coordinate columns
+		// TODO: Check rows that could match lat/lng/x/y if no headers found
 		let point = {
-			lat: r.lat || r.latitude || r.y || 0,
-			lng: r.lng || r.lon || r.longitude || r.x || 0,
+			lat: r.lat || r.latitude || r.y || r.Y || 0,
+			lng: r.lng || r.lon || r.longitude || r.x || r.X || 0,
 			text: ""
 		};
 
 		if ((r.easting && r.northing) || (point.lat > 100 && point.lng > 100)) {
 			console.log(r);
-			let easting = r.easting || r.x;
-			let northing = r.northing || r.y;
+			let easting = r.easting || r.x || r.X;
+			let northing = r.northing || r.y || r.Y;
 
 			_csv.osgb.setGridCoordinates(easting, northing);
 
@@ -95,7 +84,7 @@ let _csv = {
 				virtual: true,
 				draggable: false,
 				autoPan: true,
-				icon: _map.icons.ico.csv
+				icon: createUniqueMarker(_csv.cFileName)
 			}
 		);
 
@@ -105,6 +94,26 @@ let _csv = {
 				direction: 'bottom',
 				className: 'marker_label'
 			});
+		}
+
+		function createUniqueMarker(filename) {
+			if (!_csv.icons[filename]) {
+				let sectorMD5 = MD5(filename);
+				let sectorColor = chroma('#' + sectorMD5.substring(0, 6));
+				sectorColor = sectorColor.darken();
+
+				_csv.icons[filename] = L.BeautifyIcon.icon({
+					icon: 'far fa-circle icon-class',
+					shadowSize: [0, 0],
+					iconShape: 'marker',
+					borderColor: '#fff',
+					borderWidth: 1,
+					backgroundColor: sectorColor.hex(),
+					textColor: '#fff'
+				});
+			}
+
+			return _csv.icons[filename];
 		}
 
 		function createPopupText(d) {
@@ -132,16 +141,12 @@ let _csv = {
 	},
 
 	parseFile: function (f) {
-		_csv.files.push(
-			Papa.parse(f, _csv.conf)
-		);
-	},
+		_csv.cFileName = f.name;
+		$s = $('#csv_import_file_info');
+		$s.text('Parsing file: ' + f.name);
 
-	parse: function (text) {
-		let raw = atob(text);
-		_csv.files.push(
-			Papa.parse(raw, _csv.conf)
-		);
+		_csv.files[f.name] = Papa.parse(f, _csv.conf);
+		$s.text('Loaded file: ' + f.name);
 	}
 
 };

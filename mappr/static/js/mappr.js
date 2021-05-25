@@ -8,9 +8,9 @@ let _mappr = {
 	init: function(){
 		if (!_mappr.dev) {
 			_mappr.initMatomo();
+		} else {
+			_mappr.initServiceWorker();
 		}
-
-		_mappr.initServiceWorker();
 	},
 
 	initMatomo: function () {
