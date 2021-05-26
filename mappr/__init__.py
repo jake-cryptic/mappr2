@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_pymongo import PyMongo
+from flask_migrate import Migrate
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_login import LoginManager
@@ -14,6 +15,7 @@ mimetypes.add_type('text/javascript', '.js')
 # Initialise objects
 db = SQLAlchemy()
 mongo = PyMongo()
+migrate = Migrate()
 csrf = CSRFProtect()
 login_manager = LoginManager()
 limiter = Limiter(key_func=get_remote_address, default_limits=["10000 per day", "1000 per hour", "100 per minute"])
@@ -30,6 +32,7 @@ def create_app():
 
 	db.init_app(app)
 	mongo.init_app(app)
+	migrate.init_app(app, db, compare_type=True)
 	limiter.init_app(app)
 	login_manager.init_app(app)
 	admin.init_app(app)
