@@ -2,6 +2,8 @@ import threading, exifread
 from queue import Queue
 from time import sleep
 from PIL import Image
+from .. import mongo, db
+from ..models import GalleryFile
 
 
 def correct_image_orientation(im, tags):
@@ -33,6 +35,9 @@ class ImageProcessorThread(threading.Thread):
 		threading.Thread.__init__(self, *args, **kwargs)
 		self.input_queue = Queue()
 
+	def set_app(self, app):
+		self.current_app = app
+
 	def send(self, item):
 		self.input_queue.put(item)
 
@@ -42,7 +47,7 @@ class ImageProcessorThread(threading.Thread):
 
 	def run(self):
 		while True:
-			im_file = self.input_queue.get()
+			reference, im_file = self.input_queue.get()
 			if im_file is None:
 				break
 
@@ -64,6 +69,19 @@ class ImageProcessorThread(threading.Thread):
 					f_im.save(im_file + '.webp', 'WEBP', lossless=False, method=6, quality=80)
 			except OSError:
 				print("Could not convert file", im_file)
+
+			with self.current_app.app_context():
+				db_file_query = GalleryFile.query.filter(
+					GalleryFile.file_uuid == reference
+				)
+				if db_file_query.count() != 1:
+					print('Database update error')
+				else:
+					db_file = db_file_query.one()
+					db_file.processing = 0
+					db.session.commit()
+
+				print(mongo.db)
 
 			self.input_queue.task_done()
 			sleep(1)

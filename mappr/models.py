@@ -2,10 +2,10 @@ from datetime import datetime
 from mappr import db
 from sqlalchemy import Integer, SmallInteger, Sequence, Index, UniqueConstraint
 from sqlalchemy.types import DECIMAL
+from sqlalchemy.dialects.mysql import TINYINT, INTEGER
 from sqlalchemy_utils import UUIDType
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-import uuid
 
 
 class User(UserMixin, db.Model):
@@ -163,13 +163,13 @@ class Bookmark(db.Model):
 class GalleryFile(db.Model):
 	__tablename__ = 'gallery_files'
 
-	id = db.Column(Integer, Sequence('galleryfile_id_seq'), primary_key=True)
+	id = db.Column(INTEGER(unsigned=True), Sequence('galleryfile_id_seq'), primary_key=True)
 	user_id = db.Column(Integer, db.ForeignKey('users.id'))
 	user = db.relationship('User', back_populates='gallery_file')
 
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-	permission = db.Column(db.SmallInteger, nullable=False, default=0)
-	processing = db.Column(db.SmallInteger, nullable=False, default=1)		# Indicates if the file is being processed
+	permission = db.Column(TINYINT(unsigned=True), nullable=False, default=0)
+	processing = db.Column(TINYINT(unsigned=True), nullable=False, default=1)		# Indicates if the file is being processed
 
 	alt_text = db.Column(db.Text, nullable=False, default='Image has no alt-text')
 	description = db.Column(db.Text, nullable=True)
@@ -183,13 +183,13 @@ class GalleryFile(db.Model):
 class MapFile(db.Model):
 	__tablename__ = 'map_files'
 
-	id = db.Column(Integer, Sequence('mapfile_id_seq'), primary_key=True)
+	id = db.Column(INTEGER(unsigned=True), Sequence('mapfile_id_seq'), primary_key=True)
 	user_id = db.Column(Integer, db.ForeignKey('users.id'))
 	user = db.relationship('User', back_populates='map_files')
 
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-	permission = db.Column(db.SmallInteger, nullable=False, default=1)
-	processing = db.Column(db.SmallInteger, nullable=False, default=1)		# Indicates if the file is being processed
+	permission = db.Column(TINYINT(unsigned=True), nullable=False, default=1)
+	processing = db.Column(TINYINT(unsigned=True), nullable=False, default=1)		# Indicates if the file is being processed
 
 	description = db.Column(db.Text, nullable=True)
 

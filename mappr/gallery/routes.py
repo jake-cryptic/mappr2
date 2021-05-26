@@ -101,7 +101,10 @@ def image_upload():
 		file_path = path.join(current_app.config['GALLERY_FILES_DEST'], random_name)
 		file.save(file_path)
 
-		current_app.imageprocessor.send(file_path)
+		# Commit database changes so that secondary thread can change file status
+		db.session.commit()
+
+		current_app.imageprocessor.send([random_reference, file_path])
 
 		return True
 
@@ -119,14 +122,12 @@ def image_upload():
 	if len(saved_files) == 0:
 		return resp({}, error='No files saved')
 
-	db.session.commit()
-
 	return resp({
 		'files': saved_files
 	})
 
 
-@gallery_bp.route('/image/delete/<image_uuid>', methods=['GET'])
+@gallery_bp.route('/image/delete/<image_uuid>', methods=['GET', 'POST'])
 @limiter.limit('250/hour;50/minute;2/second')
 def delete_image(image_uuid=None):
 	if not is_valid_uuid(image_uuid):
@@ -143,7 +144,7 @@ def delete_image(image_uuid=None):
 	return abort(501)
 
 
-@gallery_bp.route('/image/details/<image_uuid>', methods=['GET'])
+@gallery_bp.route('/image/details/<image_uuid>', methods=['GET', 'POST'])
 @limiter.limit('250/hour;50/minute;2/second')
 def edit_image(image_uuid=None):
 	if not is_valid_uuid(image_uuid):
@@ -158,6 +159,8 @@ def edit_image(image_uuid=None):
 	image_info = image_data.one()
 
 	update_form = UpdateImageDetailsForm()
+
+	# TODO: Process form
 
 	return render_template('gallery/image.html', image=image_info, form=update_form)
 

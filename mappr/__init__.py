@@ -62,6 +62,8 @@ def create_app():
 			img_thread = gallery_threads.ImageProcessorThread()
 			csv_thread = map_threads.FileProcessorThread()
 
+			img_thread.set_app(app)
+
 			# Tie them to the application
 			app.imageprocessor = img_thread
 			app.mapfileprocessor = csv_thread
