@@ -1,4 +1,4 @@
-alembic==1.6.4
+alembic==1.6.5
 is-safe-url==1.0
 itsdangerous==2.0.1
 email-validator==1.1.2

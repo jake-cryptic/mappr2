@@ -141,7 +141,7 @@ class CellIdBlockList(db.Model):
 class Bookmark(db.Model):
 	__tablename__ = 'bookmarks'
 
-	id = db.Column(Integer, Sequence('bookmark_id_seq'), primary_key=True)
+	id = db.Column(INTEGER(unsigned=True), Sequence('bookmark_id_seq'), primary_key=True)
 	user_id = db.Column(Integer, db.ForeignKey('users.id'))
 	user = db.relationship('User', back_populates='bookmarks')
 
@@ -150,7 +150,7 @@ class Bookmark(db.Model):
 
 	lat = db.Column(DECIMAL(8, 6), nullable=False)
 	lng = db.Column(DECIMAL(9, 6), nullable=False)
-	zoom = db.Column(SmallInteger, nullable=False)
+	zoom = db.Column(TINYINT(unsigned=True), nullable=False)
 
 	comment = db.Column(db.Text, nullable=True)
 
