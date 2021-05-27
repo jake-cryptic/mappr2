@@ -107,7 +107,7 @@ let _bookmarks = {
 			'comment': comment
 		};
 
-		$.post('api/bookmark/create', postData).done(function (resp) {
+		$.post(_api.base + 'bookmark/create', postData).done(function (resp) {
 			console.log(resp);
 			_bookmarks.reloadUi();
 		});
@@ -121,7 +121,7 @@ let _bookmarks = {
 			'id': removeId
 		};
 
-		$.post('api/bookmark/delete', postData).done(function (resp) {
+		$.post(_api.base + 'bookmark/delete', postData).done(function (resp) {
 			console.log(resp);
 		});
 	},

@@ -19,8 +19,8 @@ class User(UserMixin, db.Model):
 	password_hash = db.Column(db.String(128))
 	password = db.Column(db.String(60), nullable=False)
 	email = db.Column(db.String(256), unique=True, nullable=False)
-	active = db.Column(db.SmallInteger, nullable=False, default=0)
-	account_type = db.Column(db.SmallInteger, nullable=False, default=0)
+	active = db.Column(TINYINT(unsigned=True), nullable=False, default=0)
+	account_type = db.Column(TINYINT(unsigned=True), nullable=False, default=0)
 
 	bookmarks = db.relationship("Bookmark", back_populates='user')
 	locations = db.relationship("NodeLocation", back_populates='user')
@@ -119,18 +119,18 @@ class NodeLocation(db.Model):
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 	def __repr__(self):
-		return "<NodeLocation(id='%s', node_id='%s', lat='%s', lng='%s')>" % (self.id, self.node_id, self.lat, self.lng)
+		return "<NodeLocation(id='%s', mcc='%s', mnc='%s', node_id='%s', lat='%s', lng='%s')>" % (self.id, self.mcc, self.mnc, self.node_id, self.lat, self.lng)
 
 
 class CellIdBlockList(db.Model):
 	__tablename__ = 'blocked_cells'
 
-	id = db.Column(Integer, Sequence('cell_blocked_id_seq'), primary_key=True)
+	id = db.Column(INTEGER(unsigned=True), Sequence('cell_blocked_id_seq'), primary_key=True)
 	user_id = db.Column(Integer, db.ForeignKey('users.id'))
 
 	mcc = db.Column(SmallInteger, nullable=False)
 	mnc = db.Column(SmallInteger, nullable=False)
-	cell_id = db.Column(Integer, nullable=False)
+	cell_id = db.Column(INTEGER(unsigned=True), nullable=False)
 
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
