@@ -2,7 +2,7 @@ from datetime import datetime
 from mappr import db
 from sqlalchemy import Integer, SmallInteger, Sequence, Index, UniqueConstraint
 from sqlalchemy.types import DECIMAL
-from sqlalchemy.dialects.mysql import TINYINT, INTEGER
+from sqlalchemy.dialects.mysql import TINYINT, INTEGER, SMALLINT, MEDIUMINT
 from sqlalchemy_utils import UUIDType
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -11,7 +11,7 @@ from flask_login import UserMixin
 class User(UserMixin, db.Model):
 	__tablename__ = 'users'
 
-	id = db.Column(db.Integer, primary_key=True)
+	id = db.Column(INTEGER(unsigned=True), primary_key=True)
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 	# Information to be provided by user
@@ -46,22 +46,22 @@ class User(UserMixin, db.Model):
 class Sector(db.Model):
 	__tablename__ = 'sectors'
 
-	id = db.Column(Integer, Sequence('sector_id_seq'), primary_key=True)
+	id = db.Column(INTEGER(unsigned=True), Sequence('sector_id_seq'), primary_key=True)
 
-	mcc = db.Column(SmallInteger, nullable=False)
-	mnc = db.Column(SmallInteger, nullable=False)
+	mcc = db.Column(SMALLINT(unsigned=True), nullable=False)
+	mnc = db.Column(SMALLINT(unsigned=True), nullable=False)
 
-	node_id = db.Column(Integer, nullable=False)
-	sector_id = db.Column(SmallInteger, nullable=False)
-	pci = db.Column(SmallInteger, default=-1, nullable=False)
+	node_id = db.Column(INTEGER(unsigned=True), nullable=False)
+	sector_id = db.Column(TINYINT(unsigned=True), nullable=False)
+	pci = db.Column(SMALLINT(unsigned=True), default=-1, nullable=False)
 
 	lat = db.Column(DECIMAL(8, 6))
 	lng = db.Column(DECIMAL(9, 6))
-	range = db.Column(Integer)
+	range = db.Column(MEDIUMINT(unsigned=True))
 
-	samples = db.Column(Integer)
-	created = db.Column(Integer)
-	updated = db.Column(Integer)
+	samples = db.Column(MEDIUMINT(unsigned=True))
+	created = db.Column(INTEGER(unsigned=True))
+	updated = db.Column(INTEGER(unsigned=True))
 
 	def __repr__(self):
 		return "<Sector(id='%s', enb='%s', sector='%s')>" % (self.id, self.node_id, self.sector_id)
@@ -75,12 +75,12 @@ class Sector(db.Model):
 class Node(db.Model):
 	__tablename__ = 'nodes'
 
-	id = db.Column(Integer, Sequence('node_id_seq'), primary_key=True)
+	id = db.Column(INTEGER(unsigned=True), Sequence('node_id_seq'), primary_key=True)
 
-	mcc = db.Column(SmallInteger, nullable=False)
-	mnc = db.Column(SmallInteger, nullable=False)
+	mcc = db.Column(SMALLINT(unsigned=True), nullable=False)
+	mnc = db.Column(SMALLINT(unsigned=True), nullable=False)
 
-	node_id = db.Column(Integer, nullable=False)
+	node_id = db.Column(INTEGER(unsigned=True), nullable=False)
 
 	lat = db.Column(DECIMAL(8, 6), nullable=False)
 	lng = db.Column(DECIMAL(9, 6), nullable=False)
@@ -88,9 +88,9 @@ class Node(db.Model):
 	mean_lat = db.Column(DECIMAL(8, 6))
 	mean_lng = db.Column(DECIMAL(9, 6))
 
-	samples = db.Column(Integer)
-	created = db.Column(Integer)
-	updated = db.Column(Integer)
+	samples = db.Column(INTEGER(unsigned=True))
+	created = db.Column(INTEGER(unsigned=True))
+	updated = db.Column(INTEGER(unsigned=True))
 
 	def __repr__(self):
 		return "<Node(id='%s', enb='%s')>" % (self.id, self.node_id)
@@ -104,14 +104,14 @@ class Node(db.Model):
 class NodeLocation(db.Model):
 	__tablename__ = 'node_locations'
 
-	id = db.Column(Integer, Sequence('node_loc_id_seq'), primary_key=True)
-	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+	id = db.Column(INTEGER(unsigned=True), Sequence('node_loc_id_seq'), primary_key=True)
+	user_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('users.id'))
 	user = db.relationship('User', back_populates='locations')
 
-	mcc = db.Column(SmallInteger, nullable=False)
-	mnc = db.Column(SmallInteger, nullable=False)
+	mcc = db.Column(SMALLINT(unsigned=True), nullable=False)
+	mnc = db.Column(SMALLINT(unsigned=True), nullable=False)
 
-	node_id = db.Column(Integer, nullable=False)
+	node_id = db.Column(INTEGER(unsigned=True), nullable=False)
 
 	lat = db.Column(DECIMAL(8, 6), nullable=False)
 	lng = db.Column(DECIMAL(9, 6), nullable=False)
@@ -126,10 +126,10 @@ class CellIdBlockList(db.Model):
 	__tablename__ = 'blocked_cells'
 
 	id = db.Column(INTEGER(unsigned=True), Sequence('cell_blocked_id_seq'), primary_key=True)
-	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+	user_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('users.id'))
 
-	mcc = db.Column(SmallInteger, nullable=False)
-	mnc = db.Column(SmallInteger, nullable=False)
+	mcc = db.Column(SMALLINT(unsigned=True), nullable=False)
+	mnc = db.Column(SMALLINT(unsigned=True), nullable=False)
 	cell_id = db.Column(INTEGER(unsigned=True), nullable=False)
 
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -141,16 +141,16 @@ class CellIdBlockList(db.Model):
 class Bookmark(db.Model):
 	__tablename__ = 'bookmarks'
 
-	id = db.Column(Integer, Sequence('bookmark_id_seq'), primary_key=True)
-	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+	id = db.Column(INTEGER(unsigned=True), Sequence('bookmark_id_seq'), primary_key=True)
+	user_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('users.id'))
 	user = db.relationship('User', back_populates='bookmarks')
 
-	mcc = db.Column(SmallInteger, nullable=False)
-	mnc = db.Column(SmallInteger, nullable=False)
+	mcc = db.Column(SMALLINT(unsigned=True), nullable=False)
+	mnc = db.Column(SMALLINT(unsigned=True), nullable=False)
 
 	lat = db.Column(DECIMAL(8, 6), nullable=False)
 	lng = db.Column(DECIMAL(9, 6), nullable=False)
-	zoom = db.Column(SmallInteger, nullable=False)
+	zoom = db.Column(TINYINT(unsigned=True), nullable=False)
 
 	comment = db.Column(db.Text, nullable=True)
 
@@ -164,7 +164,7 @@ class GalleryFile(db.Model):
 	__tablename__ = 'gallery_files'
 
 	id = db.Column(INTEGER(unsigned=True), Sequence('galleryfile_id_seq'), primary_key=True)
-	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+	user_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('users.id'))
 	user = db.relationship('User', back_populates='gallery_file')
 
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -184,7 +184,7 @@ class MapFile(db.Model):
 	__tablename__ = 'map_files'
 
 	id = db.Column(INTEGER(unsigned=True), Sequence('mapfile_id_seq'), primary_key=True)
-	user_id = db.Column(Integer, db.ForeignKey('users.id'))
+	user_id = db.Column(INTEGER(unsigned=True), db.ForeignKey('users.id'))
 	user = db.relationship('User', back_populates='map_files')
 
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
