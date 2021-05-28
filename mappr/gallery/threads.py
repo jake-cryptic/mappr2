@@ -5,6 +5,7 @@ from PIL import Image
 from .. import mongo, db
 from ..models import GalleryFile
 
+
 # Thanks: https://stackoverflow.com/a/45857824/12286336
 # https://gist.github.com/snakeye/fdc372dbf11370fe29eb
 def _convert_to_degress(value):
@@ -48,8 +49,18 @@ def get_mongo_schema(reference, tags):
 
 	# Store remaining tags
 	for key in tags:
-		print(key, tags[key], type(tags[key].values))
-		schema['tags'][key] = tags[key].values
+		if isinstance(tags[key].values, list):
+			val = tags[key].values
+			if len(val) == 1:
+				val = val[0]
+
+				# MongoDB cannot insert this type
+				if val.__class__.__name__ == 'Ratio':
+					val = str(val)
+
+			schema['tags'][key] = val
+		else:
+			schema['tags'][key] = tags[key].values
 
 	return schema
 
@@ -131,15 +142,14 @@ class ImageProcessorThread(threading.Thread):
 				try:
 					mongo.db.gallery_files.insert_one(schema)
 				except Exception as e:
-					print(e)
 					print('Mongo update error')
+					print(e)
 					self.input_queue.task_done()
 					continue
 
 				# Save changes to SQL db to indicate processing done
-				print(db_file)
 				db_file = db_file_query.one()
-				db_file.update(dict(processing=0))
+				db_file.processing = 0
 				db.session.commit()
 
 			self.input_queue.task_done()
