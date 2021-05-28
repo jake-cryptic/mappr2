@@ -76,12 +76,25 @@ class ImageProcessorThread(threading.Thread):
 				)
 				if db_file_query.count() != 1:
 					print('Database update error')
-				else:
-					db_file = db_file_query.one()
-					db_file.processing = 0
-					db.session.commit()
+					self.input_queue.task_done()
+					continue
 
-				print(mongo.db)
+				db_file = db_file_query.one()
+				db_file.processing = 0
+
+				schema = {
+					'file_uuid': reference,
+					'tags': {}
+				}
+				try:
+					mongo.db.gallery_files.insert_one(schema)
+				except:
+					print('Mongo update error')
+					self.input_queue.task_done()
+					continue
+
+				# Save changes to SQL db to indicate processing done
+				db.session.commit()
 
 			self.input_queue.task_done()
 			sleep(1)
