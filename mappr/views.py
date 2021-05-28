@@ -58,4 +58,4 @@ admin.add_view(AdminView(Sector, db.session, category='Base Data'))
 
 admin.add_view(AdminView(GalleryFile, db.session, category='Files'))
 admin.add_view(AdminView(MapFile, db.session, category='Files'))
-#admin.add_view(FileView(mongo.db['files'], category='Files'))
+# admin.add_view(FileView(mongo.db['gallery_files'], category='Files'))

@@ -5,7 +5,7 @@ from flask import Blueprint, request, render_template, current_app, abort, send_
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 from ..functions import resp, is_valid_uuid
-from .. import limiter, db
+from .. import limiter, db, mongo
 from ..models import GalleryFile
 from .forms import UpdateImageDetailsForm
 
@@ -28,9 +28,12 @@ def validate_image(stream):
 @gallery_bp.route('/', methods=['GET'])
 @login_required
 def home():
-	featured_images = GalleryFile.query.limit(10).all()
+	featured_images = GalleryFile.query.filter(
+		GalleryFile.processing != 1
+	).limit(10).all()
 	user_images = GalleryFile.query.filter(
-		GalleryFile.user_id == current_user.get_id()
+		GalleryFile.user_id == current_user.get_id(),
+		GalleryFile.processing != 1
 	).limit(10).all()
 
 	return render_template('gallery/home.html', featured_image_list=featured_images, user_image_list=user_images)
@@ -157,10 +160,13 @@ def edit_image(image_uuid=None):
 		return abort(404)
 
 	image_info = image_data.one()
+	exif_data = mongo.db.gallery_files.find({'file_uuid':image_info.file_uuid})
+	print(exif_data)
 
 	update_form = UpdateImageDetailsForm()
-
-	# TODO: Process form
+	if request.method == 'POST' and update_form.validate_on_submit():
+		# TODO: Process form
+		return abort(501)
 
 	return render_template('gallery/image.html', image=image_info, form=update_form)
 
@@ -186,6 +192,11 @@ def view_image(image_uuid=None, image_format='best'):
 		return abort(404)
 
 	image_info = image_data.one()
+
+	# If image isn't done processing yet...
+	if image_info.processing == 1:
+		return abort(403)
+
 	file_ext = '.webp' if image_format != 'jpg' else '.jpg'
 
 	try:

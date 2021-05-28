@@ -5,6 +5,54 @@ from PIL import Image
 from .. import mongo, db
 from ..models import GalleryFile
 
+# Thanks: https://stackoverflow.com/a/45857824/12286336
+# https://gist.github.com/snakeye/fdc372dbf11370fe29eb
+def _convert_to_degress(value):
+	d = float(value.values[0].num) / float(value.values[0].den)
+	m = float(value.values[1].num) / float(value.values[1].den)
+	s = float(value.values[2].num) / float(value.values[2].den)
+	return d + (m / 60.0) + (s / 3600.0)
+
+
+def get_gps(tags):
+	latitude = tags.get('GPS GPSLatitude')
+	latitude_ref = tags.get('GPS GPSLatitudeRef')
+	longitude = tags.get('GPS GPSLongitude')
+	longitude_ref = tags.get('GPS GPSLongitudeRef')
+
+	if not latitude or not longitude:
+		return {}
+
+	lat_value = _convert_to_degress(latitude)
+	if latitude_ref.values != 'N':
+		lat_value = -lat_value
+
+	lon_value = _convert_to_degress(longitude)
+	if longitude_ref.values != 'E':
+		lon_value = -lon_value
+
+	return {'latitude': lat_value, 'longitude': lon_value}
+
+
+def get_mongo_schema(reference, tags):
+	schema = {
+		'file_uuid': reference,
+		'tags': {}
+	}
+
+	# Get image GPS coords
+	image_gps = get_gps(tags)
+	if 'latitude' in image_gps:
+		schema['lat'] = image_gps['latitude']
+		schema['lng'] = image_gps['longitude']
+
+	# Store remaining tags
+	for key in tags:
+		print(key, tags[key], type(tags[key].values))
+		schema['tags'][key] = tags[key].values
+
+	return schema
+
 
 def correct_image_orientation(im, tags):
 	if "Image Orientation" not in tags.keys():
@@ -79,21 +127,19 @@ class ImageProcessorThread(threading.Thread):
 					self.input_queue.task_done()
 					continue
 
-				db_file = db_file_query.one()
-				db_file.processing = 0
-
-				schema = {
-					'file_uuid': reference,
-					'tags': {}
-				}
+				schema = get_mongo_schema(reference, tags)
 				try:
 					mongo.db.gallery_files.insert_one(schema)
-				except:
+				except Exception as e:
+					print(e)
 					print('Mongo update error')
 					self.input_queue.task_done()
 					continue
 
 				# Save changes to SQL db to indicate processing done
+				print(db_file)
+				db_file = db_file_query.one()
+				db_file.update(dict(processing=0))
 				db.session.commit()
 
 			self.input_queue.task_done()

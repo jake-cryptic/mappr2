@@ -26,8 +26,10 @@ let _upload = {
 			headers: _upload._headers
 		})
 		.use(Uppy.XHRUpload, {
+			// TODO: https://uppy.io/docs/xhr-upload/#getResponseError-responseText-response
 			endpoint: _upload.url,
-			headers: _upload._headers
+			headers: _upload._headers,
+			limit:10
 		})
 		.use(Uppy.DropTarget, {target: document.body})
 		.use(Uppy.Webcam)
