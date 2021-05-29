@@ -57,8 +57,19 @@ def get_mongo_schema(reference, tags):
 				# MongoDB cannot insert this type
 				if val.__class__.__name__ == 'Ratio':
 					val = str(val)
+			else:
+				fixed_list = []
+				for item in val:
+					# MongoDB cannot insert this type
+					if item.__class__.__name__ == 'Ratio':
+						fixed_list.append(str(item))
+					else:
+						fixed_list.append(item)
+				val = fixed_list
 
 			schema['tags'][key] = val
+		elif isinstance(tags[key].values, str):
+			schema['tags'][key] = str(tags[key].values).strip()
 		else:
 			schema['tags'][key] = tags[key].values
 

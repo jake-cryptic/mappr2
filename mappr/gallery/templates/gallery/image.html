@@ -13,30 +13,30 @@
   				<ol class="breadcrumb px-4 py-3">
     				<li class="breadcrumb-item"><a href="{{ url_for('gallery_bp.home') }}">Home</a></li>
    	 				<li class="breadcrumb-item"><a href="{{ url_for('gallery_bp.image_table') }}">Images</a></li>
-    				<li class="breadcrumb-item active" aria-current="page">Image</li>
+    				<li class="breadcrumb-item active" aria-current="page">{{ image['file_name'] }} Details</li>
   				</ol>
 			</nav>
 
 			<div class="row">
 				<div class="col-lg-6 col-sm-12">
-					<img src="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}" class="img-fluid" alt="{{ image['alt_text'] }}" />
+					<img src="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}" class="mt-1 img-fluid" alt="{{ image['alt_text'] }}" />
 				</div>
 				<div class="col-lg-6 col-sm-12">
-					<form id="update_image_form" class="mt-3" action="{{ url_for('gallery_bp.edit_image', image_uuid=image['file_uuid']) }}" method="POST">
+					<form id="update_image_form" class="" action="{{ url_for('gallery_bp.edit_image', image_uuid=image['file_uuid']) }}" method="POST">
 						{{ form.csrf_token }}
-						<div class="mb-3">
+						<div class="mb-2">
 							{{ form.name.label(class="form-label") }}
 							{{ form.name(class="form-control", value=image['file_name']) }}
 						</div>
-						<div class="mb-3">
+						<div class="mb-2">
 							{{ form.description.label(class="form-label") }}
 							{{ form.description(class="form-control", value=image['description']) }}
 						</div>
-						<div class="mb-3">
+						<div class="mb-2">
 							{{ form.alt.label(class="form-label") }}
 							{{ form.alt(class="form-control mb-3", value=image['alt_text']) }}
 						</div>
-						<div class="mb-3">
+						<div class="mb-2">
 							{{ form.permission.label(class="form-label") }}
 							{{ form.permission(class="form-select mb-3", value=image['permission']) }}
 						</div>
@@ -48,10 +48,64 @@
 			<hr />
 
 			<div class="float-right">
-				<a href="{{ url_for('gallery_bp.image_table') }}" class="btn btn-outline-info"><i class="fas fa-image"></i> Your Images</a>
-				<a href="{{ url_for('gallery_bp.delete_image', image_uuid=image['file_uuid']) }}" class="btn btn-outline-danger"><i class="fas fa-trash"></i> Delete</a>
+				<a href="{{ url_for('gallery_bp.image_table') }}" class="btn btn-info text-light"><i class="fas fa-image"></i> Your Images</a>
+				<a href="{{ url_for('gallery_bp.delete_image', image_uuid=image['file_uuid']) }}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
 			</div>
 
+			<hr />
+
+			<div class="row">
+				<div class="col-lg-6 col-sm-12 text-center">
+					{% if location|length != 0 %}
+						<div data-map-lat="{{ location[0] }}" data-map-lng="{{ location[1] }}">
+							<div class="spinner-border text-primary" role="status">
+							  	<span class="visually-hidden">Loading...</span>
+							</div>
+						</div>
+					{% else %}
+						<span>Image does not have any location data</span>
+					{% endif %}
+				</div>
+				<div class="col-lg-6 col-sm-12 text-center">
+					<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_exif_data" aria-expanded="false" aria-controls="collapse_exif_data">
+						View Image EXIF data
+					</button>
+					<div class="collapse" id="collapse_exif_data">
+						<table class="table table-sm table-striped table-hover{% if session['dark_theme'] %} table-dark{% endif %}">
+							<thead>
+								<tr>
+									<th scope="col">Tag Name</th>
+									<th scope="col">Value</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% if exif_data|length == 0 %}
+								<tr>
+									<th scope="row" colspan="2">Image has no EXIF data</th>
+								</tr>
+								{% else %}
+									{% for tag in exif_data %}
+									<tr>
+										<td>{{ tag }}</td>
+										<td class="user-select-all">{{ exif_data[tag] }}</td>
+									</tr>
+									{% endfor %}
+								{% endif %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+{% endblock %}
+
+{% block jsfiles %}
+	{{ super() }}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.73.0/L.Control.Locate.min.js" integrity="sha512-taGzWgtN8FsSonl7SSrfPQBvTm/omZEf9p0s64IomW39xQZx8bSmP+aUyzeqig61ojVlMUwW5Moyo87HNQxliw==" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.73.0/L.Control.Locate.min.css" integrity="sha512-61KpOy3DnpOq3pZlp54eyUdvq9ub53e2ETbksuRlQCMNiAkqyB2Iz8a6ggg61e9zlvPImPz+7A0tgvNGaoVLZg==" crossorigin="anonymous" />
+
+	<!-- Scripts to activate some data-* attribute functionality -->
+	<script src="{{ url_for('static', filename='js/gallery/maplocation.js') }}" type="text/javascript"></script>
+	<script src="{{ url_for('static', filename='js/gallery/sharing.js') }}" type="text/javascript"></script>
 {% endblock %}

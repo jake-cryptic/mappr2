@@ -39,6 +39,11 @@ select {
 	background-color: #fff !important;
 }
 
+.small-map {
+	height:50vh;
+	width:100%;
+}
+
 #toast_section {
 	min-height: 200px;
 	position: absolute;

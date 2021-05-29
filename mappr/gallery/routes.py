@@ -160,15 +160,24 @@ def edit_image(image_uuid=None):
 		return abort(404)
 
 	image_info = image_data.one()
-	exif_data = mongo.db.gallery_files.find({'file_uuid':image_info.file_uuid})
-	print(exif_data)
+	exif_data = mongo.db.gallery_files.find_one({'file_uuid': str(image_info.file_uuid)})
+
+	# Get exif tags
+	tags = {}
+	for key in exif_data['tags']:
+		tags[key] = exif_data['tags'][key]
+
+	# Get location
+	location = []
+	if 'lat' in exif_data:
+		location = [exif_data['lat'], exif_data['lng']]
 
 	update_form = UpdateImageDetailsForm()
 	if request.method == 'POST' and update_form.validate_on_submit():
 		# TODO: Process form
 		return abort(501)
 
-	return render_template('gallery/image.html', image=image_info, form=update_form)
+	return render_template('gallery/image.html', image=image_info, form=update_form, exif_data=tags, location=location)
 
 
 @gallery_bp.route('/image/view/<image_uuid>/<image_format>', methods=['GET'])

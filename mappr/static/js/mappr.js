@@ -1,5 +1,7 @@
 var _paq = window._paq = window._paq || [];
 
+const MAPPR_VER = "mappr-v2.1.0b";
+
 let _mappr = {
 
 	dev: window.location.host === 'localhost:5000',
@@ -9,7 +11,7 @@ let _mappr = {
 		if (!_mappr.dev) {
 			_mappr.initMatomo();
 		} else {
-			_mappr.initServiceWorker();
+			//_mappr.initServiceWorker();
 		}
 	},
 

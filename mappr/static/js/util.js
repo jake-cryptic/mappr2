@@ -19,6 +19,16 @@ let round = function(n, dp){
 	return Math.floor(Math.round(n*exp))/exp;
 };
 
+let genRandomId = function (length) {
+	let result = '',
+		characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_';
+	let charactersLength = characters.length;
+	for (let i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	return result;
+};
+
 let storage = {
 
 	supported: typeof(Storage) !== 'undefined',

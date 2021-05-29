@@ -2,8 +2,6 @@
 	Loads modules and initialises code
 */
 
-const MAPPR_VER = "mappr-v2.0.0b";
-
 let _app = {
 
 	rat: "LTE",
