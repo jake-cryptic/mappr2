@@ -29,7 +29,8 @@ def validate_image(stream):
 @login_required
 def home():
 	featured_images = GalleryFile.query.filter(
-		GalleryFile.processing != 1
+		GalleryFile.processing != 1,
+		GalleryFile.permission < 2
 	).order_by(func.random()).limit(10).all()
 	user_images = GalleryFile.query.filter(
 		GalleryFile.user_id == current_user.get_id(),
@@ -39,13 +40,23 @@ def home():
 	return render_template('gallery/home.html', featured_image_list=featured_images, user_image_list=user_images)
 
 
-@gallery_bp.route('/images', methods=['GET'])
+@gallery_bp.route('/images/table', methods=['GET'])
 @login_required
 def image_table():
 	user_images = GalleryFile.query.filter(
 		GalleryFile.user_id == current_user.get_id()
 	).all()
 	return render_template('gallery/table.html', image_list=user_images)
+
+
+@gallery_bp.route('/images/map', methods=['GET'])
+@login_required
+def image_map():
+	user_images = GalleryFile.query.filter(
+		GalleryFile.user_id == current_user.get_id()
+	).all()
+	#return render_template('gallery/map.html', image_list=user_images)
+	return abort(501)
 
 
 @gallery_bp.route('/upload', methods=['GET'])
@@ -153,7 +164,7 @@ def delete_image(image_uuid=None):
 	except FileNotFoundError:
 		pass
 	except OSError as err:
-		print(err)
+		return abort(500, err=err)
 
 	# Delete mongodb data
 	result = mongo.db.gallery_files.delete_one({'file_uuid': str(image_info.file_uuid)})
@@ -179,8 +190,15 @@ def edit_image(image_uuid=None):
 		return abort(404)
 
 	image_info = image_data.one()
-	exif_data = mongo.db.gallery_files.find_one({'file_uuid': str(image_info.file_uuid)})
 
+	# Check permission to view the image
+	if image_info.permission > 0:
+		if not current_user.is_authenticated:
+			return abort(404)
+		elif image_info.permission > 1 and current_user.get_id() != image_info.user_id:
+			return abort(403)
+
+	exif_data = mongo.db.gallery_files.find_one({'file_uuid': str(image_info.file_uuid)})
 	if exif_data is None:
 		return abort(404)
 
@@ -227,6 +245,13 @@ def view_image(image_uuid=None, image_format='best'):
 	# If image isn't done processing yet...
 	if image_info.processing == 1:
 		return abort(403)
+
+	# Check permission to view the image
+	if image_info.permission > 0:
+		if not current_user.is_authenticated:
+			return abort(404)
+		elif image_info.permission > 1 and current_user.get_id() != image_info.user_id:
+			return abort(403)
 
 	file_ext = '.webp' if image_format != 'jpg' else '.jpg'
 

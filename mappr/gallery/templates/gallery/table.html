@@ -16,8 +16,8 @@
 			</nav>
 			<div class="table-responsive-lg">
 				<div class="d-grid gap-2 d-lg-block">
-					<a class="btn btn-primary" href="{{ url_for('gallery_bp.upload') }}"><i class="fas fa-upload"></i> Upload</a>
-					<a class="btn btn-primary" type="button"><i class="fas fa-map-marked-alt"></i> View Map</a>
+					<a class="btn btn-outline-info" href="{{ url_for('gallery_bp.upload') }}"><i class="fas fa-upload"></i> Upload</a>
+					<a class="btn btn-outline-warning" href="{{ url_for('gallery_bp.image_map') }}"><i class="fas fa-map-marked-alt"></i> View Map</a>
 				</div>
 				<table class="table table-striped table-hover{% if session['dark_theme'] %} table-dark{% endif %}">
 					<thead>

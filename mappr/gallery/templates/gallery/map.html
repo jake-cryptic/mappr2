@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Collections - Map{% endblock %}
+
+{% block description %}Locations of your pictures{% endblock %}
+
+{% block content %}
+	<div id="csrf_token" data-value="{{ csrf_token() }}"></div>
+	<div class="container-fluid py-5">
+		<div class="container">
+			<div class="display-4 pb-4">Collections - Map</div>
+
+			<nav class="navbar-light bg-light mb-2 rounded" aria-label="breadcrumb">
+  				<ol class="breadcrumb px-4 py-3">
+    				<li class="breadcrumb-item"><a href="{{ url_for('gallery_bp.home') }}">Home</a></li>
+   	 				<li class="breadcrumb-item"><a href="{{ url_for('gallery_bp.image_table') }}">Images</a></li>
+    				<li class="breadcrumb-item active" aria-current="page">Map</li>
+  				</ol>
+			</nav>
+		</div>
+	</div>
+{% endblock %}
+
+{% block jsfiles %}
+	{{ super() }}
+{% endblock %}

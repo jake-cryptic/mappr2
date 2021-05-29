@@ -39,6 +39,10 @@ select {
 	background-color: #fff !important;
 }
 
+.mh-vh-50 {
+	max-height:50vh;
+}
+
 .small-map {
 	height:50vh;
 	width:100%;
