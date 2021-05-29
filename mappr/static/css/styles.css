@@ -44,6 +44,15 @@ select {
 	width:100%;
 }
 
+.beautify-marker {
+	margin-top:-16px !important;
+}
+
+.icon-class {
+	margin-top: 6px !important;
+	margin-left: -2px !important;
+}
+
 #toast_section {
 	min-height: 200px;
 	position: absolute;

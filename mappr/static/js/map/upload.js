@@ -19,7 +19,7 @@ let _upload = {
 			debug: true,
 			autoProceed: false,
 			restrictions: {
-				maxFileSize: 1024 * 1024 * 10,
+				maxFileSize: 1024 * 1024 * 15,
 				maxNumberOfFiles: 1,
 				allowedFileTypes: ['.csv', '.tsv']
 			},
@@ -39,7 +39,7 @@ let _upload = {
 			replaceTargetContent: true,
 			showProgressDetails: true,
 			proudlyDisplayPoweredByUppy: false,
-			note: 'Maximum file size: 10MB',
+			note: 'Maximum file size: 15MB',
 			autoOpenFileEditor: false,
 			metaFields: [
 				{id: 'name', name: 'Name', placeholder: 'Filename'},

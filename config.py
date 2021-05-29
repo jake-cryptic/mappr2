@@ -21,7 +21,7 @@ class Config:
 
 	REMEMBER_COOKIE_DURATION = timedelta(seconds=int(environ.get('REMEMBER_COOKIE_DURATION')))
 
-	MAX_CONTENT_LENGTH = 1024 * 1024 * 12
+	MAX_CONTENT_LENGTH = 1024 * 1024 * 16
 
 	GALLERY_UPLOAD_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp']
 	GALLERY_FILES_DEST = join('uploads', 'images')

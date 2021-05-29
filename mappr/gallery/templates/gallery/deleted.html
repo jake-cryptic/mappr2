@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Collections - Deleted{% endblock %}
+
+{% block description %}The image has been deleted{% endblock %}
+
+{% block content %}
+	<div id="csrf_token" data-value="{{ csrf_token() }}"></div>
+	<div class="container-fluid py-5">
+		<div class="container">
+			<div class="display-4 pb-4">Collections - Deleted</div>
+
+			<nav class="navbar-light bg-light mb-2 rounded" aria-label="breadcrumb">
+  				<ol class="breadcrumb px-4 py-3">
+    				<li class="breadcrumb-item"><a href="{{ url_for('gallery_bp.home') }}">Home</a></li>
+   	 				<li class="breadcrumb-item"><a href="{{ url_for('gallery_bp.image_table') }}">Images</a></li>
+    				<li class="breadcrumb-item active" aria-current="page">Image Deleted</li>
+  				</ol>
+			</nav>
+
+			<h3>Image was deleted.</h3>
+		</div>
+	</div>
+{% endblock %}

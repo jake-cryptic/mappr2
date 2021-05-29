@@ -14,3 +14,7 @@
 	height: 100%;
     object-fit: contain;
 }
+
+.carousel-caption>h5, .carousel-caption p {
+	background-color:rgba(0,0,0,0.5);
+}

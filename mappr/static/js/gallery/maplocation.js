@@ -5,9 +5,23 @@
 let _maplocation = {
 
 	maps: {},
+	icon: null,
 
 	init: function () {
-		$('[data-map-lat]').each(function() {
+		_maplocation.icon = L.BeautifyIcon.icon({
+			icon: 'far fa-circle icon-class',
+			shadowSize: [0, 0],
+			iconShape: 'marker',
+			borderColor: '#fff',
+			borderWidth: 1,
+			backgroundColor: '#1a1a1a',
+			textColor: '#fff'
+		});
+		_maplocation.run();
+	},
+
+	run:function (){
+		$('[data-map-lat]').each(function () {
 			let lat = parseFloat($(this).data('map-lat'));
 			let lng = parseFloat($(this).data('map-lng'));
 			let elId = genRandomId(8);
@@ -17,7 +31,7 @@ let _maplocation = {
 		});
 	},
 
-	makeMap: function($el, id, lat, lng) {
+	makeMap: function ($el, id, lat, lng) {
 		// Create the map
 		_maplocation.maps[id] = L.map(id, {
 			fullscreenControl: true,
@@ -25,7 +39,7 @@ let _maplocation = {
 				position: 'topleft'
 			},
 			preferCanvas: true
-		}).setView([round(lat, 6), round(lng, 6)], 12);
+		}).setView([round(lat, 6), round(lng, 6)], 13);
 
 		L.control.scale().addTo(_maplocation.maps[id]);
 		L.control.locate({
@@ -43,7 +57,11 @@ let _maplocation = {
 			})
 		);
 
-		L.circle([lat, lng], 5).addTo(_maplocation.maps[id]);
+		_maplocation.maps[id].addLayer(
+			new L.marker([lat, lng], {
+				icon: _maplocation.icon
+			})
+		);
 	}
 
 };

@@ -44,15 +44,6 @@
 	background: rgba(255, 255, 255, 0.9) !important;
 }
 
-.beautify-marker {
-	margin-top:-16px !important;
-}
-
-.icon-class {
-	margin-top: 6px !important;
-	margin-left: -2px !important;
-}
-
 .leaflet-popup-content {
 	text-align: center;
 }

@@ -19,7 +19,7 @@ let _upload = {
 			debug: true,
 			autoProceed: false,
 			restrictions: {
-				maxFileSize: 1024 * 1024 * 12,
+				maxFileSize: 1024 * 1024 * 14,
 				maxNumberOfFiles: 32,
 				allowedFileTypes: ['image/*']
 			},

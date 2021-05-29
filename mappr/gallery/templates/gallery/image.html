@@ -49,6 +49,12 @@
 
 			<div class="float-right">
 				<a href="{{ url_for('gallery_bp.image_table') }}" class="btn btn-info text-light"><i class="fas fa-image"></i> Your Images</a>
+				<a data-share-url="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}"
+				   data-share-title="{{ image['file_name'] }}"
+				   data-share-text="{{ image['description'] }}"
+				   class="btn btn-primary">
+					<i class="fas fa-share"></i> Share
+				</a>
 				<a href="{{ url_for('gallery_bp.delete_image', image_uuid=image['file_uuid']) }}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
 			</div>
 
@@ -67,10 +73,10 @@
 					{% endif %}
 				</div>
 				<div class="col-lg-6 col-sm-12 text-center">
-					<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_exif_data" aria-expanded="false" aria-controls="collapse_exif_data">
+					<!--<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_exif_data" aria-expanded="false" aria-controls="collapse_exif_data">
 						View Image EXIF data
-					</button>
-					<div class="collapse" id="collapse_exif_data">
+					</button>-->
+					<div class="collapsed" id="collapse_exif_data">
 						<table class="table table-sm table-striped table-hover{% if session['dark_theme'] %} table-dark{% endif %}">
 							<thead>
 								<tr>

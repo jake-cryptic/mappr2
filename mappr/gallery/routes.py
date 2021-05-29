@@ -1,8 +1,8 @@
-import uuid
-import imghdr
-from os import path, makedirs
+import imghdr, uuid
+from os import path, makedirs, remove
 from flask import Blueprint, request, render_template, current_app, abort, send_from_directory, send_file
 from flask_login import current_user, login_required
+from sqlalchemy import func
 from werkzeug.utils import secure_filename
 from ..functions import resp, is_valid_uuid
 from .. import limiter, db, mongo
@@ -30,7 +30,7 @@ def validate_image(stream):
 def home():
 	featured_images = GalleryFile.query.filter(
 		GalleryFile.processing != 1
-	).limit(10).all()
+	).order_by(func.random()).limit(10).all()
 	user_images = GalleryFile.query.filter(
 		GalleryFile.user_id == current_user.get_id(),
 		GalleryFile.processing != 1
@@ -144,7 +144,26 @@ def delete_image(image_uuid=None):
 
 	image_info = image_data.one()
 
-	return abort(501)
+	# Delete files associated with image (main and converted)
+	file_loc = str(image_info.file_location)
+	try:
+		remove(path.join(current_app.config['GALLERY_FILES_DEST'], file_loc))
+		remove(path.join(current_app.config['GALLERY_FILES_DEST'], file_loc + '.jpg'))
+		remove(path.join(current_app.config['GALLERY_FILES_DEST'], file_loc + '.webp'))
+	except FileNotFoundError:
+		pass
+	except OSError as err:
+		print(err)
+
+	# Delete mongodb data
+	result = mongo.db.gallery_files.delete_one({'file_uuid': str(image_info.file_uuid)})
+	print(result.deleted_count)
+
+	# Remove record from SQL db
+	db.session.delete(image_info)
+	db.session.commit()
+
+	return render_template('gallery/deleted.html')
 
 
 @gallery_bp.route('/image/details/<image_uuid>', methods=['GET', 'POST'])
@@ -161,6 +180,9 @@ def edit_image(image_uuid=None):
 
 	image_info = image_data.one()
 	exif_data = mongo.db.gallery_files.find_one({'file_uuid': str(image_info.file_uuid)})
+
+	if exif_data is None:
+		return abort(404)
 
 	# Get exif tags
 	tags = {}
