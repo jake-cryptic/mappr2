@@ -23,24 +23,26 @@
 				</div>
 				<div class="col-lg-6 col-sm-12">
 					<form id="update_image_form" class="" action="{{ url_for('gallery_bp.edit_image', image_uuid=image['file_uuid']) }}" method="POST">
-						{{ form.csrf_token }}
+						{{ details_form.csrf_token }}
 						<div class="mb-2">
-							{{ form.name.label(class="form-label") }}
-							{{ form.name(class="form-control", value=image['file_name'], readonly=image['user_id']!=current_user.id) }}
+							{{ details_form.name.label(class="form-label") }}
+							{{ details_form.name(class="form-control", value=image['file_name'], readonly=image['user_id']!=current_user.id) }}
 						</div>
 						<div class="mb-2">
-							{{ form.description.label(class="form-label") }}
-							{{ form.description(class="form-control", value=image['description'], readonly=image['user_id']!=current_user.id) }}
+							{{ details_form.description.label(class="form-label") }}
+							{{ details_form.description(class="form-control", value=image['description'], readonly=image['user_id']!=current_user.id) }}
 						</div>
 						<div class="mb-2">
-							{{ form.alt.label(class="form-label") }}
-							{{ form.alt(class="form-control mb-3", value=image['alt_text'], readonly=image['user_id']!=current_user.id) }}
+							{{ details_form.alt.label(class="form-label") }}
+							{{ details_form.alt(class="form-control mb-3", value=image['alt_text'], readonly=image['user_id']!=current_user.id) }}
 						</div>
+						{% if image['user_id']==current_user.id %}
 						<div class="mb-2">
-							{{ form.permission.label(class="form-label") }}
-							{{ form.permission(class="form-select mb-3", value=image['permission'], readonly=image['user_id']!=current_user.id) }}
+							{{ details_form.permission.label(class="form-label") }}
+							{{ details_form.permission(class="form-select mb-3", value=image['permission'], readonly=image['user_id']!=current_user.id) }}
 						</div>
 						<button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Update Details</button>
+						{% endif %}
 					</form>
 				</div>
   			</div>
@@ -55,21 +57,53 @@
 				   class="btn btn-primary">
 					<i class="fas fa-share"></i> Share
 				</a>
+				{% if image['user_id']==current_user.id %}
+				<a href="#" class="btn btn-warning text-light"><i class="fas fa-broom"></i> Clear EXIF Data</a>
 				<a href="{{ url_for('gallery_bp.delete_image', image_uuid=image['file_uuid']) }}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+				{% endif %}
 			</div>
 
 			<hr />
 
 			<div class="row">
-				<div class="col-lg-6 col-sm-12 text-center">
+				<div class="col-lg-6 col-sm-12">
 					{% if location|length != 0 %}
-						<div data-map-lat="{{ location[0] }}" data-map-lng="{{ location[1] }}">
+						<div data-map-lat="{{ location[0] }}" data-map-lng="{{ location[1] }}" class="text-center">
 							<div class="spinner-border text-primary" role="status">
 							  	<span class="visually-hidden">Loading...</span>
 							</div>
 						</div>
+						<form id="update_location_form" class="" action="{{ url_for('gallery_bp.edit_image', image_uuid=image['file_uuid']) }}" method="POST">
+							{{ location_form.csrf_token }}
+							<div class="mb-2">
+								{{ location_form.lat.label(class="form-label") }}
+								{{ location_form.lat(class="form-control mb-3", value=location[0], readonly=image['user_id']!=current_user.id) }}
+							</div>
+							<div class="mb-2">
+								{{ location_form.lng.label(class="form-label") }}
+								{{ location_form.lng(class="form-control mb-3", value=location[1], readonly=image['user_id']!=current_user.id) }}
+							</div>
+							{% if image['user_id']==current_user.id %}
+							<button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Update Image Location</button>
+							{% endif %}
+						</form>
 					{% else %}
-						<span>Image does not have any location data</span>
+						<span class="lead">Image does not have any location data</span>
+						{% if image['user_id']==current_user.id %}
+						<span class="d-block mt-4 h4">Add location data:</span>
+						<form id="update_location_form" class="" action="{{ url_for('gallery_bp.edit_image', image_uuid=image['file_uuid']) }}" method="POST">
+							{{ location_form.csrf_token }}
+							<div class="mb-2">
+								{{ location_form.lat.label(class="form-label") }}
+								{{ location_form.lat(class="form-control mb-3", value=location[0], readonly=image['user_id']!=current_user.id) }}
+							</div>
+							<div class="mb-2">
+								{{ location_form.lng.label(class="form-label") }}
+								{{ location_form.lng(class="form-control mb-3", value=location[1], readonly=image['user_id']!=current_user.id) }}
+							</div>
+							<button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Add Image Location</button>
+						</form>
+						{% endif %}
 					{% endif %}
 				</div>
 				<div class="col-lg-6 col-sm-12 text-center">

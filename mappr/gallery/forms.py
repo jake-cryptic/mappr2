@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField
+from wtforms import StringField, SubmitField, SelectField, FloatField
 from wtforms.validators import DataRequired, Length
 
 
@@ -13,3 +13,9 @@ class UpdateImageDetailsForm(FlaskForm):
 		('2', 'Only I can view')
 	], validators=[DataRequired(message='Please enter a permission level')])
 	submit = SubmitField('Update Image Details')
+
+
+class UpdateImageLocationForm(FlaskForm):
+	lat = FloatField('Latitude', validators=[DataRequired(message='Please enter a valid latitude')])
+	lng = FloatField('Longitude', validators=[DataRequired(message='Please enter a valid longitude')])
+	submit = SubmitField('Update Image Location')

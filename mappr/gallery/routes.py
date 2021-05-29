@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 from ..functions import resp, is_valid_uuid
 from .. import limiter, db, mongo
 from ..models import GalleryFile
-from .forms import UpdateImageDetailsForm
+from .forms import UpdateImageDetailsForm, UpdateImageLocationForm
 
 gallery_bp = Blueprint("gallery_bp", __name__, template_folder="templates", url_prefix='/collections')
 
@@ -66,7 +66,7 @@ def upload():
 
 
 @gallery_bp.route('/upload', methods=['POST'])
-@limiter.limit('100/hour;60/minute;10/second')
+@limiter.limit('100/hour;64/minute;12/second')
 @login_required
 def image_upload():
 	if len(request.files) == 0:
@@ -212,12 +212,17 @@ def edit_image(image_uuid=None):
 	if 'lat' in exif_data:
 		location = [exif_data['lat'], exif_data['lng']]
 
-	update_form = UpdateImageDetailsForm()
-	if request.method == 'POST' and update_form.validate_on_submit():
-		# TODO: Process form
-		return abort(501)
+	update_details_form = UpdateImageDetailsForm()
+	update_location_form = UpdateImageLocationForm()
+	if request.method == 'POST':
+		if update_details_form.validate_on_submit():
+			# TODO: Process form
+			return abort(501)
+		if update_location_form.validate_on_submit():
+			# TODO: Process form
+			return abort(501)
 
-	return render_template('gallery/image.html', image=image_info, form=update_form, exif_data=tags, location=location)
+	return render_template('gallery/image.html', image=image_info, details_form=update_details_form, location_form=update_location_form, exif_data=tags, location=location)
 
 
 @gallery_bp.route('/image/view/<image_uuid>/<image_format>', methods=['GET'])
