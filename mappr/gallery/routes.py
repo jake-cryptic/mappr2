@@ -32,6 +32,7 @@ def home():
 		GalleryFile.processing != 1,
 		GalleryFile.permission < 2
 	).order_by(func.random()).limit(10).all()
+
 	user_images = GalleryFile.query.filter(
 		GalleryFile.user_id == current_user.id,
 		GalleryFile.processing != 1

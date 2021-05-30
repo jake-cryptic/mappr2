@@ -15,22 +15,6 @@ if not path.exists(current_app.config['MAP_FILES_DEST']):
 	makedirs(current_app.config['MAP_FILES_DEST'])
 
 
-# TODO: Remove this temp fix after 2021/07/01
-@map_bp.route('/api/map', methods=['GET'])
-def map_api_get_map_area():
-	return api_get_map_area()
-
-
-@map_bp.route('/api/get-mccs', methods=['GET'])
-def map_api_get_mnc_list():
-	return api_get_mnc_list
-
-
-@map_bp.route('/get-sectors', methods=['GET'])
-def map_api_get_sector_list():
-	return api_get_sector_list
-
-
 @map_bp.route('/', methods=['GET'])
 @login_required
 def mappr():

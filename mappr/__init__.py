@@ -19,7 +19,7 @@ migrate = Migrate()
 csrf = CSRFProtect()
 login_manager = LoginManager()
 limiter = Limiter(key_func=get_remote_address, default_limits=["10000 per day", "1000 per hour", "100 per minute"])
-admin = Admin(name='Mappr2', template_mode='bootstrap4')
+flaskadmin = Admin(name='Mappr2', template_mode='bootstrap4')
 
 # Define folders
 static_folder = 'static'
@@ -35,11 +35,12 @@ def create_app():
 	migrate.init_app(app, db, compare_type=True)
 	limiter.init_app(app)
 	login_manager.init_app(app)
-	admin.init_app(app)
+	flaskadmin.init_app(app)
 	csrf.init_app(app)
 
 	with app.app_context():
-		from . import routes, views
+		from . import routes
+		from .admin import views as admin_views
 		from .api import routes as api_routes
 		from .auth import routes as auth_routes
 		from .errors import routes as error_routes

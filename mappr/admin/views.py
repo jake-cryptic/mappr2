@@ -2,7 +2,7 @@ from flask import url_for, request, redirect, flash
 from flask_admin.contrib.sqla import ModelView as SQLAModelView
 from flask_admin.contrib.pymongo import ModelView as MongoModelView
 from flask_login import current_user
-from mappr import admin, db, mongo
+from mappr import flaskadmin, db, mongo
 from wtforms import form, fields
 from mappr.models import User, NodeLocation, Bookmark, Node, Sector, CellIdBlockList, MapFile, GalleryFile
 
@@ -48,14 +48,14 @@ class FileView(MongoModelView):
 		return super(FileView, self).edit_form(obj)
 
 
-admin.add_view(AdminView(User, db.session))
-admin.add_view(AdminView(NodeLocation, db.session))
-admin.add_view(AdminView(CellIdBlockList, db.session))
-admin.add_view(AdminView(Bookmark, db.session))
+flaskadmin.add_view(AdminView(User, db.session))
+flaskadmin.add_view(AdminView(NodeLocation, db.session))
+flaskadmin.add_view(AdminView(CellIdBlockList, db.session))
+flaskadmin.add_view(AdminView(Bookmark, db.session))
 
-admin.add_view(AdminView(Node, db.session, category='Base Data'))
-admin.add_view(AdminView(Sector, db.session, category='Base Data'))
+flaskadmin.add_view(AdminView(Node, db.session, category='Base Data'))
+flaskadmin.add_view(AdminView(Sector, db.session, category='Base Data'))
 
-admin.add_view(AdminView(GalleryFile, db.session, category='Files'))
-admin.add_view(AdminView(MapFile, db.session, category='Files'))
-# admin.add_view(FileView(mongo.db['gallery_files'], category='Files'))
+flaskadmin.add_view(AdminView(GalleryFile, db.session, category='Files'))
+flaskadmin.add_view(AdminView(MapFile, db.session, category='Files'))
+# flaskadmin.add_view(FileView(mongo.db['gallery_files'], category='Files'))
