@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Collections - Delete{% endblock %}
+
+{% block description %}You are about to delete an image from Mappr{% endblock %}
+
+{% block content %}
+	<div id="csrf_token" data-value="{{ csrf_token() }}"></div>
+	<div class="container-fluid py-5">
+		<div class="container">
+			<div class="display-4 pb-4">Collections - Delete Image</div>
+
+			<nav class="navbar-light bg-light mb-2 rounded" aria-label="breadcrumb">
+  				<ol class="breadcrumb px-4 py-3">
+    				<li class="breadcrumb-item"><a href="{{ url_for('gallery_bp.home') }}">Home</a></li>
+   	 				<li class="breadcrumb-item"><a href="{{ url_for('gallery_bp.image_table') }}">Images</a></li>
+    				<li class="breadcrumb-item active" aria-current="page">Delete Confirmation</li>
+  				</ol>
+			</nav>
+
+			<h3>Are you sure you want to delete this image?</h3>
+			<form action="?" method="POST">
+				{{ delete_form.csrf_token }}
+				<button class="btn btn-danger" type="submit"><i class="fas fa-trash"></i> Delete</button>
+				<a class="btn btn-primary" href="{{ url_for('gallery_bp.image_table') }}"><i class="fas fa-window-close"></i> Cancel</a>
+			</form>
+
+			<img src="{{ url_for('gallery_bp.view_image', image_uuid=image['file_uuid'], image_format='best') }}" class="mt-1 mh-vh-50 mw-100 img-fluid" alt="{{ image['alt_text'] }}" />
+		</div>
+	</div>
+{% endblock %}

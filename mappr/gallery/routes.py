@@ -1,13 +1,13 @@
 import imghdr, uuid
 from os import path, makedirs, remove
-from flask import Blueprint, request, render_template, current_app, abort, send_from_directory, send_file
-from flask_login import current_user, login_required
+from flask import Blueprint, request, render_template, current_app, abort, send_from_directory, redirect, url_for, flash
+from flask_login import current_user, login_required, fresh_login_required
 from sqlalchemy import func
 from werkzeug.utils import secure_filename
 from ..functions import resp, is_valid_uuid
 from .. import limiter, db, mongo
 from ..models import GalleryFile
-from .forms import UpdateImageDetailsForm, UpdateImageLocationForm
+from .forms import UpdateImageDetailsForm, UpdateImageLocationForm, DeleteImageForm
 
 gallery_bp = Blueprint("gallery_bp", __name__, template_folder="templates", url_prefix='/collections')
 
@@ -33,7 +33,7 @@ def home():
 		GalleryFile.permission < 2
 	).order_by(func.random()).limit(10).all()
 	user_images = GalleryFile.query.filter(
-		GalleryFile.user_id == current_user.get_id(),
+		GalleryFile.user_id == current_user.id,
 		GalleryFile.processing != 1
 	).limit(10).all()
 
@@ -44,7 +44,7 @@ def home():
 @login_required
 def image_table():
 	user_images = GalleryFile.query.filter(
-		GalleryFile.user_id == current_user.get_id()
+		GalleryFile.user_id == current_user.id
 	).all()
 	return render_template('gallery/table.html', image_list=user_images)
 
@@ -53,7 +53,7 @@ def image_table():
 @login_required
 def image_map():
 	user_images = GalleryFile.query.filter(
-		GalleryFile.user_id == current_user.get_id()
+		GalleryFile.user_id == current_user.id
 	).all()
 	#return render_template('gallery/map.html', image_list=user_images)
 	return abort(501)
@@ -102,7 +102,7 @@ def image_upload():
 
 		# Add file to database
 		db.session.add(GalleryFile(
-			user_id=current_user.get_id(),
+			user_id=current_user.id,
 			description=description,
 			alt_text=alt,
 			file_name=new_name,
@@ -143,6 +143,8 @@ def image_upload():
 
 @gallery_bp.route('/image/delete/<image_uuid>', methods=['GET', 'POST'])
 @limiter.limit('250/hour;50/minute;2/second')
+@login_required
+@fresh_login_required
 def delete_image(image_uuid=None):
 	if not is_valid_uuid(image_uuid):
 		return abort(404)
@@ -155,30 +157,42 @@ def delete_image(image_uuid=None):
 
 	image_info = image_data.one()
 
-	# Delete files associated with image (main and converted)
-	file_loc = str(image_info.file_location)
-	try:
-		remove(path.join(current_app.config['GALLERY_FILES_DEST'], file_loc))
-		remove(path.join(current_app.config['GALLERY_FILES_DEST'], file_loc + '.jpg'))
-		remove(path.join(current_app.config['GALLERY_FILES_DEST'], file_loc + '.webp'))
-	except FileNotFoundError:
-		pass
-	except OSError as err:
-		return abort(500, err=err)
+	# Check user has permission to delete the image
+	if image_info.user_id != current_user.id:
+		return abort(403)
 
-	# Delete mongodb data
-	result = mongo.db.gallery_files.delete_one({'file_uuid': str(image_info.file_uuid)})
-	print(result.deleted_count)
+	form = DeleteImageForm()
 
-	# Remove record from SQL db
-	db.session.delete(image_info)
-	db.session.commit()
+	if request.method == 'POST' and form.validate_on_submit():
+		# Delete files associated with image (main and converted)
+		file_loc = str(image_info.file_location)
+		try:
+			remove(path.join(current_app.config['GALLERY_FILES_DEST'], file_loc))
+			remove(path.join(current_app.config['GALLERY_FILES_DEST'], file_loc + '.jpg'))
+			remove(path.join(current_app.config['GALLERY_FILES_DEST'], file_loc + '.webp'))
+		except FileNotFoundError:
+			pass
+		except OSError as err:
+			return abort(500, err=err)
 
-	return render_template('gallery/deleted.html')
+		# Delete mongodb data
+		result = mongo.db.gallery_files.delete_one({'file_uuid': str(image_info.file_uuid)})
+		print(result.deleted_count)
+
+		# Remove record from SQL db
+		db.session.delete(image_info)
+		db.session.commit()
+
+		# Tell user action was successful
+		flash('Image has been deleted.', 'success')
+		return redirect(url_for('gallery_bp.image_table'))
+
+	return render_template('gallery/delete.html', delete_form=form, image=image_info)
 
 
 @gallery_bp.route('/image/details/<image_uuid>', methods=['GET', 'POST'])
 @limiter.limit('250/hour;50/minute;2/second')
+@login_required
 def edit_image(image_uuid=None):
 	if not is_valid_uuid(image_uuid):
 		return abort(404)
@@ -195,12 +209,14 @@ def edit_image(image_uuid=None):
 	if image_info.permission > 0:
 		if not current_user.is_authenticated:
 			return abort(404)
-		elif image_info.permission > 1 and current_user.get_id() != image_info.user_id:
+		elif image_info.permission > 1 and current_user.id != image_info.user_id:
 			return abort(403)
 
-	exif_data = mongo.db.gallery_files.find_one({'file_uuid': str(image_info.file_uuid)})
+	mongo_query = {'file_uuid': str(image_info.file_uuid)}
+	exif_data = mongo.db.gallery_files.find_one(mongo_query)
 	if exif_data is None:
-		return abort(404)
+		flash('There was an error trying to edit the image with ID: ' + str(image_info.file_uuid), 'danger')
+		return redirect(url_for('gallery_bp.image_table'))
 
 	# Get exif tags
 	tags = {}
@@ -215,12 +231,31 @@ def edit_image(image_uuid=None):
 	update_details_form = UpdateImageDetailsForm()
 	update_location_form = UpdateImageLocationForm()
 	if request.method == 'POST':
+		# Check user has permission to edit the image details
+		if image_info.user_id != current_user.id:
+			return abort(403)
+
 		if update_details_form.validate_on_submit():
-			# TODO: Process form
-			return abort(501)
+			image_info.file_name = update_details_form.name.data
+			image_info.description = update_details_form.description.data
+			image_info.alt_text = update_details_form.alt.data
+			image_info.permission = update_details_form.permission.data
+			db.session.commit()
+			flash('Updated image details', 'success')
+
 		if update_location_form.validate_on_submit():
-			# TODO: Process form
-			return abort(501)
+			mongo.db.gallery_files.update_one(mongo_query, {
+				'$set': {
+					'lat': float(update_location_form.lat.data),
+					'lng': float(update_location_form.lng.data)
+				}
+			})
+			flash('Updated image location', 'success')
+			return redirect(url_for('gallery_bp.edit_image', image_uuid=image_uuid))
+
+	# See here: https://stackoverflow.com/questions/12099741/how-do-you-set-a-default-value-for-a-wtforms-selectfield
+	update_details_form.permission.default = image_info.permission
+	update_details_form.process()
 
 	return render_template('gallery/image.html', image=image_info, details_form=update_details_form, location_form=update_location_form, exif_data=tags, location=location)
 
@@ -255,7 +290,7 @@ def view_image(image_uuid=None, image_format='best'):
 	if image_info.permission > 0:
 		if not current_user.is_authenticated:
 			return abort(404)
-		elif image_info.permission > 1 and current_user.get_id() != image_info.user_id:
+		elif image_info.permission > 1 and current_user.id != image_info.user_id:
 			return abort(403)
 
 	file_ext = '.webp' if image_format != 'jpg' else '.jpg'

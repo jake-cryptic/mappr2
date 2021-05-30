@@ -19,3 +19,7 @@ class UpdateImageLocationForm(FlaskForm):
 	lat = FloatField('Latitude', validators=[DataRequired(message='Please enter a valid latitude')])
 	lng = FloatField('Longitude', validators=[DataRequired(message='Please enter a valid longitude')])
 	submit = SubmitField('Update Image Location')
+
+
+class DeleteImageForm(FlaskForm):
+	submit = SubmitField('Delete Image')

@@ -31,39 +31,39 @@
 
 			<div class="row">
 				<div class="col-lg-6 col-sm-12">
-
-				<h2 class="h3">Your most recent pictures</h2>
-				{% if user_image_list|length == 0 %}
-					<small>You must upload some mast pictures in order to see them here... I'm not magic :)</small>
-				{% else %}
-				<div id="my_images" class="carousel carousel-dark slide" data-bs-ride="carousel">
-					<div class="carousel-indicators">
-						{% for image in user_image_list %}
-						<button type="button" data-bs-target="#my_images" data-bs-slide-to="{{ loop.index0 }}"
-							aria-label="Slide #{{ loop.index }}"{% if loop.index0 == 0 %} class="active" aria-current="true"{% endif %}></button>
-						{% endfor %}
-					</div>
-					<div class="carousel-inner">
-						{% for image in user_image_list %}
-						<div class="carousel-item{% if loop.index0 == 0 %} active{% endif %}">
-							<img src="{{ url_for('gallery_bp.view_image', image_uuid=image.file_uuid, image_format='jpg') }}" class="d-block w-100" alt="{{ image.file_type }}">
-							<div class="carousel-caption text-light d-none d-md-block">
-								<h5>Image {{ loop.index }}</h5>
-								<p>{{ image.file_name }}</p>
-							</div>
+					<h2 class="h3">Your most recent pictures</h2>
+					{% if user_image_list|length == 0 %}
+						<small>You must upload some mast pictures in order to see them here... I'm not magic :)</small>
+					{% else %}
+					<div id="my_images" class="carousel carousel-dark slide" data-bs-ride="carousel">
+						<div class="carousel-indicators">
+							{% for image in user_image_list %}
+							<button type="button" data-bs-target="#my_images" data-bs-slide-to="{{ loop.index0 }}"
+								aria-label="Slide #{{ loop.index }}"{% if loop.index0 == 0 %} class="active" aria-current="true"{% endif %}></button>
+							{% endfor %}
 						</div>
-						{% endfor %}
+						<div class="carousel-inner">
+							{% for image in user_image_list %}
+							<div class="carousel-item{% if loop.index0 == 0 %} active{% endif %}">
+								<img src="{{ url_for('gallery_bp.view_image', image_uuid=image.file_uuid, image_format='jpg') }}" class="d-block w-100" alt="{{ image.file_type }}">
+								<div class="carousel-caption text-light d-none d-md-block">
+									<h5>Image {{ loop.index }}</h5>
+									<p>{{ image.file_name }}</p>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+						<button class="carousel-control-prev" type="button" data-bs-target="#my_images" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#my_images" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
 					</div>
-					<button class="carousel-control-prev" type="button" data-bs-target="#my_images" data-bs-slide="prev">
-						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Previous</span>
-					</button>
-					<button class="carousel-control-next" type="button" data-bs-target="#my_images" data-bs-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Next</span>
-					</button>
+					{% endif %}
 				</div>
-				{% endif %}
 			</div>
 
 			<div class="col-lg-6 col-sm-12">

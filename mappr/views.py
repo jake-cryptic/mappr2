@@ -12,8 +12,8 @@ class AdminView(SQLAModelView):
 
 	def is_accessible(self):
 		if current_user.is_authenticated:
-			if current_user.get_id():
-				user = User.query.get(current_user.get_id())
+			if current_user.id:
+				user = User.query.get(current_user.id)
 				if user.account_type > 4 or current_user.id == 1:
 					return True
 

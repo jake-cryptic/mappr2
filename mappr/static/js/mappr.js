@@ -7,7 +7,7 @@ let _mappr = {
 	dev: window.location.host === 'localhost:5000',
 	sw: null,
 
-	init: function(){
+	init: function () {
 		if (!_mappr.dev) {
 			_mappr.initMatomo();
 		} else {
@@ -35,11 +35,22 @@ let _mappr = {
 	initServiceWorker: function () {
 		if (!('serviceWorker' in navigator)) return false;
 
-		_mappr.sw = navigator.serviceWorker.register('/static/js/service-worker.js').then(function(registration){
-			console.log('ServiceWorker registration successful with scope: ',registration.scope);
-		},function(err){
-			console.log('ServiceWorker registration failed: ',err);
+		_mappr.sw = navigator.serviceWorker.register('/static/js/service-worker.js').then(function (registration) {
+			console.log('ServiceWorker registration successful with scope: ', registration.scope);
+		}, function (err) {
+			console.log('ServiceWorker registration failed: ', err);
 		});
+	},
+
+	// Credit: https://web.dev/customize-install/#track-how-the-pwa-was-launched
+	getPWADisplayMode: function () {
+		const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+		if (document.referrer.startsWith('android-app://')) {
+			return 'twa';
+		} else if (navigator.standalone || isStandalone) {
+			return 'standalone';
+		}
+		return 'browser';
 	}
 
 };

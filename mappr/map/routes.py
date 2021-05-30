@@ -47,7 +47,7 @@ def mappr2():
 @login_required
 def file_table():
 	user_files = MapFile.query.filter(
-		MapFile.user_id == current_user.get_id()
+		MapFile.user_id == current_user.id
 	).all()
 
 	return render_template('map/file_table.html', file_list=user_files)
@@ -122,7 +122,7 @@ def file_upload():
 
 		# Add file to database
 		db.session.add(MapFile(
-			user_id=current_user.get_id(),
+			user_id=current_user.id,
 			description=description,
 			file_name=new_name,
 			file_location=random_name,

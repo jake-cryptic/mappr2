@@ -472,7 +472,7 @@ def api_bookmark_get():
 @login_required
 @internally_referred
 def proxy(url):
-	if current_user.get_id() != 1: return abort(403)
+	if current_user.id != 1: return abort(403)
 	parsed_url = urlparse(url)
 	if parsed_url.netloc not in (
 		'coverage.ee.co.uk',
