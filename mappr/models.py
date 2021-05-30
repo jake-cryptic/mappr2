@@ -2,7 +2,7 @@ from datetime import datetime
 from mappr import db
 from sqlalchemy import Integer, SmallInteger, Sequence, Index, UniqueConstraint
 from sqlalchemy.types import DECIMAL
-from sqlalchemy.dialects.mysql import TINYINT, INTEGER
+from sqlalchemy.dialects.mysql import TINYINT, INTEGER, SMALLINT, MEDIUMINT
 from sqlalchemy_utils import UUIDType
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -46,22 +46,22 @@ class User(UserMixin, db.Model):
 class Sector(db.Model):
 	__tablename__ = 'sectors'
 
-	id = db.Column(Integer, Sequence('sector_id_seq'), primary_key=True)
+	id = db.Column(INTEGER(unsigned=True), Sequence('sector_id_seq'), primary_key=True)
 
-	mcc = db.Column(SmallInteger, nullable=False)
-	mnc = db.Column(SmallInteger, nullable=False)
+	mcc = db.Column(SMALLINT(unsigned=True), nullable=False)
+	mnc = db.Column(SMALLINT(unsigned=True), nullable=False)
 
-	node_id = db.Column(Integer, nullable=False)
-	sector_id = db.Column(SmallInteger, nullable=False)
-	pci = db.Column(SmallInteger, default=-1, nullable=False)
+	node_id = db.Column(INTEGER(unsigned=True), nullable=False)
+	sector_id = db.Column(TINYINT(unsigned=True), nullable=False)
+	pci = db.Column(SMALLINT(unsigned=True), default=-1, nullable=False)
 
 	lat = db.Column(DECIMAL(8, 6))
 	lng = db.Column(DECIMAL(9, 6))
-	range = db.Column(Integer)
+	range = db.Column(MEDIUMINT(unsigned=True))
 
-	samples = db.Column(Integer)
-	created = db.Column(Integer)
-	updated = db.Column(Integer)
+	samples = db.Column(MEDIUMINT(unsigned=True))
+	created = db.Column(INTEGER(unsigned=True))
+	updated = db.Column(INTEGER(unsigned=True))
 
 	def __repr__(self):
 		return "<Sector(id='%s', enb='%s', sector='%s')>" % (self.id, self.node_id, self.sector_id)
@@ -75,12 +75,12 @@ class Sector(db.Model):
 class Node(db.Model):
 	__tablename__ = 'nodes'
 
-	id = db.Column(Integer, Sequence('node_id_seq'), primary_key=True)
+	id = db.Column(INTEGER(unsigned=True), Sequence('node_id_seq'), primary_key=True)
 
-	mcc = db.Column(SmallInteger, nullable=False)
-	mnc = db.Column(SmallInteger, nullable=False)
+	mcc = db.Column(SMALLINT(unsigned=True), nullable=False)
+	mnc = db.Column(SMALLINT(unsigned=True), nullable=False)
 
-	node_id = db.Column(Integer, nullable=False)
+	node_id = db.Column(INTEGER(unsigned=True), nullable=False)
 
 	lat = db.Column(DECIMAL(8, 6), nullable=False)
 	lng = db.Column(DECIMAL(9, 6), nullable=False)
@@ -88,9 +88,9 @@ class Node(db.Model):
 	mean_lat = db.Column(DECIMAL(8, 6))
 	mean_lng = db.Column(DECIMAL(9, 6))
 
-	samples = db.Column(Integer)
-	created = db.Column(Integer)
-	updated = db.Column(Integer)
+	samples = db.Column(MEDIUMINT(unsigned=True))
+	created = db.Column(INTEGER(unsigned=True))
+	updated = db.Column(INTEGER(unsigned=True))
 
 	def __repr__(self):
 		return "<Node(id='%s', enb='%s')>" % (self.id, self.node_id)
@@ -128,8 +128,8 @@ class CellIdBlockList(db.Model):
 	id = db.Column(INTEGER(unsigned=True), Sequence('cell_blocked_id_seq'), primary_key=True)
 	user_id = db.Column(Integer, db.ForeignKey('users.id'))
 
-	mcc = db.Column(SmallInteger, nullable=False)
-	mnc = db.Column(SmallInteger, nullable=False)
+	mcc = db.Column(SMALLINT(unsigned=True), nullable=False)
+	mnc = db.Column(SMALLINT(unsigned=True), nullable=False)
 	cell_id = db.Column(INTEGER(unsigned=True), nullable=False)
 
 	time_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -145,8 +145,8 @@ class Bookmark(db.Model):
 	user_id = db.Column(Integer, db.ForeignKey('users.id'))
 	user = db.relationship('User', back_populates='bookmarks')
 
-	mcc = db.Column(SmallInteger, nullable=False)
-	mnc = db.Column(SmallInteger, nullable=False)
+	mcc = db.Column(SMALLINT(unsigned=True), nullable=False)
+	mnc = db.Column(SMALLINT(unsigned=True), nullable=False)
 
 	lat = db.Column(DECIMAL(8, 6), nullable=False)
 	lng = db.Column(DECIMAL(9, 6), nullable=False)
