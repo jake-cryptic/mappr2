@@ -37,6 +37,9 @@ def get_gps(tags):
 	if longitude_ref.values != 'E':
 		lon_value = -lon_value
 
+	if lat_value == 0 and lon_value == 0:
+		return {}
+
 	return {'latitude': lat_value, 'longitude': lon_value}
 
 
