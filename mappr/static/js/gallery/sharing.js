@@ -5,6 +5,18 @@
 let _sharing = {
 
 	init: function () {
+		if ('share' in navigator) {
+			_sharing.assignShareEvents();
+		} else {
+			$('[data-share-url]').each(function() {
+				$(this).removeClass('btn-primary').addClass('btn-secondary').on('click enter', function(){
+					alert('This feature is not available in your browser');
+				});
+			});
+		}
+	},
+
+	assignShareEvents: function () {
 		$('[data-share-url]').each(function() {
 			let title = $(this).data('share-title') || '';
 			let url = $(this).data('share-url') || '';

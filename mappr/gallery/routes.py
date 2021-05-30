@@ -56,7 +56,7 @@ def image_map():
 	user_images = GalleryFile.query.filter(
 		GalleryFile.user_id == current_user.id
 	).all()
-	#return render_template('gallery/map.html', image_list=user_images)
+	# return render_template('gallery/map.html', image_list=user_images)
 	return abort(501)
 
 
@@ -67,7 +67,7 @@ def upload():
 
 
 @gallery_bp.route('/upload', methods=['POST'])
-@limiter.limit('100/hour;64/minute;12/second')
+@limiter.limit('256/hour;64/minute;12/second')
 @login_required
 def image_upload():
 	if len(request.files) == 0:
@@ -86,7 +86,7 @@ def image_upload():
 			return False
 
 		file_type = validate_image(file.stream)
-		if file_type != file_ext:
+		if file_type not in current_app.config['GALLERY_UPLOAD_EXTENSIONS']:
 			return False
 
 		new_name = secure_filename(file.filename)

@@ -377,15 +377,21 @@ let _map = {
 		// Apply some hacks
 		_map.leafletHacks();
 
-		// Create the map
-		_map.state.map = L.map('map', {
-			fullscreenControl: true,
-			fullscreenControlOptions: {
-				position: 'topleft'
-			},
-
+		let leaflet_opts = {
 			preferCanvas: true
-		}).setView(_map.state.defaultCoords, _map.state.zoom);
+		};
+		let ua = navigator.userAgent.toLowerCase();
+		if (!(ua.indexOf('safari') !== -1 && ua.indexOf('chrome') === -1)) {
+			leaflet_opts = Object.assign(leaflet_opts, {
+				fullscreenControl: true,
+				fullscreenControlOptions: {
+					position: 'topleft'
+				}
+			});
+		}
+
+		// Create the map
+		_map.state.map = L.map('map', leaflet_opts).setView(_map.state.defaultCoords, _map.state.zoom);
 
 		L.control.scale().addTo(_map.state.map);
 

@@ -91,8 +91,8 @@ def create_app():
 		response.headers['Cross-Origin-Resource-Policy'] = 'same-site'
 
 		if not request.path.startswith('/static/') and not request.path.startswith('/api/'):
-			response.headers["Feature-Policy"] = "fullscreen 'self'; geolocation 'self';"
-			response.headers["Permissions-Policy"] = "accelerometer=(), geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()"
+			response.headers["Feature-Policy"] = "camera 'self'; fullscreen 'self'; geolocation 'self';"
+			response.headers["Permissions-Policy"] = "accelerometer=(), camera=(self), geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()"
 			response.headers["Referrer-Policy"] = "same-origin"
 			response.headers["Strict-Transport-Security"] = "max-age=5184000"
 			response.headers["X-Frame-Options"] = "Deny"
