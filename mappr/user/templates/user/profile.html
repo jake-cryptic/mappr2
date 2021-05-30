@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}User Profile{% endblock title %}
+
+{% block description %}User Profile{% endblock description %}
+
+{% block content %}
+<div class="container-fluid py-4 px-3">
+	<div class="container">
+		<h1 class="display-3">Profile</h1>
+		{% include "components/alert.html" %}
+		Unavailable at this time.
+
+		<hr />
+		<div class="float-right">
+			<a href="{{ url_for('user_bp.account') }}" class="btn btn-outline-info"><i class="fas fa-user"></i> Account Settings</a>
+		</div>
+	</div>
+</div>
+{% endblock content %}
