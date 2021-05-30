@@ -63,6 +63,7 @@ let _data = {
 					if (findItem(sectorId, [0, 1, 2, 3, 4, 5])) ret += "3 ";
 					if (findItem(sectorId, [16])) ret += "3SC ";
 					if (findItem(sectorId, [6, 7, 8])) ret += "20";
+					if (findItem(sectorId, [91, 92, 93])) ret += "28";
 					return ret;
 				}
 			},

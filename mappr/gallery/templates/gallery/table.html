@@ -24,7 +24,7 @@
 						<tr>
 							<th scope="col">Name</th>
 							<th scope="col">Uploaded</th>
-							<th scope="col">Alt-Text</th>
+							<!--<th scope="col">Alt-Text</th>-->
 							<th scope="col">Description</th>
 							<th scope="col">Options</th>
 						</tr>
@@ -36,10 +36,10 @@
 						</tr>
 						{% else %}
 							{% for image in image_list %}
-							<tr>
+							<tr{% if image['processing'] == 1 %} class="table-warning"{% endif %} title="{{ image['alt_text'] }}">
 								<td>{{ image['file_name'] }}</td>
 								<td>{{ image['time_created'] }}</td>
-								<td>{{ image['alt_text'] }}</td>
+								<!--<td>{{ image['alt_text'] }}</td>-->
 								<td>{{ image['description'] }}</td>
 								<td>
 									<div class="btn-group btn-group-sm" role="group" aria-label="Image options for {{ image['file_name'] }}">

@@ -9,9 +9,14 @@ from ..models import GalleryFile
 # Thanks: https://stackoverflow.com/a/45857824/12286336
 # https://gist.github.com/snakeye/fdc372dbf11370fe29eb
 def _convert_to_degress(value):
-	d = float(value.values[0].num) / float(value.values[0].den)
-	m = float(value.values[1].num) / float(value.values[1].den)
-	s = float(value.values[2].num) / float(value.values[2].den)
+	def zf(n):
+		if n == 0:
+			return 1
+		else:
+			return n
+	d = float(value.values[0].num) / float(zf(value.values[0].den))
+	m = float(value.values[1].num) / float(zf(value.values[1].den))
+	s = float(value.values[2].num) / float(zf(value.values[2].den))
 	return d + (m / 60.0) + (s / 3600.0)
 
 
