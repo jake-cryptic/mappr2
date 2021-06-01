@@ -57,6 +57,13 @@ select {
 	margin-left: -2px !important;
 }
 
+.pride-1{color:#FF0018;}
+.pride-2{color:#FFA52C;}
+.pride-3{color:#FFFF41;}
+.pride-4{color:#268000;}
+.pride-5{color:#0053f9;}
+.pride-6{color:#9b0091;}
+
 #toast_section {
 	min-height: 200px;
 	position: absolute;
