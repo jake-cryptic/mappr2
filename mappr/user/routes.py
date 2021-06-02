@@ -174,7 +174,7 @@ def settings():
 @user_bp.route('/settings/experimental/toggle/<setting>', methods=['GET'])
 @login_required
 def setting_toggle(setting):
-	if setting not in ('dark_theme'): return abort(404)
+	if setting not in ('dark_theme', 'beta_map'): return abort(404)
 	enable = True
 	if setting in session:
 		enable = False if session[setting] == True else True

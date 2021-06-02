@@ -16,28 +16,34 @@ def favicon():
 	return send_from_directory(static_folder, 'img/bus_256.png')
 
 
-@main_bp.route("/")
+@main_bp.route('/')
 @login_required
 def index():
 	return redirect(url_for('map_bp.mappr'))
 
 
-@main_bp.route("/contribute")
+@main_bp.route('/account')
+@login_required
+def account_redir():
+	return redirect(url_for('user_bp.account'))
+
+
+@main_bp.route('/contribute')
 @login_required
 def contribute():
 	return render_template('help/contribute.html')
 
 
-@main_bp.route("/privacy-policy")
+@main_bp.route('/privacy-policy')
 def privacy():
 	return render_template('help/privacy.html')
 
 
-@main_bp.route("/terms-of-use")
+@main_bp.route('/terms-of-use')
 def terms():
 	return render_template('help/terms-of-use.html')
 
 
-@main_bp.route("/proto/<req>")
+@main_bp.route('/proto/<req>')
 def proto(req):
 	print(req)

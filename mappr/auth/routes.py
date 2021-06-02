@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
 from flask_login import login_user, confirm_login, current_user, logout_user, login_required, login_fresh
 from is_safe_url import is_safe_url
 from ..decorators import force_modern_browser
@@ -59,8 +59,8 @@ def auth():
 				login_user(user, remember=True)
 
 				next_url = request.args.get('next')
-				#if not is_safe_url(next, {'localhost'}, require_https=False):
-				#	return abort(400)
+				if not is_safe_url(next_url, {'localhost', '2.mappr.uk'}, require_https=False):
+					return abort(400)
 
 				return redirect(next_url or url_for('main_bp.index'))
 
@@ -87,7 +87,11 @@ def reauth():
 		else:
 			confirm_login()
 			flash('You have been re-authenticated', 'success')
+
 			next_url = request.args.get('next')
+			if not is_safe_url(next_url, {'localhost', '2.mappr.uk'}, require_https=False):
+				return abort(400)
+
 			return redirect(next_url or url_for('user_bp.account'))
 
 	return render_template('auth/reauth.html', title='Login Required', reauth_form=reauth_form)

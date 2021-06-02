@@ -14,16 +14,13 @@
 		<h3>Session Toggles</h3>
 		<a href="{{ url_for('user_bp.setting_toggle', setting='dark_theme') }}" class="btn btn-secondary">
 			<i class="fas fa-adjust"></i> Toggle Dark Theme
+		</a>&nbsp;&nbsp;&nbsp;
+		<a href="{{ url_for('user_bp.setting_toggle', setting='beta_map') }}" class="btn text-light btn-info">
+			<i class="fas fa-drafting-compass"></i> Toggle Upgraded Map
 		</a>
 		<hr />
 		<h3 class="mt-4">Account Toggles</h3>
 		<form id="settings" method="POST" action="/404">
-			<div class="form-check form-switch">
-				<input class="form-check-input" type="checkbox" id="use_js_workers" disabled>
-				<label class="form-check-label" for="use_js_workers">
-					<i class="fa fa-wrench"></i> Use WebWorkers <span class="badge bg-warning text-light">Experimental</span>
-				</label>
-			</div>
 			<div class="form-check form-switch">
 				<input class="form-check-input" type="checkbox" id="use_service_worker" disabled>
 				<label class="form-check-label" for="use_service_worker">

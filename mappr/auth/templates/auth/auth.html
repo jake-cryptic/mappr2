@@ -30,7 +30,7 @@
 						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 					</div>
 				{% endfor %}
-				<form id="login_form" action="{{ url_for('auth_bp.auth') }}" name="login_form" method="POST">
+				<form id="login_form" action="{{ request.url }}" name="login_form" method="POST">
 					<input type="hidden" class="d-none" name="form_name" value="login" />
 					{{ login_user.csrf_token }}
 					<div class="mb-3 ">

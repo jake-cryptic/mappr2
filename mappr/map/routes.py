@@ -1,8 +1,8 @@
 import uuid
 from os import path, makedirs
-from flask import Blueprint, render_template, current_app, request, abort
+from flask import Blueprint, render_template, current_app, request, abort, session, url_for
 from flask_login import login_required, current_user
-from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename, redirect
 from .. import limiter, db
 from ..functions import resp, is_valid_uuid
 from ..models import MapFile
@@ -17,7 +17,10 @@ if not path.exists(current_app.config['MAP_FILES_DEST']):
 @map_bp.route('/', methods=['GET'])
 @login_required
 def mappr():
-	return render_template('map/map.html')
+	if 'beta_map' in session and session['beta_map'] == True:
+		return redirect(url_for('map_bp.mappr2'))
+	else:
+		return render_template('map/map.html')
 
 
 @map_bp.route('/beta', methods=['GET'])
