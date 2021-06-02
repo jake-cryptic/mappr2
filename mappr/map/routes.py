@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 from .. import limiter, db
 from ..functions import resp, is_valid_uuid
 from ..models import MapFile
-from ..api.routes import api_get_map_area, api_get_mnc_list, api_get_sector_list
 
 map_bp = Blueprint("map_bp", __name__, template_folder="templates", url_prefix='/map')
 

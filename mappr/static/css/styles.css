@@ -6,6 +6,10 @@ body, html {
 	font-family: 'Inter', sans-serif !important;
 }
 
+.perfect p {
+	width: clamp(45ch, 50%, 75ch);
+}
+
 main {
 	min-height:100vh;
 }

@@ -7,7 +7,7 @@ let _worker = {
 	active:{},
 	callbacks:{},
 	logs:[],
-	path: '/static/js/map/workers/',
+	path: '/static/js/map_beta/workers/',
 
 	init: function () {
 		_worker.spawn('api.js');
