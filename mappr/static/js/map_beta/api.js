@@ -13,6 +13,7 @@ let _api = {
 
 	init: function () {
 		_api.prepareAjax();
+		_worker.init();
 		_api.data.getMccSectors();
 		_api.users.getUsers();
 

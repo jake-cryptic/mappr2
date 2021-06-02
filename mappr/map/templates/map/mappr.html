@@ -12,7 +12,14 @@
 {% block content %}
 	<div id="csrf_token" data-value="{{ csrf_token() }}"></div>
 	<div id="page">
-		<div id="map" class="fw"></div>
+		<div id="map" class="fw">
+			<div class="d-flex justify-content-center mt-5">
+				<h3>Map Loading...</h3><br />
+  				<div class="spinner-border" role="status">
+    				<span class="visually-hidden">Loading...</span>
+  				</div>
+			</div>
+		</div>
 		{% include "map/offcanvas.html" %}
 	</div>
 {% endblock content %}

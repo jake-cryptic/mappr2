@@ -34,6 +34,11 @@ def contribute():
 	return render_template('help/contribute.html')
 
 
+@main_bp.route('/about')
+def about():
+	return render_template('help/about.html')
+
+
 @main_bp.route('/privacy-policy')
 def privacy():
 	return render_template('help/privacy.html')
