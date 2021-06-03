@@ -11,7 +11,10 @@ let _data = {
 			"4": {
 				"name": "Ofcom Shared Access",
 				"short": "Shared Access",
-				"website": "https://ofcom.org.uk"
+				"website": "https://ofcom.org.uk",
+				"sectorInfo": function (enb, sectorId) {
+					return '?';
+				}
 			},
 			"10": {
 				"name": "O2-UK",
@@ -73,6 +76,7 @@ let _data = {
 				"website": "https://ee.co.uk",
 				"background": "#007b85",
 				"text": "#fff",
+				"ratList": ['GSM', 'UMTS', 'LTE', 'NR'],
 				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
 					if (findItem(sectorId, [21, 22, 23, 24])) ret += "? ";
