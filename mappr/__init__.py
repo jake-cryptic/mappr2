@@ -94,10 +94,8 @@ def create_app():
 			response.headers["Feature-Policy"] = "camera 'self'; fullscreen 'self'; geolocation 'self';"
 			response.headers["Permissions-Policy"] = "accelerometer=(), camera=(self), geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()"
 			response.headers["Referrer-Policy"] = "same-origin"
-			response.headers["Strict-Transport-Security"] = "max-age=5184000"
 			response.headers["X-Frame-Options"] = "Deny"
 			response.headers["X-XSS-Protection"] = "1; mode=block"
-			response.headers["X-Content-Type-Options"] = "nosniff"
 
 			csp_header_value = "script-src 'self' https://analytics.mappr.uk https://static.cloudflareinsights.com https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://unpkg.com; img-src 'self' data: blob: https://cdnjs.cloudflare.com https://api.cellmapper.net https://www.three.co.uk/ https://mapserver.vodafone.co.uk https://68aa7b45-tiles.spatialbuzz.net https://coverage.ee.co.uk https://mt1.google.com https://tile.opentopomap.org https://*.tile.openstreetmap.org https://*.api.tomtom.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://analytics.mappr.uk https://nominatim.openstreetmap.org https://mappr.report-uri.com; media-src 'none'; object-src 'none'; child-src 'none'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content; manifest-src 'self'; worker-src 'self'; report-uri https://mappr.report-uri.com/r/d/csp/reportOnly"
 

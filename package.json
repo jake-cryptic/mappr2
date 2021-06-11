@@ -26,6 +26,7 @@
     "chroma-js": "^2.1.2",
     "esri-leaflet": "^3.0.2",
     "jquery": "^3.6.0",
+    "laravel-mix": "^6.0.19",
     "leaflet": "^1.7.1",
     "leaflet.fullscreen": "^2.0.0",
     "leaflet.markercluster": "^1.5.0",
