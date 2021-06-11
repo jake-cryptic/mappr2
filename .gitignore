@@ -5,4 +5,5 @@ __pycache__
 venv
 uploads
 node_modules
+mappr/static/third-party
 .env

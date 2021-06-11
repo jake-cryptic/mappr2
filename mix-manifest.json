@@ -1,0 +1,9 @@
+{
+    "/mappr/static/third-party/bootstrap/bootstrap.min.js": "/mappr/static/third-party/bootstrap/bootstrap.min.js",
+    "/mappr/static/third-party/bootstrap/bootstrap.min.js.map": "/mappr/static/third-party/bootstrap/bootstrap.min.js.map",
+    "/mappr/static/third-party/bootstrap/bootstrap.min.css": "/mappr/static/third-party/bootstrap/bootstrap.min.css",
+    "/mappr/static/third-party/bootstrap/bootstrap.min.css.map": "/mappr/static/third-party/bootstrap/bootstrap.min.css.map",
+    "/mappr/static/third-party/beautifymarker/leaflet-beautify-marker-icon.js": "/mappr/static/third-party/beautifymarker/leaflet-beautify-marker-icon.js",
+    "/mappr/static/third-party/beautifymarker/leaflet-beautify-marker-icon.css": "/mappr/static/third-party/beautifymarker/leaflet-beautify-marker-icon.css",
+    "/mappr/static/third-party/jquery/jquery.min.js": "/mappr/static/third-party/jquery/jquery.min.js"
+}

@@ -9,8 +9,8 @@ let appLibraries = [
 	'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css',
 
 	// Bootstrap
-	'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.min.js',
-	'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css',
+	'static/third-party/bootstrap/bootstrap.min.js',
+	'static/third-party/bootstrap/bootstrap.min.css',
 
 	// Leaflet
 	'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js',
@@ -19,8 +19,8 @@ let appLibraries = [
 	// Leaflet Plugins
 	'https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/2.0.0/Control.FullScreen.min.js',
 	'https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/2.0.0/Control.FullScreen.min.css',
-	'https://unpkg.com/beautifymarker@1.0.9/leaflet-beautify-marker-icon.js',
-	'https://unpkg.com/beautifymarker@1.0.9/leaflet-beautify-marker-icon.css',
+	'static/third-party/beautifymarker/leaflet-beautify-marker-icon.js',
+	'static/third-party/beautifymarker/leaflet-beautify-marker-icon.css',
 	'https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet/3.0.1/esri-leaflet.min.js',
 
 	// Uppy
@@ -28,7 +28,7 @@ let appLibraries = [
 	'https://cdnjs.cloudflare.com/ajax/libs/uppy/1.27.0/uppy.min.css',
 
 	// jQuery
-	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js',
+	'static/third-party/jquery.min.js',
 
 	// Chart.js
 	'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.0/chart.min.js',

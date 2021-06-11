@@ -11,7 +11,10 @@ let _data = {
 			"4": {
 				"name": "Ofcom Shared Access",
 				"short": "Shared Access",
-				"website": "https://ofcom.org.uk"
+				"website": "https://ofcom.org.uk",
+				"sectorInfo": function (enb, sectorId) {
+					return '?';
+				}
 			},
 			"10": {
 				"name": "O2-UK",
@@ -73,16 +76,18 @@ let _data = {
 				"website": "https://ee.co.uk",
 				"background": "#007b85",
 				"text": "#fff",
+				"ratList": ['GSM', 'UMTS', 'LTE', 'NR'],
 				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
-					if (findItem(sectorId, [21, 22, 23, 24])) ret += "? ";
+					if (findItem(sectorId, [21, 22, 23])) ret += "? ";
 					if (findItem(sectorId, [18, 19, 20])) ret += "1 ";
 					if (findItem(sectorId, [0, 1, 2])) ret += "3P ";
 					if (findItem(sectorId, [3, 4, 5])) ret += "3S ";
 					if (findItem(sectorId, [6, 7, 8])) ret += "7P ";
 					if (findItem(sectorId, [9, 10, 11])) ret += "7S ";
 					if (findItem(sectorId, [15, 16, 17])) ret += "7T ";
-					if (findItem(sectorId, [12, 13, 14])) ret += "20";
+					if (findItem(sectorId, [12, 13, 14])) ret += "20 ";
+					if (findItem(sectorId, [24])) ret += "3SC ";
 					return ret;
 				}
 			},

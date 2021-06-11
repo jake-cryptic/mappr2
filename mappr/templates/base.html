@@ -43,7 +43,6 @@
 
 		<!-- Fonts -->
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600;700&display=swap" rel="stylesheet" />
-		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet" />
 
 		<!-- Fontawesome -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" integrity="sha512-apX8rFN/KxJW8rniQbkvzrshQ3KvyEH+4szT3Sno5svdr6E/CP0QE862yEeLBMUnCqLko8QaugGkzvWS7uNfFQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -51,7 +50,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" integrity="sha512-OdEXQYCOldjqUEsuMKsZRj93Ht23QRlhIb8E/X0sbwZhme8eUw6g8q7AdxGJKakcBbv7+/PX0Gc2btf7Ru8cZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 		<!-- Bootstrap -->
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" integrity="sha512-Ez0cGzNzHR1tYAv56860NLspgUGuQw16GiOOp/I2LuTmpSK9xDXlgJz3XN4cnpXWDmkNBKXR/VDMTCnAaEooxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='third-party/bootstrap/bootstrap.min.css') }}" />
 
 		{% block pagehead %}{% endblock pagehead %}
 
@@ -74,10 +73,10 @@
 		{% block jsfiles %}
 		<!-- Run JS code here as to not block page rendering -->
 		<!-- jQuery -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="{{ url_for('static', filename='third-party/jquery/jquery.min.js') }}"></script>
 
 		<!-- Bootstrap -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.min.js" integrity="sha512-EKWWs1ZcA2ZY9lbLISPz8aGR2+L7JVYqBAYTq5AXgBkSjRSuQEGqWx8R1zAX16KdXPaCjOCaKE8MCpU0wcHlHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="{{ url_for('static', filename='third-party/bootstrap/bootstrap.min.js') }}"></script>
 
 		<!-- Leaflet -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -88,8 +87,8 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/2.0.0/Control.FullScreen.min.css" integrity="sha512-DRkMa+fn898M1uc6s9JZeztUoXN6viuHsXmh/pgz3jG6a77YWO3U3QYEjLoqbxOeclc2NunWfMTya4Y5twXAKA==" crossorigin="anonymous" />
 
 		<!-- Extra Markers -->
-		<script src="https://unpkg.com/beautifymarker@1.0.9/leaflet-beautify-marker-icon.js" integrity="sha384-loeLo2TSF+D4cr3NxoXh6DZXW2iOzG4Bfdlunz56NIXPvJFUynSPAV79B7bSVFkt" crossorigin="anonymous"></script>
-		<link rel="stylesheet" href="https://unpkg.com/beautifymarker@1.0.9/leaflet-beautify-marker-icon.css" integrity="sha384-WEQUujCp3OEGbM6FpKgt3LJuJLT3DcblwhKaZb5BHZziQsaCyWNdk+Eu/78WVrsf" crossorigin="anonymous">
+		<script src="{{ url_for('static', filename='third-party/beautifymarker/leaflet-beautify-marker-icon.js') }}"></script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='third-party/beautifymarker/leaflet-beautify-marker-icon.css') }}" />
 
 		<!-- Chart.js -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.0/chart.min.js" integrity="sha512-yadYcDSJyQExcKhjKSQOkBKy2BLDoW6WnnGXCAkCoRlpHGpYuVuBqGObf3g/TdB86sSbss1AOP4YlGSb6EKQPg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
