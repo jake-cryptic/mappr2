@@ -102,7 +102,7 @@ def create_app():
 			# Production only headers
 			if app.config['ENV'] == 'production':
 				response.headers['Content-Security-Policy-Report-Only'] = csp_header_value
-				response.headers['Cross-Origin-Embedder-Policy-Report-Only'] = 'unsafe-none; report-to="default"' # Change to require-corp in future
+				response.headers['Cross-Origin-Embedder-Policy-Report-Only'] = 'require-corp; report-to="default"' # Change to require-corp in future
 				response.headers['Cross-Origin-Opener-Policy-Report-Only'] = 'same-origin; report-to="default"'
 				response.headers['Expect-CT'] = 'report-uri="https://mappr.report-uri.com/r/d/ct/reportOnly", max-age=30'
 				response.headers['Report-To'] = '{"group":"default","max_age":3600,"endpoints":[{"url":"https://mappr.report-uri.com/a/d/g"}],"include_subdomains":true}'
