@@ -15,6 +15,12 @@
 
 Make sure you have a valid .env file (You can just rename .env.example to .env for now)
 
+Before you can run mappr you must make sure to download the third-party JS libraries.
+
+	npm install
+
+	npx mix
+
 To run the flask application in development mode:
 	
 	python wsgi.py

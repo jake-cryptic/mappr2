@@ -23,6 +23,7 @@
 
 {% block jsfiles %}
 {{ super() }}
-<script src="{{ url_for('static', filename='js/stats/statschart.js') }}" type="text/javascript"></script>
-<script src="{{ url_for('static', filename='js/stats/init.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/data.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/statistics/graph.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/statistics/init.js') }}" type="text/javascript"></script>
 {% endblock jsfiles %}

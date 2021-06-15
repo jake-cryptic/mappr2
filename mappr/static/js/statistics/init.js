@@ -1,8 +1,18 @@
-let main = new StatsChart('main-chart');
+let main = new Graph('main-chart');
 
-fetch('/api/statistics', {}).response();
+let statistics = {
 
-let init = {
+	api_base: '/statistics/api/',
+
+	init: async function() {
+		await fetch(statistics.api_base + 'networks/available').then(function (response) {
+			return response.json();
+		}).then(function(data) {
+			console.log(data);
+		}).catch(function(error){
+			alert('Failed to get available networks');
+		});
+	},
 
 	postData: async function (url = '/api/statistics', data = {}) {
 		if (!navigator.onLine) {
@@ -17,9 +27,9 @@ let init = {
 			mode: 'same-origin',
 			cache: 'no-cache',
 			credentials: 'same-origin',
-			headers: {
+			headers: new Headers({
 				'Content-Type': 'application/json'
-			},
+			}),
 			redirect: 'error',
 			referrerPolicy: 'same-origin',
 			body: JSON.stringify(data)
@@ -40,7 +50,6 @@ let init = {
 
 		return response.json();
 	},
-
 
 
 };

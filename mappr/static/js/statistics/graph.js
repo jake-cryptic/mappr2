@@ -1,15 +1,4 @@
-const mncColors = {
-	"234": {
-		"58": "#000",
-		"55": "#11a",
-		"30": "#007b85",
-		"20": "#000",
-		"15": "#e60000",
-		"10": "#0a7cbb"
-	}
-};
-
-let StatsChart = function () {
+let Graph = function () {
 	this.ctx = null;
 	this.chart = null;
 
