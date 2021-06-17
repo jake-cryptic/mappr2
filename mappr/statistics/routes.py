@@ -2,8 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, abort
 from flask_login import current_user, login_required, fresh_login_required
 from ..functions import resp
 from ..models import db, Node, Sector
-from .. import login_manager
-from . import queries
+from .queries import queries
 
 statistics_bp = Blueprint("statistics_bp", __name__, template_folder="templates", url_prefix='/statistics')
 
@@ -25,7 +24,7 @@ def network_api_query():
 	interval = request.args.get('interval')
 
 	#if query
-	return
+	return resp({})
 
 
 @statistics_bp.route('/networks', methods=['GET'])
