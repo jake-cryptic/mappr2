@@ -18,12 +18,12 @@ Jinja2==3.0.1
 Mako==1.1.4
 MarkupSafe==2.0.1
 SQLAlchemy==1.3.23
-SQLAlchemy-Utils==0.37.7
+SQLAlchemy-Utils==0.37.8
 mysql-connector-python==8.0.25
-Pillow==8.2.0
+Pillow==8.3.1
 PyMongo==3.11.4
 pymysql==1.0.2
-python-dotenv==0.17.1
+python-dotenv==0.18.0
 requests==2.25.1
 Werkzeug==2.0.1
 WTForms==2.3.3

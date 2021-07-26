@@ -25,6 +25,7 @@ let _data = {
 				"ratList": ['GSM', 'UMTS', 'LTE', 'NR'],
 				"sectorInfo": function (enb, sectorId) {
 					let ret = '';
+					if (findItem(sectorId, [23, 68]) && enb >= 500000) ret += "SpiderCloud";
 					if (findItem(sectorId, [115, 125, 135, 145, 155, 165])) ret += (enb >= 500000 ? "1 " : "40C1 ");
 					if (findItem(sectorId, [114, 124, 134, 144, 154, 164])) ret += (enb >= 500000 ? "3 " : "1 ");
 					if (findItem(sectorId, [110, 120, 130, 140, 150, 160])) ret += "20 ";
