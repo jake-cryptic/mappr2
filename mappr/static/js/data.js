@@ -274,5 +274,46 @@ let _data = {
 				}
 			}
 		}
+	},
+
+	"621": {
+		"country_name": "Nigeria",
+		"country_short": "NG",
+		"mobile_spectrum_url": null,
+		"providers": {
+			"20": {
+				"name": "Airtel",
+				"short": "Airtel",
+				"sectorInfo": function (enb, sectorId) {
+					let ret = '';
+					if (findItem(sectorId, [1, 2, 3])) ret += "3 ";
+					if (findItem(sectorId, [11, 12, 13])) ret += "7 ";
+					if (findItem(sectorId, [21, 22, 23])) ret += "8 ";
+					return ret;
+				}
+			},
+			"30": {
+				"name": "MTN",
+				"short": "MTN",
+				"sectorInfo": function (enb, sectorId) {
+					let ret = '';
+					if (findItem(sectorId, [81, 82, 83])) ret += "3 ";
+					if (findItem(sectorId, [4, 5, 6])) ret += "7 ";
+					if (findItem(sectorId, [1, 2, 3])) ret += "20 ";
+					if (findItem(sectorId, [10, 11, 12])) ret += "28 ";
+					return ret;
+				}
+			},
+			"50": {
+				"name": "Glo",
+				"short": "Glo",
+				"sectorInfo": function (enb, sectorId) {
+					let ret = '';
+					if (findItem(sectorId, [4, 5, 6])) ret += "3 ";
+					if (findItem(sectorId, [1, 2, 3])) ret += "28 ";
+					return ret;
+				}
+			}
+		}
 	}
 };
