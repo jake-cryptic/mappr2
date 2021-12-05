@@ -90,7 +90,7 @@ def create_app():
 		response.headers["Server"] = "Mappr2"
 		response.headers['Cross-Origin-Resource-Policy'] = 'same-site'
 
-		if not request.path.startswith('/static/') and not request.path.startswith('/api/'):
+		if not request.path.startswith('/static/') and not request.path.startswith('/api/') and '192.168' not in request.host:
 			response.headers["Feature-Policy"] = "camera 'self'; fullscreen 'self'; geolocation 'self';"
 			response.headers["Permissions-Policy"] = "accelerometer=(), camera=(self), geolocation=(self), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()"
 			response.headers["Referrer-Policy"] = "same-origin"

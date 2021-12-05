@@ -32,6 +32,8 @@ let _data = {
 					if (findItem(sectorId, [112, 122, 132])) ret += "8 ";
 					if (findItem(sectorId, [116, 126, 136, 146, 156, 166])) ret += (enb >= 500000 ? "40C1 " : "3 ");
 					if (findItem(sectorId, [117, 127, 137, 147, 157, 167])) ret += "40C2";
+					if (findItem(sectorId, [118, 128, 138])) ret += "38";
+					if (findItem(sectorId, [119, 129, 139])) ret += "28";
 					return ret;
 				}
 			},
@@ -62,6 +64,10 @@ let _data = {
 				"text": "#fff",
 				"ratList": ['UMTS', 'LTE', 'NR'],
 				"sectorInfo": function (enb, sectorId) {
+					if (enb > 80000 && enb < 80100) {
+						return 'DAS';
+					}
+
 					let ret = '';
 					if (findItem(sectorId, [71, 72, 73, 74, 75, 76])) ret += "1 ";
 					if (findItem(sectorId, [0, 1, 2, 3, 4, 5])) ret += "3 ";
